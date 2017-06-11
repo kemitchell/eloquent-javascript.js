@@ -1,5 +1,14 @@
 {
   "name": "eloquent-javascript",
   "version": "0.0.0",
-  "license": "(CC-BY-NC-3.0 AND MIT)"
+  "license": "(CC-BY-NC-3.0 AND MIT)",
+  "devDependencies": {
+    "ajv-cli": "^2.1.0",
+    "lamos-to-json": "^3.0.2"
+  },
+  "scripts": {
+    "pretest": "lamos-to-json < schema.lamos > schema.json",
+    "test": "set -e ; for file in data/*.json ; do ajv -s schema.json -d $file ; done",
+    "posttest": "rm -f schema.json"
+  }
 }

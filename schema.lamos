@@ -1,0 +1,100 @@
+type: object
+properties:
+  title:
+    type: string
+  content:
+    type: array
+    items:
+      anyOf:
+        - $ref: #/definitions/blockquote
+        - $ref: #/definitions/img
+        - $ref: #/definitions/p
+        - $ref: #/definitions/pre
+required:
+  - title
+  - content
+definitions:
+  section:
+    type: object
+    properties:
+      element:
+        constant: section
+      content:
+        type: array
+        items:
+          anyOf:
+            - $ref: #/definitions/blockquote
+            - $ref: #/definitions/img
+            - $ref: #/definitions/p
+            - $ref: #/definitions/pre
+  blockquote:
+    type: object
+    properties:
+      element:
+        constant: blockquote
+      attribution:
+        type: string
+      content:
+        type: array
+        items:
+          anyOf:
+            - $ref: #/definitions/p
+  p:
+    type: object
+    properties:
+      element:
+        type: string
+        constant: p
+      content:
+        type: array
+        items:
+          anyOf:
+            - type: string
+            - $ref: #/definitions/em
+            - $ref: #/definitions/literal
+            - $ref: #/definitions/superscript
+  img:
+    type: object
+    properties:
+      element:
+        constant: img
+      src:
+        type: string
+  pre:
+    type: object
+    properties:
+      element:
+        constant: pre
+      content:
+        type: string
+  superscript:
+    type: object
+    properties:
+      element:
+        constant: superscript
+      content:
+        type: array
+        items:
+          anyOf:
+            - type: string
+            - $ref: #/definitions/em
+  literal:
+    type: object
+    properties:
+      element:
+        constant: literal
+      content:
+        type: array
+        items:
+          type: string
+  em:
+    type: object
+    properties:
+      element:
+        constant: em
+      content:
+        type: array
+        items:
+          anyOf:
+            - type: string
+            - $ref: #/definitions/superscript
