@@ -1,0 +1,1951 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "C.A.R. Hoare 1980 ACM Turing Award Lecture",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "A large program is a costly program, and not just because of the time it takes to build. Size almost always involves complexity, and complexity confuses programmers. Confused programmers, in turn, tend to introduce mistakes (",
+        {
+          "element": "em",
+          "content": [
+            "bugs"
+          ]
+        },
+        ") into programs. A large program also provides a lot of space for these bugs to hide, making them hard to find."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Let’s briefly go back to the final two example programs in the introduction. The first is self-contained and six lines long."
+      ]
+    },
+    {
+      "element": "listing",
+      "numbered": false,
+      "content": []
+    },
+    {
+      "element": "p",
+      "content": [
+        "The second relies on two external functions and is one line long."
+      ]
+    },
+    {
+      "element": "listing",
+      "numbered": false,
+      "content": []
+    },
+    {
+      "element": "p",
+      "content": [
+        "Which one is more likely to contain a bug?"
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "If we count the size of the definitions of ",
+        {
+          "element": "literal",
+          "content": [
+            "sum"
+          ]
+        },
+        " and ",
+        {
+          "element": "literal",
+          "content": [
+            "range"
+          ]
+        },
+        ", the second program is also big—even bigger than the first. But still, I’d argue that it is more likely to be correct."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "It is more likely to be correct because the solution is expressed in a vocabulary that corresponds to the problem being solved. Summing a range of numbers isn’t about loops and counters. It is about ranges and sums."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "The definitions of this vocabulary (the functions ",
+        {
+          "element": "literal",
+          "content": [
+            "sum"
+          ]
+        },
+        " and ",
+        {
+          "element": "literal",
+          "content": [
+            "range"
+          ]
+        },
+        ") will still involve loops, counters, and other incidental details. But because they are expressing simpler concepts than the program as a whole, they are easier to get right."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In the context of programming, these kinds of vocabularies are usually called ",
+            {
+              "element": "em",
+              "content": [
+                "abstractions"
+              ]
+            },
+            ". Abstractions hide details and give us the ability to talk about problems at a higher (or more abstract) level."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "As an analogy, compare these two recipes for pea soup:"
+          ]
+        },
+        {
+          "element": "blockquote",
+          "attribution": "",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Put 1 cup of dried peas per person into a container. Add water until the peas are well covered. Leave the peas in water for at least 12 hours. Take the peas out of the water and put them in a cooking pan. Add 4 cups of water per person. Cover the pan and keep the peas simmering for two hours. Take half an onion per person. Cut it into pieces with a knife. Add it to the peas. Take a stalk of celery per person. Cut it into pieces with a knife. Add it to the peas. Take a carrot per person. Cut it into pieces. With a knife! Add it to the peas. Cook for 10 more minutes."
+              ]
+            }
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "And the second recipe:"
+          ]
+        },
+        {
+          "element": "blockquote",
+          "attribution": "",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Per person: 1 cup dried split peas, half a chopped onion, a stalk of celery, and a carrot."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Soak peas for 12 hours. Simmer for 2 hours in 4 cups of water (per person). Chop and add vegetables. Cook for 10 more minutes."
+              ]
+            }
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The second is shorter and easier to interpret. But you do need to understand a few more cooking-related words—",
+            {
+              "element": "em",
+              "content": [
+                "soak"
+              ]
+            },
+            ", ",
+            {
+              "element": "em",
+              "content": [
+                "simmer"
+              ]
+            },
+            ", ",
+            {
+              "element": "em",
+              "content": [
+                "chop"
+              ]
+            },
+            ", and, I guess, ",
+            {
+              "element": "em",
+              "content": [
+                "vegetable"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When programming, we can’t rely on all the words we need to be waiting for us in the dictionary. Thus, you might fall into the pattern of the first recipe—work out the precise steps the computer has to perform, one by one, blind to the higher-level concepts that they express."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It has to become second nature, for a programmer, to notice when a concept is begging to be abstracted into a new word."
+          ]
+        }
+      ],
+      "title": "Abstraction"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Plain functions, as we’ve seen them so far, are a good way to build abstractions. But sometimes they fall short."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In the ",
+            {
+              "element": "reference",
+              "content": "previous chapter"
+            },
+            ", this type of ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            " loop made several appearances:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "  It’s trying to say, “For each element in the array, log it to the console”. But it uses a roundabout way that involves a counter variable ",
+            {
+              "element": "literal",
+              "content": [
+                "i"
+              ]
+            },
+            ", a check against the array’s length, and an extra variable declaration to pick out the current element. Apart from being a bit of an eyesore, this provides a lot of space for potential mistakes. We might accidentally reuse the ",
+            {
+              "element": "literal",
+              "content": [
+                "i"
+              ]
+            },
+            " variable, misspell ",
+            {
+              "element": "literal",
+              "content": [
+                "length"
+              ]
+            },
+            " as ",
+            {
+              "element": "literal",
+              "content": [
+                "lenght"
+              ]
+            },
+            ", confuse the ",
+            {
+              "element": "literal",
+              "content": [
+                "i"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "current"
+              ]
+            },
+            " variables, and so on."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "So let’s try to abstract this into a function. Can you think of a way?"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Well, it’s easy to write a function that goes over an array and calls ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " on every element."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "   But what if we want to do something other than logging the elements? Since “doing something” can be represented as a function and functions are just values, we can pass our action as a function value."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "(In some browsers, calling ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " in this way does not work. You can use ",
+            {
+              "element": "literal",
+              "content": [
+                "alert"
+              ]
+            },
+            " instead of ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " if this example fails to work.)"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Often, you don’t pass a predefined function to ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " but create a function value on the spot instead."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This looks quite a lot like the classical ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            " loop, with its body written as a block below it. However, now the body is inside the function value, as well as inside the parentheses of the call to ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            ". This is why it has to be closed with the closing brace ",
+            {
+              "element": "em",
+              "content": [
+                "and"
+              ]
+            },
+            " closing parenthesis."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Using this pattern, we can specify a variable name for the current element (",
+            {
+              "element": "literal",
+              "content": [
+                "number"
+              ]
+            },
+            "), rather than having to pick it out of the array manually."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "  In fact, we don’t need to write ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " ourselves. It is available as a standard method on arrays. Since the array is already provided as the thing the method acts on, ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " takes only one required argument: the function to be executed for each element."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To illustrate how helpful this is, let’s look back at a function from ",
+            {
+              "element": "reference",
+              "content": "the previous chapter"
+            },
+            ". It contains two array-traversing loops."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Working with ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " makes it slightly shorter and quite a bit cleaner."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Abstracting array traversal"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "  Functions that operate on other functions, either by taking them as arguments or by returning them, are called ",
+            {
+              "element": "em",
+              "content": [
+                "higher-order functions"
+              ]
+            },
+            ". If you have already accepted the fact that functions are regular values, there is nothing particularly remarkable about the fact that such functions exist. The term comes from mathematics, where the distinction between functions and other values is taken more seriously."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Higher-order functions allow us to abstract over ",
+            {
+              "element": "em",
+              "content": [
+                "actions"
+              ]
+            },
+            ", not just values. They come in several forms. For example, you can have functions that create new functions."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "And you can have functions that change other functions."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "You can even write functions that provide new types of control flow."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The lexical scoping rules that we discussed in ",
+            {
+              "element": "reference",
+              "content": "Chapter 3"
+            },
+            " work to our advantage when using functions in this way. In the previous example, the ",
+            {
+              "element": "literal",
+              "content": [
+                "n"
+              ]
+            },
+            " variable is a parameter to the outer function. Because the inner function lives inside the environment of the outer one, it can use ",
+            {
+              "element": "literal",
+              "content": [
+                "n"
+              ]
+            },
+            ". The bodies of such inner functions can access the variables around them. They can play a role similar to the ",
+            {
+              "element": "literal",
+              "content": [
+                "{}"
+              ]
+            },
+            " blocks used in regular loops and conditional statements. An important difference is that variables declared inside inner functions do not end up in the environment of the outer function. And that is usually a good thing."
+          ]
+        }
+      ],
+      "title": "Higher-order functions"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "noisy"
+              ]
+            },
+            " function defined earlier, which wraps its argument in another function, has a rather serious deficit."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "If ",
+            {
+              "element": "literal",
+              "content": [
+                "f"
+              ]
+            },
+            " takes more than one parameter, it gets only the first one. We could add a bunch of arguments to the inner function (",
+            {
+              "element": "literal",
+              "content": [
+                "arg1"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "arg2"
+              ]
+            },
+            ", and so on) and pass them all to ",
+            {
+              "element": "literal",
+              "content": [
+                "f"
+              ]
+            },
+            ", but it is not clear how many would be enough. This solution would also deprive ",
+            {
+              "element": "literal",
+              "content": [
+                "f"
+              ]
+            },
+            " of the information in ",
+            {
+              "element": "literal",
+              "content": [
+                "arguments.length"
+              ]
+            },
+            ". Since we’d always pass the same number of arguments, it wouldn’t know how many arguments were originally given."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " For these kinds of situations, JavaScript functions have an ",
+            {
+              "element": "literal",
+              "content": [
+                "apply"
+              ]
+            },
+            " method. You pass it an array (or array-like object) of arguments, and it will call the function with those arguments."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "That’s a useless function, but it shows the pattern we are interested in—the function it returns passes all of the given arguments, and only those arguments, to ",
+            {
+              "element": "literal",
+              "content": [
+                "f"
+              ]
+            },
+            ". It does this by passing its own ",
+            {
+              "element": "literal",
+              "content": [
+                "arguments"
+              ]
+            },
+            " object to ",
+            {
+              "element": "literal",
+              "content": [
+                "apply"
+              ]
+            },
+            ". The first argument to ",
+            {
+              "element": "literal",
+              "content": [
+                "apply"
+              ]
+            },
+            ", for which we are passing ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " here, can be used to simulate a method call. We will come back to that in the ",
+            {
+              "element": "reference",
+              "content": "next chapter"
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "Passing along arguments"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " Higher-order functions that somehow apply a function to the elements of an array are widely used in JavaScript. The ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " method is the most primitive such function. There are a number of other variants available as methods on arrays. To familiarize ourselves with them, let’s play around with another data set."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A few years ago, someone crawled through a lot of archives and put together a book on the history of my family name (Haverbeke—meaning Oatbrook). I opened it hoping to find knights, pirates, and alchemists ... but the book turns out to be mostly full of Flemish farmers. For my amusement, I extracted the information on my direct ancestors and put it into a computer-readable format."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The file I created looks something like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This format is called JSON (pronounced “Jason”), which stands for JavaScript Object Notation. It is widely used as a data storage and communication format on the Web."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " JSON is similar to JavaScript’s way of writing arrays and objects, with a few restrictions. All property names have to be surrounded by double quotes, and only simple data expressions are allowed—no function calls, variables, or anything that involves actual computation. Comments are not allowed in JSON."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "JavaScript gives us functions, ",
+            {
+              "element": "literal",
+              "content": [
+                "JSON.stringify"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "JSON.parse"
+              ]
+            },
+            ", that convert data to and from this format. The first takes a JavaScript value and returns a JSON-encoded string. The second takes such a string and converts it to the value it encodes."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The variable ",
+            {
+              "element": "literal",
+              "content": [
+                "ANCESTRY_FILE"
+              ]
+            },
+            ", available in the sandbox for this chapter and in ",
+            {
+              "element": "reference",
+              "content": "a downloadable file"
+            },
+            " on the website, contains the content of my JSON file as a string. Let’s decode it and see how many people it contains."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "JSON"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "   To find the people in the ancestry data set who were young in 1924, the following function might be helpful. It filters out the elements in an array that don’t pass a test."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "  This uses the argument named ",
+            {
+              "element": "literal",
+              "content": [
+                "test"
+              ]
+            },
+            ", a function value, to fill in a “gap” in the computation. The ",
+            {
+              "element": "literal",
+              "content": [
+                "test"
+              ]
+            },
+            " function is called for each element, and its return value determines whether an element is included in the returned array."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Three people in the file were alive and young in 1924: my grandfather, grandmother, and great-aunt."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Note how the ",
+            {
+              "element": "literal",
+              "content": [
+                "filter"
+              ]
+            },
+            " function, rather than deleting elements from the existing array, builds up a new array with only the elements that pass the test. This function is ",
+            {
+              "element": "em",
+              "content": [
+                "pure"
+              ]
+            },
+            ". It does not modify the array it is given."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Like ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "filter"
+              ]
+            },
+            " is also a standard method on arrays. The example defined the function only in order to show what it does internally. From now on, we’ll use it like this instead:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Filtering an array"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " Say we have an array of objects representing people, produced by filtering the ",
+            {
+              "element": "literal",
+              "content": [
+                "ancestry"
+              ]
+            },
+            " array somehow. But we want an array of names, which is easier to read."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            " method transforms an array by applying a function to all of its elements and building a new array from the returned values. The new array will have the same length as the input array, but its content will have been “mapped” to a new form by the function."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Interestingly, the people who lived to at least 90 years of age are the same three people who we saw before—the people who were young in the 1920s, which happens to be the most recent generation in my data set. I guess medicine has come a long way."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Like ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "filter"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            " is also a standard method on arrays."
+          ]
+        }
+      ],
+      "title": "Transforming with map"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " Another common pattern of computation on arrays is computing a single value from them. Our recurring example, summing a collection of numbers, is an instance of this. Another example would be finding the person with the earliest year of birth in the data set."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The higher-order operation that represents this pattern is called ",
+            {
+              "element": "em",
+              "content": [
+                "reduce"
+              ]
+            },
+            " (or sometimes ",
+            {
+              "element": "em",
+              "content": [
+                "fold"
+              ]
+            },
+            "). You can think of it as folding up the array, one element at a time. When summing numbers, you’d start with the number zero and, for each element, combine it with the current sum by adding the two."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The parameters to the ",
+            {
+              "element": "literal",
+              "content": [
+                "reduce"
+              ]
+            },
+            " function are, apart from the array, a combining function and a start value. This function is a little less straightforward than ",
+            {
+              "element": "literal",
+              "content": [
+                "filter"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            ", so pay close attention."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The standard array method ",
+            {
+              "element": "literal",
+              "content": [
+                "reduce"
+              ]
+            },
+            ", which of course corresponds to this function, has an added convenience. If your array contains at least one element, you are allowed to leave off the ",
+            {
+              "element": "literal",
+              "content": [
+                "start"
+              ]
+            },
+            " argument. The method will take the first element of the array as its start value and start reducing at the second element."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To use ",
+            {
+              "element": "literal",
+              "content": [
+                "reduce"
+              ]
+            },
+            " to find my most ancient known ancestor, we can write something like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Summarizing with reduce"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Consider how we would have written the previous example (finding the person with the earliest year of birth) without higher-order functions. The code is not that much worse."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "There are a few more variables, and the program is two lines longer but still quite easy to understand."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Higher-order functions start to shine when you need to ",
+            {
+              "element": "em",
+              "content": [
+                "compose"
+              ]
+            },
+            " functions. As an example, let’s write code that finds the average age for men and for women in the data set."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " (It’s a bit silly that we have to define ",
+            {
+              "element": "literal",
+              "content": [
+                "plus"
+              ]
+            },
+            " as a function, but operators in JavaScript, unlike functions, are not values, so you can’t pass them as arguments.)"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Instead of tangling the logic into a big loop, it is neatly composed into the concepts we are interested in—determining sex, computing age, and averaging numbers. We can apply these one by one to get the result we are looking for."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is ",
+            {
+              "element": "em",
+              "content": [
+                "fabulous"
+              ]
+            },
+            " for writing clear code. Unfortunately, this clarity comes at a cost."
+          ]
+        }
+      ],
+      "title": "Composability"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In the happy land of elegant code and pretty rainbows, there lives a spoil-sport monster called ",
+            {
+              "element": "em",
+              "content": [
+                "inefficiency"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " A program that processes an array is most elegantly expressed as a sequence of cleanly separated steps that each do something with the array and produce a new array. But building up all those intermediate arrays is somewhat expensive."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "  Likewise, passing a function to ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " and letting that method handle the array iteration for us is convenient and easy to read. But function calls in JavaScript are costly compared to simple loop bodies."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "And so it goes with a lot of techniques that help improve the clarity of a program. Abstractions add layers between the raw things the computer is doing and the concepts we are working with and thus cause the machine to perform more work. This is not an iron law—there are programming languages that have better support for building abstractions without adding inefficiencies, and even in JavaScript, an experienced programmer can find ways to write abstract code that is still fast. But it is a problem that comes up a lot."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Fortunately, most computers are insanely fast. If you are processing a modest set of data or doing something that has to happen only on a human time scale (say, every time the user clicks a button), then it ",
+            {
+              "element": "em",
+              "content": [
+                "does not matter"
+              ]
+            },
+            " whether you wrote a pretty solution that takes half a millisecond or a super-optimized solution that takes a tenth of a millisecond."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " It is helpful to roughly keep track of how often a piece of your program is going to run. If you have a loop inside a loop (either directly or through the outer loop calling a function that ends up performing the inner loop), the code inside the inner loop will end up running ",
+            {
+              "element": "em",
+              "content": [
+                "N"
+              ]
+            },
+            "×",
+            {
+              "element": "em",
+              "content": [
+                "M"
+              ]
+            },
+            " times, where ",
+            {
+              "element": "em",
+              "content": [
+                "N"
+              ]
+            },
+            " is the number of times the outer loop repeats and ",
+            {
+              "element": "em",
+              "content": [
+                "M"
+              ]
+            },
+            " is the number of times the inner loop repeats within each iteration of the outer loop. If that inner loop contains another loop that makes ",
+            {
+              "element": "em",
+              "content": [
+                "P"
+              ]
+            },
+            " rounds, its body will run ",
+            {
+              "element": "em",
+              "content": [
+                "M"
+              ]
+            },
+            "×",
+            {
+              "element": "em",
+              "content": [
+                "N"
+              ]
+            },
+            "×",
+            {
+              "element": "em",
+              "content": [
+                "P"
+              ]
+            },
+            " times, and so on. This can add up to large numbers, and when a program is slow, the problem can often be traced to only a small part of the code, which sits inside an inner loop."
+          ]
+        }
+      ],
+      "title": "The cost"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "My grandfather, Philibert Haverbeke, is included in the data file. By starting with him, I can trace my lineage to find out whether the most ancient person in the data, Pauwels van Haverbeke, is my direct ancestor. And if he is, I would like to know how much DNA I theoretically share with him."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " To be able to go from a parent’s name to the actual object that represents this person, we first build up an object that associates names with people."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Now, the problem is not entirely as simple as following the ",
+            {
+              "element": "literal",
+              "content": [
+                "father"
+              ]
+            },
+            " properties and counting how many we need to reach Pauwels. There are several cases in the family tree where people married their second cousins (tiny villages and all that). This causes the branches of the family tree to rejoin in a few places, which means I share more than 1/2",
+            {
+              "element": "superscript",
+              "content": [
+                {
+                  "element": "em",
+                  "content": [
+                    "G"
+                  ]
+                }
+              ]
+            },
+            " of my genes with this person, where ",
+            {
+              "element": "em",
+              "content": [
+                "G"
+              ]
+            },
+            " for the number of generations between Pauwels and me. This formula comes from the idea that each generation splits the gene pool in two."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A reasonable way to think about this problem is to look at it as being analogous to ",
+            {
+              "element": "literal",
+              "content": [
+                "reduce"
+              ]
+            },
+            ", which condenses an array to a single value by repeatedly combining values, left to right. In this case, we also want to condense our data structure to a single value but in a way that follows family lines. The ",
+            {
+              "element": "em",
+              "content": [
+                "shape"
+              ]
+            },
+            " of the data is that of a family tree, rather than a flat list."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The way we want to reduce this shape is by computing a value for a given person by combining values from their ancestors. This can be done recursively: if we are interested in person ",
+            {
+              "element": "em",
+              "content": [
+                "A"
+              ]
+            },
+            ", we have to compute the values for ",
+            {
+              "element": "em",
+              "content": [
+                "A"
+              ]
+            },
+            "’s parents, which in turn requires us to compute the value for ",
+            {
+              "element": "em",
+              "content": [
+                "A"
+              ]
+            },
+            "’s grandparents, and so on. In principle, that’d require us to look at an infinite number of people, but since our data set is finite, we have to stop somewhere. We’ll allow a default value to be given to our reduction function, which will be used for people who are not in the data. In our case, that value is simply zero, on the assumption that people not in the list don’t share DNA with the ancestor we are looking at."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Given a person, a function to combine values from the two parents of a given person, and a default value, ",
+            {
+              "element": "literal",
+              "content": [
+                "reduceAncestors"
+              ]
+            },
+            " condenses a value from a family tree."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The inner function (",
+            {
+              "element": "literal",
+              "content": [
+                "valueFor"
+              ]
+            },
+            ") handles a single person. Through the magic of recursion, it can simply call itself to handle the father and the mother of this person. The results, along with the person object itself, are passed to ",
+            {
+              "element": "literal",
+              "content": [
+                "f"
+              ]
+            },
+            ", which returns the actual value for this person."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can then use this to compute the amount of DNA my grandfather shared with Pauwels van Haverbeke and divide that by four."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The person with the name Pauwels van Haverbeke obviously shared 100 percent of his DNA with Pauwels van Haverbeke (there are no people who share names in the data set), so the function returns 1 for him. All other people share the average of the amounts that their parents share."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "So, statistically speaking, I share about 0.05 percent of my DNA with this 16th-century person. It should be noted that this is only a statistical approximation, not an exact amount. It is a rather small number, but given how much genetic material we carry (about 3 billion base pairs), there’s still probably some aspect in the biological machine that is me that originates with Pauwels."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We could also have computed this number without relying on ",
+            {
+              "element": "literal",
+              "content": [
+                "reduceAncestors"
+              ]
+            },
+            ". But separating the general approach (condensing a family tree) from the specific case (computing shared DNA) can improve the clarity of the code and allows us to reuse the abstract part of the program for other cases. For example, the following code finds the percentage of a person’s known ancestors who lived past 70 (by lineage, so people may be counted multiple times):"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Such numbers are not to be taken too seriously, given that our data set contains a rather arbitrary collection of people. But the code illustrates the fact that ",
+            {
+              "element": "literal",
+              "content": [
+                "reduceAncestors"
+              ]
+            },
+            " gives us a useful piece of vocabulary for working with the family tree data structure."
+          ]
+        }
+      ],
+      "title": "Great-great-great-great-..."
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            " method, which all functions have, creates a new function that will call the original function but with some of the arguments already fixed."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The following code shows an example of ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            " in use. It defines a function ",
+            {
+              "element": "literal",
+              "content": [
+                "isInSet"
+              ]
+            },
+            " that tells us whether a person is in a given set of strings. To call ",
+            {
+              "element": "literal",
+              "content": [
+                "filter"
+              ]
+            },
+            " in order to collect those person objects whose names are in a specific set, we can either write a function expression that makes a call to ",
+            {
+              "element": "literal",
+              "content": [
+                "isInSet"
+              ]
+            },
+            " with our set as its first argument or ",
+            {
+              "element": "em",
+              "content": [
+                "partially",
+                " ",
+                "apply"
+              ]
+            },
+            " the ",
+            {
+              "element": "literal",
+              "content": [
+                "isInSet"
+              ]
+            },
+            " function."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The call to ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            " returns a function that will call ",
+            {
+              "element": "literal",
+              "content": [
+                "isInSet"
+              ]
+            },
+            " with ",
+            {
+              "element": "literal",
+              "content": [
+                "theSet"
+              ]
+            },
+            " as first argument, followed by any remaining arguments given to the bound function."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The first argument, where the example passes ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            ", is used for method calls, similar to the first argument to ",
+            {
+              "element": "literal",
+              "content": [
+                "apply"
+              ]
+            },
+            ". I’ll describe this in more detail in the ",
+            {
+              "element": "reference",
+              "content": "next chapter"
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "Binding"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Being able to pass function values to other functions is not just a gimmick but a deeply useful aspect of JavaScript. It allows us to write computations with “gaps” in them as functions and have the code that calls these functions fill in those gaps by providing function values that describe the missing computations."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Arrays provide a number of useful higher-order methods—",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " to do something with each element in an array, ",
+            {
+              "element": "literal",
+              "content": [
+                "filter"
+              ]
+            },
+            " to build a new array with some elements filtered out, ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            " to build a new array where each element has been put through a function, and ",
+            {
+              "element": "literal",
+              "content": [
+                "reduce"
+              ]
+            },
+            " to combine all an array’s elements into a single value."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Functions have an ",
+            {
+              "element": "literal",
+              "content": [
+                "apply"
+              ]
+            },
+            " method that can be used to call them with an array specifying their arguments. They also have a ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            " method, which is used to create a partially applied version of the function."
+          ]
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Use the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "reduce"
+                  ]
+                },
+                " method in combination with the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "concat"
+                  ]
+                },
+                " method to “flatten” an array of arrays into a single array that has all the elements of the input arrays."
+              ]
+            }
+          ],
+          "title": "Flattening"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Using the example data set from this chapter, compute the average age difference between mothers and children (the age of the mother when the child is born). You can use the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "average"
+                  ]
+                },
+                " function defined ",
+                {
+                  "element": "reference",
+                  "content": "earlier"
+                },
+                " in this chapter."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Note that not all the mothers mentioned in the data are themselves present in the array. The ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "byName"
+                  ]
+                },
+                " object, which makes it easy to find a person’s object from their name, might be useful here."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Because not all elements in the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "ancestry"
+                  ]
+                },
+                " array produce useful data (we can’t compute the age difference unless we know the birth date of the mother), we will have to apply ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "filter"
+                  ]
+                },
+                " in some manner before calling ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "average"
+                  ]
+                },
+                ". You could do it as a first pass, by defining a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "hasKnownMother"
+                  ]
+                },
+                " function and filtering on that first. Alternatively, you could start by calling ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "map"
+                  ]
+                },
+                " and in your mapping function return either the age difference or ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "null"
+                  ]
+                },
+                " if no mother is known. Then, you can call ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "filter"
+                  ]
+                },
+                " to remove the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "null"
+                  ]
+                },
+                " elements before passing the array to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "average"
+                  ]
+                },
+                "."
+              ]
+            }
+          ],
+          "title": "Mother-child age difference"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "When we looked up all the people in our data set that lived more than 90 years, only the latest generation in the data came out. Let’s take a closer look at that phenomenon."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Compute and output the average age of the people in the ancestry data set per century. A person is assigned to a century by taking their year of death, dividing it by 100, and rounding it up, as in ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.ceil(person.died / 100)"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The essence of this example lies in grouping the elements of a collection by some aspect of theirs—splitting the array of ancestors into smaller arrays with the ancestors for each century."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " During the grouping process, keep an object that associates century names (numbers) with arrays of either person objects or ages. Since we do not know in advance what categories we will find, we’ll have to create them on the fly. For each person, after computing their century, we test whether that century was already known. If not, add an array for it. Then add the person (or age) to the array for the proper century."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Finally, a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "for"
+                  ]
+                },
+                "/",
+                {
+                  "element": "literal",
+                  "content": [
+                    "in"
+                  ]
+                },
+                " loop can be used to print the average ages for the individual centuries."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " For bonus points, write a function ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "groupBy"
+                  ]
+                },
+                " that abstracts the grouping operation. It should accept as arguments an array and a function that computes the group for an element in the array and returns an object that maps group names to arrays of group members."
+              ]
+            }
+          ],
+          "title": "Historical life expectancy"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                " Arrays also come with the standard methods ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "every"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "some"
+                  ]
+                },
+                ". Both take a predicate function that, when called with an array element as argument, returns true or false. Just like ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "&",
+                    "&"
+                  ]
+                },
+                " returns a true value only when the expressions on both sides are true, ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "every"
+                  ]
+                },
+                " returns true only when the predicate returns true for ",
+                {
+                  "element": "em",
+                  "content": [
+                    "all"
+                  ]
+                },
+                " elements of the array. Similarly, ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "some"
+                  ]
+                },
+                " returns true as soon as the predicate returns true for ",
+                {
+                  "element": "em",
+                  "content": [
+                    "any"
+                  ]
+                },
+                " of the elements. They do not process more elements than necessary—for example, if ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "some"
+                  ]
+                },
+                " finds that the predicate holds for the first element of the array, it will not look at the values after that."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Write two functions, ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "every"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "some"
+                  ]
+                },
+                ", that behave like these methods, except that they take the array as their first argument rather than being a method."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The functions can follow a similar pattern to the ",
+                {
+                  "element": "reference",
+                  "content": "definition"
+                },
+                " of ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "forEach"
+                  ]
+                },
+                " at the start of the chapter, except that they must return immediately (with the right value) when the predicate function returns false—or true. Don’t forget to put another ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "return"
+                  ]
+                },
+                " statement after the loop so that the function also returns the correct value when it reaches the end of the array."
+              ]
+            }
+          ],
+          "title": "Every and then some"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Higher-Order Functions"
+}

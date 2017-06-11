@@ -1,0 +1,1826 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Donald Knuth",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "People think that computer science is the art of geniuses but the actual reality is the opposite, just many people doing things that build on each other, like a wall of mini stones."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "You’ve seen function values, such as ",
+        {
+          "element": "literal",
+          "content": [
+            "alert"
+          ]
+        },
+        ", and how to call them. Functions are the bread and butter of JavaScript programming. The concept of wrapping a piece of program in a value has many uses. It is a tool to structure larger programs, to reduce repetition, to associate names with subprograms, and to isolate these subprograms from each other."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "The most obvious application of functions is defining new vocabulary. Creating new words in regular, human-language prose is usually bad style. But in programming, it is indispensable."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Typical adult English speakers have some 20,000 words in their vocabulary. Few programming languages come with 20,000 commands built in. And the vocabulary that ",
+        {
+          "element": "em",
+          "content": [
+            "is"
+          ]
+        },
+        " available tends to be more precisely defined, and thus less flexible, than in human language. Therefore, we usually ",
+        {
+          "element": "em",
+          "content": [
+            "have"
+          ]
+        },
+        " to add some of our own vocabulary to avoid repeating ourselves too much."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " A function definition is just a regular variable definition where the value given to the variable happens to be a function. For example, the following code defines the variable ",
+            {
+              "element": "literal",
+              "content": [
+                "square"
+              ]
+            },
+            " to refer to a function that produces the square of a given number:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "  A function is created by an expression that starts with the keyword ",
+            {
+              "element": "literal",
+              "content": [
+                "function"
+              ]
+            },
+            ". Functions have a set of ",
+            {
+              "element": "em",
+              "content": [
+                "parameters"
+              ]
+            },
+            " (in this case, only ",
+            {
+              "element": "literal",
+              "content": [
+                "x"
+              ]
+            },
+            ") and a ",
+            {
+              "element": "em",
+              "content": [
+                "body"
+              ]
+            },
+            ", which contains the statements that are to be executed when the function is called. The function body must always be wrapped in braces, even when it consists of only a single statement (as in the previous example)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A function can have multiple parameters or no parameters at all. In the following example, ",
+            {
+              "element": "literal",
+              "content": [
+                "makeNoise"
+              ]
+            },
+            " does not list any parameter names, whereas ",
+            {
+              "element": "literal",
+              "content": [
+                "power"
+              ]
+            },
+            " lists two:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Some functions produce a value, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "power"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "square"
+              ]
+            },
+            ", and some don’t, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "makeNoise"
+              ]
+            },
+            ", which produces only a side effect. A ",
+            {
+              "element": "literal",
+              "content": [
+                "return"
+              ]
+            },
+            " statement determines the value the function returns. When control comes across such a statement, it immediately jumps out of the current function and gives the returned value to the code that called the function. The ",
+            {
+              "element": "literal",
+              "content": [
+                "return"
+              ]
+            },
+            " keyword without an expression after it will cause the function to return ",
+            {
+              "element": "literal",
+              "content": [
+                "undefined"
+              ]
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "Defining a function"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "  The parameters to a function behave like regular variables, but their initial values are given by the ",
+            {
+              "element": "em",
+              "content": [
+                "caller"
+              ]
+            },
+            " of the function, not the code in the function itself."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " An important property of functions is that the variables created inside of them, including their parameters, are ",
+            {
+              "element": "em",
+              "content": [
+                "local"
+              ]
+            },
+            " to the function. This means, for example, that the ",
+            {
+              "element": "literal",
+              "content": [
+                "result"
+              ]
+            },
+            " variable in the ",
+            {
+              "element": "literal",
+              "content": [
+                "power"
+              ]
+            },
+            " example will be newly created every time the function is called, and these separate incarnations do not interfere with each other."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " This “localness” of variables applies only to the parameters and to variables declared with the ",
+            {
+              "element": "literal",
+              "content": [
+                "var"
+              ]
+            },
+            " keyword inside the function body. Variables declared outside of any function are called ",
+            {
+              "element": "em",
+              "content": [
+                "global"
+              ]
+            },
+            ", because they are visible throughout the program. It is possible to access such variables from inside a function, as long as you haven’t declared a local variable with the same name."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The following code demonstrates this. It defines and calls two functions that both assign a value to the variable ",
+            {
+              "element": "literal",
+              "content": [
+                "x"
+              ]
+            },
+            ". The first one declares the variable as local and thus changes only the local variable. The second does not declare ",
+            {
+              "element": "literal",
+              "content": [
+                "x"
+              ]
+            },
+            " locally, so references to ",
+            {
+              "element": "literal",
+              "content": [
+                "x"
+              ]
+            },
+            " inside of it refer to the global variable ",
+            {
+              "element": "literal",
+              "content": [
+                "x"
+              ]
+            },
+            " defined at the top of the example."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "  This behavior helps prevent accidental interference between functions. If all variables were shared by the whole program, it’d take a lot of effort to make sure no name is ever used for two different purposes. And if you ",
+            {
+              "element": "em",
+              "content": [
+                "did"
+              ]
+            },
+            " reuse a variable name, you might see strange effects from unrelated code messing with the value of your variable. By treating function-local variables as existing only within the function, the language makes it possible to read and understand functions as small universes, without having to worry about all the code at once."
+          ]
+        }
+      ],
+      "title": "Parameters and scopes"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "  JavaScript distinguishes not just between ",
+            {
+              "element": "em",
+              "content": [
+                "global"
+              ]
+            },
+            " and ",
+            {
+              "element": "em",
+              "content": [
+                "local"
+              ]
+            },
+            " variables. Functions can be created inside other functions, producing several degrees of locality."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For example, this rather nonsensical function has two functions inside of it:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "flat"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "mountain"
+              ]
+            },
+            " functions can “see” the variable called ",
+            {
+              "element": "literal",
+              "content": [
+                "result"
+              ]
+            },
+            ", since they are inside the function that defines it. But they cannot see each other’s ",
+            {
+              "element": "literal",
+              "content": [
+                "count"
+              ]
+            },
+            " variables since they are outside each other’s scope. The environment outside of the ",
+            {
+              "element": "literal",
+              "content": [
+                "landscape"
+              ]
+            },
+            " function doesn’t see any of the variables defined inside ",
+            {
+              "element": "literal",
+              "content": [
+                "landscape"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In short, each local scope can also see all the local scopes that contain it. The set of variables visible inside a function is determined by the place of that function in the program text. All variables from blocks ",
+            {
+              "element": "em",
+              "content": [
+                "around"
+              ]
+            },
+            " a function’s definition are visible—meaning both those in function bodies that enclose it and those at the top level of the program. This approach to variable visibility is called ",
+            {
+              "element": "em",
+              "content": [
+                "lexical scoping"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "People who have experience with other programming languages might expect that any block of code between braces produces a new local environment. But in JavaScript, functions are the only things that create a new scope. You are allowed to use free-standing blocks."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "But the ",
+            {
+              "element": "literal",
+              "content": [
+                "something"
+              ]
+            },
+            " inside the block refers to the same variable as the one outside the block. In fact, although blocks like this are allowed, they are useful only to group the body of an ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " statement or a loop."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If you find this odd, you’re not alone. The next version of JavaScript will introduce a ",
+            {
+              "element": "literal",
+              "content": [
+                "let"
+              ]
+            },
+            " keyword, which works like ",
+            {
+              "element": "literal",
+              "content": [
+                "var"
+              ]
+            },
+            " but creates a variable that is local to the enclosing ",
+            {
+              "element": "em",
+              "content": [
+                "block"
+              ]
+            },
+            ", not the enclosing ",
+            {
+              "element": "em",
+              "content": [
+                "function"
+              ]
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "Nested scope"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " Function variables usually simply act as names for a specific piece of the program. Such a variable is defined once and never changed. This makes it easy to start confusing the function and its name."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " But the two are different. A function value can do all the things that other values can do—you can use it in arbitrary expressions, not just call it. It is possible to store a function value in a new place, pass it as an argument to a function, and so on. Similarly, a variable that holds a function is still just a regular variable and can be assigned a new value, like so:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " In ",
+            {
+              "element": "reference",
+              "content": "Chapter 5"
+            },
+            ", we will discuss the wonderful things that can be done by passing around function values to other functions."
+          ]
+        }
+      ],
+      "title": "Functions as values"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "  There is a slightly shorter way to say “",
+            {
+              "element": "literal",
+              "content": [
+                "var square = function…"
+              ]
+            },
+            "”. The ",
+            {
+              "element": "literal",
+              "content": [
+                "function"
+              ]
+            },
+            " keyword can also be used at the start of a statement, as in the following:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is a function ",
+            {
+              "element": "em",
+              "content": [
+                "declaration"
+              ]
+            },
+            ". The statement defines the variable ",
+            {
+              "element": "literal",
+              "content": [
+                "square"
+              ]
+            },
+            " and points it at the given function. So far so good. There is one subtlety with this form of function definition, however."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This code works, even though the function is defined ",
+            {
+              "element": "em",
+              "content": [
+                "below"
+              ]
+            },
+            " the code that uses it. This is because function declarations are not part of the regular top-to-bottom flow of control. They are conceptually moved to the top of their scope and can be used by all the code in that scope. This is sometimes useful because it gives us the freedom to order code in a way that seems meaningful, without worrying about having to define all functions above their first use."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " What happens when you put such a function definition inside a conditional (",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            ") block or a loop? Well, don’t do that. Different JavaScript platforms in different browsers have traditionally done different things in that situation, and the latest standard actually forbids it. If you want your programs to behave consistently, only use this form of function-defining statements in the outermost block of a function or program."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Declaration notation"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " It will be helpful to take a closer look at the way control flows through functions. Here is a simple program that makes a few function calls:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A run through this program goes roughly like this: the call to ",
+            {
+              "element": "literal",
+              "content": [
+                "greet"
+              ]
+            },
+            " causes control to jump to the start of that function (line 2). It calls ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " (a built-in browser function), which takes control, does its job, and then returns control to line 2. Then it reaches the end of the ",
+            {
+              "element": "literal",
+              "content": [
+                "greet"
+              ]
+            },
+            " function, so it returns to the place that called it, at line 4. The line after that calls ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " again."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We could show the flow of control schematically like this:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "top\n   greet\n        console.log\n   greet\ntop\n   console.log\ntop"
+        },
+        {
+          "element": "p",
+          "content": [
+            "Because a function has to jump back to the place of the call when it returns, the computer must remember the context from which the function was called. In one case, ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " has to jump back to the ",
+            {
+              "element": "literal",
+              "content": [
+                "greet"
+              ]
+            },
+            " function. In the other case, it jumps back to the end of the program."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The place where the computer stores this context is the ",
+            {
+              "element": "em",
+              "content": [
+                "call stack"
+              ]
+            },
+            ". Every time a function is called, the current context is put on top of this “stack”. When the function returns, it removes the top context from the stack and uses it to continue execution."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Storing this stack requires space in the computer’s memory. When the stack grows too big, the computer will fail with a message like “out of stack space” or “too much recursion”. The following code illustrates this by asking the computer a really hard question, which causes an infinite back-and-forth between two functions. Rather, it ",
+            {
+              "element": "em",
+              "content": [
+                "would"
+              ]
+            },
+            " be infinite, if the computer had an infinite stack. As it is, we will run out of space, or “blow the stack”."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "The call stack"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " The following code is allowed and executes without any problem:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The function ",
+            {
+              "element": "literal",
+              "content": [
+                "alert"
+              ]
+            },
+            " officially accepts only one argument. Yet when you call it like this, it doesn’t complain. It simply ignores the other arguments and shows you “Hello”."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "JavaScript is extremely broad-minded about the number of arguments you pass to a function. If you pass too many, the extra ones are ignored. If you pass too few, the missing parameters simply get assigned the value ",
+            {
+              "element": "literal",
+              "content": [
+                "undefined"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The downside of this is that it is possible—likely, even—that you’ll accidentally pass the wrong number of arguments to functions and no one will tell you about it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The upside is that this behavior can be used to have a function take “optional” arguments. For example, the following version of ",
+            {
+              "element": "literal",
+              "content": [
+                "power"
+              ]
+            },
+            " can be called either with two arguments or with a single argument, in which case the exponent is assumed to be two, and the function behaves like ",
+            {
+              "element": "literal",
+              "content": [
+                "square"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "In the ",
+            {
+              "element": "reference",
+              "content": "next\nchapter"
+            },
+            ", we will see a way in which a function body can get at the exact list of arguments that were passed. This is helpful because it makes it possible for a function to accept any number of arguments. For example, ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " makes use of this—it outputs all of the values it is given."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Optional Arguments"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " The ability to treat functions as values, combined with the fact that local variables are “re-created” every time a function is called, brings up an interesting question. What happens to local variables when the function call that created them is no longer active?"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following code shows an example of this. It defines a function, ",
+            {
+              "element": "literal",
+              "content": [
+                "wrapValue"
+              ]
+            },
+            ", which creates a local variable. It then returns a function that accesses and returns this local variable."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is allowed and works as you’d hope—the variable can still be accessed. In fact, multiple instances of the variable can be alive at the same time, which is another good illustration of the concept that local variables really are re-created for every call—different calls can’t trample on one another’s local variables."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This feature—being able to reference a specific instance of local variables in an enclosing function—is called ",
+            {
+              "element": "em",
+              "content": [
+                "closure"
+              ]
+            },
+            ". A function that “closes over” some local variables is called ",
+            {
+              "element": "em",
+              "content": [
+                "a"
+              ]
+            },
+            " closure. This behavior not only frees you from having to worry about lifetimes of variables but also allows for some creative use of function values."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "With a slight change, we can turn the previous example into a way to create functions that multiply by an arbitrary amount."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The explicit ",
+            {
+              "element": "literal",
+              "content": [
+                "localVariable"
+              ]
+            },
+            " from the ",
+            {
+              "element": "literal",
+              "content": [
+                "wrapValue"
+              ]
+            },
+            " example isn’t needed since a parameter is itself a local variable."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Thinking about programs like this takes some practice. A good mental model is to think of the ",
+            {
+              "element": "literal",
+              "content": [
+                "function"
+              ]
+            },
+            " keyword as “freezing” the code in its body and wrapping it into a package (the function value). So when you read ",
+            {
+              "element": "literal",
+              "content": [
+                "return function(...) {...}"
+              ]
+            },
+            ", think of it as returning a handle to a piece of computation, frozen for later use."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In the example, ",
+            {
+              "element": "literal",
+              "content": [
+                "multiplier"
+              ]
+            },
+            " returns a frozen chunk of code that gets stored in the ",
+            {
+              "element": "literal",
+              "content": [
+                "twice"
+              ]
+            },
+            " variable. The last line then calls the value in this variable, causing the frozen code (",
+            {
+              "element": "literal",
+              "content": [
+                "return number * factor;"
+              ]
+            },
+            ") to be activated. It still has access to the ",
+            {
+              "element": "literal",
+              "content": [
+                "factor"
+              ]
+            },
+            " variable from the ",
+            {
+              "element": "literal",
+              "content": [
+                "multiplier"
+              ]
+            },
+            " call that created it, and in addition it gets access to the argument passed when unfreezing it, 5, through its ",
+            {
+              "element": "literal",
+              "content": [
+                "number"
+              ]
+            },
+            " parameter."
+          ]
+        }
+      ],
+      "title": "Closure"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " It is perfectly okay for a function to call itself, as long as it takes care not to overflow the stack. A function that calls itself is called ",
+            {
+              "element": "em",
+              "content": [
+                "recursive"
+              ]
+            },
+            ". Recursion allows some functions to be written in a different style. Take, for example, this alternative implementation of ",
+            {
+              "element": "literal",
+              "content": [
+                "power"
+              ]
+            },
+            ":"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is rather close to the way mathematicians define exponentiation and arguably describes the concept in a more elegant way than the looping variant does. The function calls itself multiple times with different arguments to achieve the repeated multiplication."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " But this implementation has one important problem: in typical JavaScript implementations, it’s about 10 times slower than the looping version. Running through a simple loop is a lot cheaper than calling a function multiple times."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The dilemma of speed versus elegance is an interesting one. You can see it as a kind of continuum between human-friendliness and machine-friendliness. Almost any program can be made faster by making it bigger and more convoluted. The programmer must decide on an appropriate balance."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In the case of the ",
+            {
+              "element": "reference",
+              "content": "earlier"
+            },
+            " ",
+            {
+              "element": "literal",
+              "content": [
+                "power"
+              ]
+            },
+            " function, the inelegant (looping) version is still fairly simple and easy to read. It doesn’t make much sense to replace it with the recursive version. Often, though, a program deals with such complex concepts that giving up some efficiency in order to make the program more straightforward becomes an attractive choice."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The basic rule, which has been repeated by many programmers and with which I wholeheartedly agree, is to not worry about efficiency until you know for sure that the program is too slow. If it is, find out which parts are taking up the most time, and start exchanging elegance for efficiency in those parts."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Of course, this rule doesn’t mean one should start ignoring performance altogether. In many cases, like the ",
+            {
+              "element": "literal",
+              "content": [
+                "power"
+              ]
+            },
+            " function, not much simplicity is gained from the “elegant” approach. And sometimes an experienced programmer can see right away that a simple approach is never going to be fast enough."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The reason I’m stressing this is that surprisingly many beginning programmers focus fanatically on efficiency, even in the smallest details. The result is bigger, more complicated, and often less correct programs, that take longer to write than their more straightforward equivalents and that usually run only marginally faster."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "But recursion is not always just a less-efficient alternative to looping. Some problems are much easier to solve with recursion than with loops. Most often these are problems that require exploring or processing several “branches”, each of which might branch out again into more branches."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Consider this puzzle: by starting from the number 1 and repeatedly either adding 5 or multiplying by 3, an infinite amount of new numbers can be produced. How would you write a function that, given a number, tries to find a sequence of such additions and multiplications that produce that number? For example, the number 13 could be reached by first multiplying by 3 and then adding 5 twice, whereas the number 15 cannot be reached at all."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Here is a recursive solution:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Note that this program doesn’t necessarily find the ",
+            {
+              "element": "em",
+              "content": [
+                "shortest"
+              ]
+            },
+            " sequence of operations. It is satisfied when it finds any sequence at all."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "I don’t necessarily expect you to see how it works right away. But let’s work through it, since it makes for a great exercise in recursive thinking."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The inner function ",
+            {
+              "element": "literal",
+              "content": [
+                "find"
+              ]
+            },
+            " does the actual recursing. It takes two arguments—the current number and a string that records how we reached this number—and returns either a string that shows how to get to the target or ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To do this, the function performs one of three actions. If the current number is the target number, the current history is a way to reach that target, so it is simply returned. If the current number is greater than the target, there’s no sense in further exploring this history since both adding and multiplying will only make the number bigger. And finally, if we’re still below the target, the function tries both possible paths that start from the current number, by calling itself twice, once for each of the allowed next steps. If the first call returns something that is not ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            ", it is returned. Otherwise, the second call is returned—regardless of whether it produces a string or ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To better understand how this function produces the effect we’re looking for, let’s look at all the calls to ",
+            {
+              "element": "literal",
+              "content": [
+                "find"
+              ]
+            },
+            " that are made when searching for a solution for the number 13."
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "find(1, \"1\")\n  find(6, \"(1 + 5)\")\n    find(11, \"((1 + 5) + 5)\")\n      find(16, \"(((1 + 5) + 5) + 5)\")\n        too big\n      find(33, \"(((1 + 5) + 5) * 3)\")\n        too big\n    find(18, \"((1 + 5) * 3)\")\n      too big\n  find(3, \"(1 * 3)\")\n    find(8, \"((1 * 3) + 5)\")\n      find(13, \"(((1 * 3) + 5) + 5)\")\n        found!"
+        },
+        {
+          "element": "p",
+          "content": [
+            "The indentation suggests the depth of the call stack. The first time ",
+            {
+              "element": "literal",
+              "content": [
+                "find"
+              ]
+            },
+            " is called it calls itself twice to explore the solutions that start with ",
+            {
+              "element": "literal",
+              "content": [
+                "(1 + 5)"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "(1 * 3)"
+              ]
+            },
+            ". The first call tries to find a solution that starts with ",
+            {
+              "element": "literal",
+              "content": [
+                "(1 + 5)"
+              ]
+            },
+            " and, using recursion, explores ",
+            {
+              "element": "em",
+              "content": [
+                "every"
+              ]
+            },
+            " solution that yields a number less than or equal to the target number. Since it doesn’t find a solution that hits the target, it returns ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " back to the first call. There the ",
+            {
+              "element": "literal",
+              "content": [
+                "||"
+              ]
+            },
+            " operator causes the call that explores ",
+            {
+              "element": "literal",
+              "content": [
+                "(1 * 3)"
+              ]
+            },
+            " to happen. This search has more luck because its first recursive call, through yet ",
+            {
+              "element": "em",
+              "content": [
+                "another"
+              ]
+            },
+            " recursive call, hits upon the target number, 13. This innermost recursive call returns a string, and each of the ",
+            {
+              "element": "literal",
+              "content": [
+                "||"
+              ]
+            },
+            " operators in the intermediate calls pass that string along, ultimately returning our solution."
+          ]
+        }
+      ],
+      "title": "Recursion"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " There are two more or less natural ways for functions to be introduced into programs."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The first is that you find yourself writing very similar code multiple times. We want to avoid doing that since having more code means more space for mistakes to hide and more material to read for people trying to understand the program. So we take the repeated functionality, find a good name for it, and put it into a function."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The second way is that you find you need some functionality that you haven’t written yet and that sounds like it deserves its own function. You’ll start by naming the function, and you’ll then write its body. You might even start writing code that uses the function before you actually define the function itself."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "  How difficult it is to find a good name for a function is a good indication of how clear a concept it is that you’re trying to wrap. Let’s go through an example."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We want to write a program that prints two numbers, the numbers of cows and chickens on a farm, with the words ",
+            {
+              "element": "literal",
+              "content": [
+                "Cows"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "Chickens"
+              ]
+            },
+            " after them, and zeros padded before both numbers so that they are always three digits long."
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "007 Cows\n011 Chickens"
+        },
+        {
+          "element": "p",
+          "content": [
+            "That clearly asks for a function of two arguments. Let’s get coding."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " Adding ",
+            {
+              "element": "literal",
+              "content": [
+                ".length"
+              ]
+            },
+            " after a string value will give us the length of that string. Thus, the ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            " loops keep adding zeros in front of the number strings until they are at least three characters long."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Mission accomplished! But just as we are about to send the farmer the code (along with a hefty invoice, of course), he calls and tells us he’s also started keeping pigs, and couldn’t we please extend the software to also print pigs?"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We sure can. But just as we’re in the process of copying and pasting those four lines one more time, we stop and reconsider. There has to be a better way. Here’s a first attempt:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " It works! But that name, ",
+            {
+              "element": "literal",
+              "content": [
+                "printZeroPaddedWithLabel"
+              ]
+            },
+            ", is a little awkward. It conflates three things—printing, zero-padding, and adding a label—into a single function."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Instead of lifting out the repeated part of our program wholesale, let’s try to pick out a single ",
+            {
+              "element": "em",
+              "content": [
+                "concept"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A function with a nice, obvious name like ",
+            {
+              "element": "literal",
+              "content": [
+                "zeroPad"
+              ]
+            },
+            " makes it easier for someone who reads the code to figure out what it does. And it is useful in more situations than just this specific program. For example, you could use it to help print nicely aligned tables of numbers."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " How smart and versatile should our function be? We could write anything from a terribly simple function that simply pads a number so that it’s three characters wide to a complicated generalized number-formatting system that handles fractional numbers, negative numbers, alignment of dots, padding with different characters, and so on."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A useful principle is not to add cleverness unless you are absolutely sure you’re going to need it. It can be tempting to write general “frameworks” for every little bit of functionality you come across. Resist that urge. You won’t get any real work done, and you’ll end up writing a lot of code that no one will ever use."
+          ]
+        }
+      ],
+      "title": "Growing functions"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " Functions can be roughly divided into those that are called for their side effects and those that are called for their return value. (Though it is definitely also possible to have both side effects and return a value.)"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The first helper function in the farm example, ",
+            {
+              "element": "literal",
+              "content": [
+                "printZeroPaddedWithLabel"
+              ]
+            },
+            ", is called for its side effect: it prints a line. The second version, ",
+            {
+              "element": "literal",
+              "content": [
+                "zeroPad"
+              ]
+            },
+            ", is called for its return value. It is no coincidence that the second is useful in more situations than the first. Functions that create values are easier to combine in new ways than functions that directly perform side effects."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A ",
+            {
+              "element": "em",
+              "content": [
+                "pure"
+              ]
+            },
+            " function is a specific kind of value-producing function that not only has no side effects but also doesn’t rely on side effects from other code—for example, it doesn’t read global variables that are occasionally changed by other code. A pure function has the pleasant property that, when called with the same arguments, it always produces the same value (and doesn’t do anything else). This makes it easy to reason about. A call to such a function can be mentally substituted by its result, without changing the meaning of the code. When you are not sure that a pure function is working correctly, you can test it by simply calling it, and know that if it works in that context, it will work in any context. Nonpure functions might return different values based on all kinds of factors and have side effects that might be hard to test and think about."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Still, there’s no need to feel bad when writing functions that are not pure or to wage a holy war to purge them from your code. Side effects are often useful. There’d be no way to write a pure version of ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            ", for example, and ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " is certainly useful. Some operations are also easier to express in an efficient way when we use side effects, so computing speed can be a reason to avoid purity."
+          ]
+        }
+      ],
+      "title": "Functions and side effects"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "This chapter taught you how to write your own functions. The ",
+            {
+              "element": "literal",
+              "content": [
+                "function"
+              ]
+            },
+            " keyword, when used as an expression, can create a function value. When used as a statement, it can be used to declare a variable and give it a function as its value."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A key aspect in understanding functions is understanding local scopes. Parameters and variables declared inside a function are local to the function, re-created every time the function is called, and not visible from the outside. Functions declared inside another function have access to the outer function’s local scope."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Separating the tasks your program performs into different functions is helpful. You won’t have to repeat yourself as much, and functions can make a program more readable by grouping code into conceptual chunks, in the same way that chapters and sections help organize regular text."
+          ]
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "The ",
+                {
+                  "element": "reference",
+                  "content": "previous chapter"
+                },
+                " introduced the standard function ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.min"
+                  ]
+                },
+                " that returns its smallest argument. We can do that ourselves now. Write a function ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "min"
+                  ]
+                },
+                " that takes two arguments and returns their minimum."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "If you have trouble putting braces and parentheses in the right place to get a valid function definition, start by copying one of the examples in this chapter and modifying it."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "A function may contain multiple ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "return"
+                  ]
+                },
+                " statements."
+              ]
+            }
+          ],
+          "title": "Minimum"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "We’ve seen that ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "%"
+                  ]
+                },
+                " (the remainder operator) can be used to test whether a number is even or odd by using ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "% 2"
+                  ]
+                },
+                " to check whether it’s divisible by two. Here’s another way to define whether a positive whole number is even or odd:"
+              ]
+            },
+            {
+              "element": "ul",
+              "content": [
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " Zero is even. "
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " One is odd. "
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " For any other number ",
+                        {
+                          "element": "em",
+                          "content": [
+                            "N"
+                          ]
+                        },
+                        ", its evenness is the same as ",
+                        {
+                          "element": "em",
+                          "content": [
+                            "N"
+                          ]
+                        },
+                        " - 2. "
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Define a recursive function ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "isEven"
+                  ]
+                },
+                " corresponding to this description. The function should accept a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "number"
+                  ]
+                },
+                " parameter and return a Boolean."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Test it on 50 and 75. See how it behaves on -1. Why? Can you think of a way to fix this?"
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " Your function will likely look somewhat similar to the inner ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "find"
+                  ]
+                },
+                " function in the recursive ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "findSolution"
+                  ]
+                },
+                " ",
+                {
+                  "element": "reference",
+                  "content": "example"
+                },
+                " in this chapter, with an ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "if"
+                  ]
+                },
+                "/",
+                {
+                  "element": "literal",
+                  "content": [
+                    "else if"
+                  ]
+                },
+                "/",
+                {
+                  "element": "literal",
+                  "content": [
+                    "else"
+                  ]
+                },
+                " chain that tests which of the three cases applies. The final ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "else"
+                  ]
+                },
+                ", corresponding to the third case, makes the recursive call. Each of the branches should contain a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "return"
+                  ]
+                },
+                " statement or in some other way arrange for a specific value to be returned."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "When given a negative number, the function will recurse again and again, passing itself an ever more negative number, thus getting further and further away from returning a result. It will eventually run out of stack space and abort."
+              ]
+            }
+          ],
+          "title": "Recursion"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                " You can get the Nth character, or letter, from a string by writing ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"string\".charAt(N)"
+                  ]
+                },
+                ", similar to how you get its length with ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"s\".length"
+                  ]
+                },
+                ". The returned value will be a string containing only one character (for example, ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"b\""
+                  ]
+                },
+                "). The first character has position zero, which causes the last one to be found at position ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "string.length - 1"
+                  ]
+                },
+                ". In other words, a two-character string has length 2, and its characters have positions 0 and 1."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Write a function ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "countBs"
+                  ]
+                },
+                " that takes a string as its only argument and returns a number that indicates how many uppercase “B” characters are in the string."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Next, write a function called ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "countChar"
+                  ]
+                },
+                " that behaves like ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "countBs"
+                  ]
+                },
+                ", except it takes a second argument that indicates the character that is to be counted (rather than counting only uppercase “B” characters). Rewrite ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "countBs"
+                  ]
+                },
+                " to make use of this new function."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " A loop in your function will have to look at every character in the string by running an index from zero to one below its length (",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    " string.length"
+                  ]
+                },
+                "). If the character at the current position is the same as the one the function is looking for, it adds 1 to a counter variable. Once the loop has finished, the counter can be returned."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Take care to make all the variables used in the function ",
+                {
+                  "element": "em",
+                  "content": [
+                    "local"
+                  ]
+                },
+                " to the function by using the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "var"
+                  ]
+                },
+                " keyword."
+              ]
+            }
+          ],
+          "title": "Bean counting"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Functions"
+}

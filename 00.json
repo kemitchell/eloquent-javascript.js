@@ -1,0 +1,766 @@
+{
+  "content": [
+    {
+      "element": "p",
+      "content": [
+        "This is a book about getting computers to do what you want them to do. Computers are about as common as screwdrivers today, but they contain a lot more hidden complexity and thus are harder to operate and understand. To many, they remain alien, slightly threatening things."
+      ]
+    },
+    {
+      "element": "img",
+      "src": "img/generated/computer.png"
+    },
+    {
+      "element": "p",
+      "content": [
+        "We’ve found two effective ways of bridging the communication gap between us, squishy biological organisms with a talent for social and spatial reasoning, and computers, unfeeling manipulators of meaningless data. The first is to appeal to our sense of the physical world and build interfaces that mimic that world and allow us to manipulate shapes on a screen with our fingers. This works very well for casual machine interaction."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "But we have not yet found a good way to use the point-and-click approach to communicate things to the computer that the designer of the interface did not anticipate. For open-ended interfaces, such as instructing the computer to perform arbitrary tasks, we’ve had more luck with an approach that makes use of our talent for language: teaching the machine a language."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Human languages allow words and phrases to be combined in many ways, which allows us to say many different things. Computer languages, though typically less grammatically flexible, follow a similar principle."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        " Casual computing has become much more widespread in the past 20 years, and language-based interfaces, which once were the default way in which people interacted with computers, have largely been replaced with graphical interfaces. But they are still there, if you know where to look. One such language, JavaScript, is built into almost every web browser and is thus available on just about every consumer device."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "This book intends to make you familiar enough with this language to be able to make a computer do what you want."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "blockquote",
+          "attribution": "Confucius",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "I do not enlighten those who are not eager to learn, nor arouse those who are not anxious to give an explanation themselves. If I have presented one corner of the square and they cannot come back to me with the other three, I should not go over the points again."
+              ]
+            }
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Besides explaining JavaScript, I also will introduce the basic principles of programming. Programming, it turns out, is hard. The fundamental rules are typically simple and clear. But programs built on top of these rules tend to become complex enough to introduce their own rules and complexity. You’re building your own maze, in a way, and you might just get lost in it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There will be times when reading this book feels terribly frustrating. If you are new to programming, there will be a lot of new material to digest. Much of this material will then be ",
+            {
+              "element": "em",
+              "content": [
+                "combined"
+              ]
+            },
+            " in ways that require you to make additional connections."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is up to you to make the necessary effort. When you are struggling to follow the book, do not jump to any conclusions about your own capabilities. You are fine—you just need to keep at it. Take a break, reread some material, and ",
+            {
+              "element": "em",
+              "content": [
+                "always"
+              ]
+            },
+            " make sure you read and understand the example programs and exercises. Learning is hard work, but everything you learn is yours and will make subsequent learning easier."
+          ]
+        },
+        {
+          "element": "blockquote",
+          "attribution": "Joseph Weizenbaum Computer Power and Human Reason",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "The computer programmer is a creator of universes for which he [sic] alone is responsible. Universes of virtually unlimited complexity can be created in the form of computer programs."
+              ]
+            }
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " A program is many things. It is a piece of text typed by a programmer, it is the directing force that makes the computer do what it does, it is data in the computer’s memory, yet it controls the actions performed on this same memory. Analogies that try to compare programs to objects we are familiar with tend to fall short. A superficially fitting one is that of a machine—lots of separate parts tend to be involved, and to make the whole thing tick, we have to consider the ways in which these parts interconnect and contribute to the operation of the whole."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A computer is a machine built to act as a host for these immaterial machines. Computers themselves can do only stupidly straightforward things. The reason they are so useful is that they do these things at an incredibly high speed. A program can ingeniously combine an enormous number of these simple actions in order to do very complicated things."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " To some of us, writing computer programs is a fascinating game. A program is a building of thought. It is costless to build, it is weightless, and it grows easily under our typing hands."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "But without care, a program’s size and complexity will grow out of control, confusing even the person who created it. Keeping programs under control is the main problem of programming. When a program works, it is beautiful. The art of programming is the skill of controlling complexity. The great program is subdued—made simple in its complexity."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Many programmers believe that this complexity is best managed by using only a small set of well-understood techniques in their programs. They have composed strict rules (“best practices”) prescribing the form programs should have, and the more zealous among them will consider those who go outside of this safe little zone to be ",
+            {
+              "element": "em",
+              "content": [
+                "bad"
+              ]
+            },
+            " programmers."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "What hostility to the richness of programming—to try to reduce it to something straightforward and predictable, to place a taboo on all the weird and beautiful programs! The landscape of programming techniques is enormous, fascinating in its diversity, and still largely unexplored. It is certainly dangerous going, luring the inexperienced programmer into all kinds of confusion, but that only means you should proceed with caution and keep your wits about you. As you learn there will always be new challenges and new territory to explore. Programmers who refuse to keep exploring will stagnate, forget their joy, and get bored with their craft."
+          ]
+        }
+      ],
+      "title": "On programming"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In the beginning, at the birth of computing, there were no programming languages. Programs looked something like this:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "00110001 00000000 00000000\n00110001 00000001 00000001\n00110011 00000001 00000010\n01010001 00001011 00000010\n00100010 00000010 00001000\n01000011 00000001 00000000\n01000001 00000001 00000001\n00010000 00000010 00000000\n01100010 00000000 00000000"
+        },
+        {
+          "element": "p",
+          "content": [
+            " That is a program to add the numbers from 1 to 10 together and print out the result: ",
+            {
+              "element": "literal",
+              "content": [
+                "1 + 2 + ... + 10 = 55"
+              ]
+            },
+            ". It could run on a simple, hypothetical machine. To program early computers, it was necessary to set large arrays of switches in the right position or punch holes in strips of cardboard and feed them to the computer. You can probably imagine how tedious and error-prone this procedure was. Even writing simple programs required much cleverness and discipline. Complex ones were nearly inconceivable."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Of course, manually entering these arcane patterns of bits (the ones and zeros) did give the programmer a profound sense of being a mighty wizard. And that has to be worth something in terms of job satisfaction."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Each line of the previous program contains a single instruction. It could be written in English like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Although that is already more readable than the soup of bits, it is still rather unpleasant. It might help to use names instead of numbers for the instructions and memory locations."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Can you see how the program works at this point? The first two lines give two memory locations their starting values: ",
+            {
+              "element": "literal",
+              "content": [
+                "total"
+              ]
+            },
+            " will be used to build up the result of the computation, and ",
+            {
+              "element": "literal",
+              "content": [
+                "count"
+              ]
+            },
+            " will keep track of the number that we are currently looking at. The lines using ",
+            {
+              "element": "literal",
+              "content": [
+                "compare"
+              ]
+            },
+            " are probably the weirdest ones. The program wants to see whether ",
+            {
+              "element": "literal",
+              "content": [
+                "count"
+              ]
+            },
+            " is equal to 11 in order to decide whether it can stop running. Because our hypothetical machine is rather primitive, it can only test whether a number is zero and make a decision (or jump) based on that. So it uses the memory location labeled ",
+            {
+              "element": "literal",
+              "content": [
+                "compare"
+              ]
+            },
+            " to compute the value of ",
+            {
+              "element": "literal",
+              "content": [
+                "count - 11"
+              ]
+            },
+            " and makes a decision based on that value. The next two lines add the value of ",
+            {
+              "element": "literal",
+              "content": [
+                "count"
+              ]
+            },
+            " to the result and increment ",
+            {
+              "element": "literal",
+              "content": [
+                "count"
+              ]
+            },
+            " by 1 every time the program has decided that ",
+            {
+              "element": "literal",
+              "content": [
+                "count"
+              ]
+            },
+            " is not 11 yet."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Here is the same program in JavaScript:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This version gives us a few more improvements. Most importantly, there is no need to specify the way we want the program to jump back and forth anymore. The ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            " language construct takes care of that. It continues executing the block (wrapped in braces) below it as long as the condition it was given holds. That condition is ",
+            {
+              "element": "literal",
+              "content": [
+                "count ",
+                "<",
+                "= 10"
+              ]
+            },
+            ", which means “",
+            {
+              "element": "literal",
+              "content": [
+                "count"
+              ]
+            },
+            " is less than or equal to 10”. We no longer have to create a temporary value and compare that to zero, which was an uninteresting detail. Part of the power of programming languages is that they take care of uninteresting details for us."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "At the end of the program, after the ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            " construct has finished, the ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " operation is applied to the result in order to write it as output."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Finally, here is what the program could look like if we happened to have the convenient operations ",
+            {
+              "element": "literal",
+              "content": [
+                "range"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "sum"
+              ]
+            },
+            " available, which respectively create a collection of numbers within a range and compute the sum of a collection of numbers:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The moral of this story is that the same program can be expressed in long and short, unreadable and readable ways. The first version of the program was extremely obscure, whereas this last one is almost English: ",
+            {
+              "element": "literal",
+              "content": [
+                "log"
+              ]
+            },
+            " the ",
+            {
+              "element": "literal",
+              "content": [
+                "sum"
+              ]
+            },
+            " of the ",
+            {
+              "element": "literal",
+              "content": [
+                "range"
+              ]
+            },
+            " of numbers from 1 to 10. (We will see in ",
+            {
+              "element": "reference",
+              "content": "later chapters"
+            },
+            " how to build operations like ",
+            {
+              "element": "literal",
+              "content": [
+                "sum"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "range"
+              ]
+            },
+            ".)"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " A good programming language helps the programmer by allowing them to talk about the actions that the computer has to perform on a higher level. It helps omit uninteresting details, provides convenient building blocks (such as ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            "), allows you to define your own building blocks (such as ",
+            {
+              "element": "literal",
+              "content": [
+                "sum"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "range"
+              ]
+            },
+            "), and makes those blocks easy to compose."
+          ]
+        }
+      ],
+      "title": "Why language matters"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "   JavaScript was introduced in 1995 as a way to add programs to web pages in the Netscape Navigator browser. The language has since been adopted by all other major graphical web browsers. It has made modern web applications possible—applications with which you can interact directly, without doing a page reload for every action. But it is also used in more traditional websites to provide various forms of interactivity and cleverness."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is important to note that JavaScript has almost nothing to do with the programming language named Java. The similar name was inspired by marketing considerations, rather than good judgment. When JavaScript was being introduced, the Java language was being heavily marketed and was gaining popularity. Someone thought it was a good idea to try to ride along on this success. Now we are stuck with the name."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "After its adoption outside of Netscape, a standard document was written to describe the way the JavaScript language should work to make sure the various pieces of software that claimed to support JavaScript were actually talking about the same language. This is called the ECMAScript standard, after the Ecma International organization that did the standardization. In practice, the terms ECMAScript and JavaScript can be used interchangeably—they are two names for the same language."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " There are those who will say ",
+            {
+              "element": "em",
+              "content": [
+                "terrible"
+              ]
+            },
+            " things about the JavaScript language. Many of these things are true. When I was required to write something in JavaScript for the first time, I quickly came to despise it. It would accept almost anything I typed but interpret it in a way that was completely different from what I meant. This had a lot to do with the fact that I did not have a clue what I was doing, of course, but there is a real issue here: JavaScript is ridiculously liberal in what it allows. The idea behind this design was that it would make programming in JavaScript easier for beginners. In actuality, it mostly makes finding problems in your programs harder because the system will not point them out to you."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " This flexibility also has its advantages, though. It leaves space for a lot of techniques that are impossible in more rigid languages, and as you will see (for example in ",
+            {
+              "element": "reference",
+              "content": "Chapter 10"
+            },
+            ") it can be used to overcome some of JavaScript’s shortcomings. After learning the language properly and working with it for a while, I have learned to actually ",
+            {
+              "element": "em",
+              "content": [
+                "like"
+              ]
+            },
+            " JavaScript."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " There have been several versions of JavaScript. ECMAScript version 3 was the widely supported version in the time of JavaScript’s ascent to dominance, roughly between 2000 and 2010. During this time, work was underway on an ambitious version 4, which planned a number of radical improvements and extensions to the language. Changing a living, widely used language in such a radical way turned out to be politically difficult, and work on the version 4 was abandoned in 2008, leading to the much less ambitious version 5 coming out in 2009. We’re now at the point where all major browsers support version 5, which is the language version that this book will be focusing on. A version 6 is in the process of being finalized, and some browsers are starting to support new features from this version."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Web browsers are not the only platforms on which JavaScript is used. Some databases, such as MongoDB and CouchDB, use JavaScript as their scripting and query language. Several platforms for desktop and server programming, most notably the Node.js project (the subject of ",
+            {
+              "element": "reference",
+              "content": "Chapter\n20"
+            },
+            ") are providing a powerful environment for programming JavaScript outside of the browser."
+          ]
+        }
+      ],
+      "title": "What is JavaScript?"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Code is the text that makes up programs. Most chapters in this book contain quite a lot of it. In my experience, reading code and writing code are indispensable parts of learning to program, so try to not just glance over the examples. Read them attentively and understand them. This may be slow and confusing at first, but I promise that you will quickly get the hang of it. The same goes for the exercises. Don’t assume you understand them until you’ve actually written a working solution."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "I recommend you try your solutions to exercises in an actual JavaScript interpreter. That way, you’ll get immediate feedback on whether what you are doing is working, and, I hope, you’ll be tempted to experiment and go beyond the exercises."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If you want to run the programs defined in this book outside of the book’s sandbox, some care is required. Many examples stand on their own and should work in any JavaScript environment. But code in later chapters is mostly written for a specific environment (the browser or Node.js) and can run only there. In addition, many chapters define bigger programs, and the pieces of code that appear in them depend on each other or on external files. The ",
+            {
+              "element": "reference",
+              "content": "sandbox"
+            },
+            " on the website provides links to Zip files containing all of the scripts and data files necessary to run the code for a given chapter."
+          ]
+        }
+      ],
+      "title": "Code, and what to do with it"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "This book contains roughly three parts. The first 11 chapters discuss the JavaScript language itself. The next eight chapters are about web browsers and the way JavaScript is used to program them. Finally, two chapters are devoted to Node.js, another environment to program JavaScript in."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Throughout the book, there are five ",
+            {
+              "element": "em",
+              "content": [
+                "project chapters"
+              ]
+            },
+            ", which describe larger example programs to give you a taste of real programming. In order of appearance, we will work through building an ",
+            {
+              "element": "reference",
+              "content": "artificial life simulation"
+            },
+            ", a ",
+            {
+              "element": "reference",
+              "content": "programming language"
+            },
+            ", a ",
+            {
+              "element": "reference",
+              "content": "platform game"
+            },
+            ", a ",
+            {
+              "element": "reference",
+              "content": "paint program"
+            },
+            ", and a ",
+            {
+              "element": "reference",
+              "content": "dynamic website"
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The language part of the book starts with four chapters to introduce the basic structure of the JavaScript language. They introduce ",
+            {
+              "element": "reference",
+              "content": "control structures"
+            },
+            " (such as the ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            " word you saw in this introduction), ",
+            {
+              "element": "reference",
+              "content": "functions"
+            },
+            " (writing your own operations), and ",
+            {
+              "element": "reference",
+              "content": "data structures"
+            },
+            ". After these, you will be able to write simple programs. Next, Chapters ",
+            {
+              "element": "reference",
+              "content": "5"
+            },
+            " and ",
+            {
+              "element": "reference",
+              "content": "6"
+            },
+            " introduce techniques to use functions and objects to write more ",
+            {
+              "element": "em",
+              "content": [
+                "abstract"
+              ]
+            },
+            " code and thus keep complexity under control."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "After a ",
+            {
+              "element": "reference",
+              "content": "first project chapter"
+            },
+            ", the first part of the book continues with chapters on ",
+            {
+              "element": "reference",
+              "content": "error handling and fixing"
+            },
+            ", on ",
+            {
+              "element": "reference",
+              "content": "regular expressions"
+            },
+            " (an important tool for working with text data), and on ",
+            {
+              "element": "reference",
+              "content": "modularity"
+            },
+            "—another weapon against complexity. The ",
+            {
+              "element": "reference",
+              "content": "second project chapter"
+            },
+            " concludes the first part of the book."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The second part, Chapters ",
+            {
+              "element": "reference",
+              "content": "12"
+            },
+            " to ",
+            {
+              "element": "reference",
+              "content": "19"
+            },
+            ", describes the tools that browser JavaScript has access to. You’ll learn to display things on the screen (Chapters ",
+            {
+              "element": "reference",
+              "content": "13"
+            },
+            " and ",
+            {
+              "element": "reference",
+              "content": "16"
+            },
+            "), respond to user input (Chapters ",
+            {
+              "element": "reference",
+              "content": "14"
+            },
+            " and ",
+            {
+              "element": "reference",
+              "content": "18"
+            },
+            "), and communicate over the network (",
+            {
+              "element": "reference",
+              "content": "Chapter 17"
+            },
+            "). There are again two project chapters in this part."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "After that, ",
+            {
+              "element": "reference",
+              "content": "Chapter 20"
+            },
+            " describes Node.js, and ",
+            {
+              "element": "reference",
+              "content": "Chapter 21"
+            },
+            " builds a simple web system using that tool."
+          ]
+        }
+      ],
+      "title": "Overview of this book"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In this book, text written in a ",
+            {
+              "element": "literal",
+              "content": [
+                "monospaced"
+              ]
+            },
+            " font will represent elements of programs—sometimes they are self-sufficient fragments, and sometimes they just refer to part of a nearby program. Programs (of which you have already seen a few), are written as follows:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Sometimes, in order to show the output that a program produces, the expected output is written after it, with two slashes and an arrow in front."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Good luck!"
+          ]
+        }
+      ],
+      "title": "Typographic conventions"
+    }
+  ],
+  "title": "Introduction"
+}

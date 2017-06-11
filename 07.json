@@ -1,0 +1,1701 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Edsger Dijkstra The Threats to Computing Science",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "[...] the question of whether Machines Can Think [...] is about as relevant as the question of whether Submarines Can Swim."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "In “project” chapters, I’ll stop pummeling you with new theory for a brief moment and instead work through a program with you. Theory is indispensable when learning to program, but it should be accompanied by reading and understanding nontrivial programs."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Our project in this chapter is to build a virtual ecosystem, a little world populated with critters that move around and struggle for survival."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "To make this task manageable, we will radically simplify the concept of a ",
+            {
+              "element": "em",
+              "content": [
+                "world"
+              ]
+            },
+            ". Namely, a world will be a two-dimensional grid where each entity takes up one full square of the grid. On every ",
+            {
+              "element": "em",
+              "content": [
+                "turn"
+              ]
+            },
+            ", the critters all get a chance to take some action."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Thus, we chop both time and space into units with a fixed size: squares for space and turns for time. Of course, this is a somewhat crude and inaccurate approximation. But our simulation is intended to be amusing, not accurate, so we can freely cut such corners."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can define a world with a ",
+            {
+              "element": "em",
+              "content": [
+                "plan"
+              ]
+            },
+            ", an array of strings that lays out the world’s grid using one character per square."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The “#” characters in this plan represent walls and rocks, and the “o” characters represent critters. The spaces, as you might have guessed, are empty space."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A plan array can be used to create a world object. Such an object keeps track of the size and content of the world. It has a ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " method, which converts the world back to a printable string (similar to the plan it was based on) so that we can see what’s going on inside. The world object also has a ",
+            {
+              "element": "literal",
+              "content": [
+                "turn"
+              ]
+            },
+            " method, which allows all the critters in it to take one turn and updates the world to reflect their actions."
+          ]
+        }
+      ],
+      "title": "Definition"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " The grid that models the world has a fixed width and height. Squares are identified by their x- and y-coordinates. We use a simple type, ",
+            {
+              "element": "literal",
+              "content": [
+                "Vector"
+              ]
+            },
+            " (as seen in the exercises for the ",
+            {
+              "element": "reference",
+              "content": "previous chapter"
+            },
+            "), to represent these coordinate pairs."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Next, we need an object type that models the grid itself. A grid is part of a world, but we are making it a separate object (which will be a property of a world object) to keep the world object itself simple. The world should concern itself with world-related things, and the grid should concern itself with grid-related things."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To store a grid of values, we have several options. We can use an array of row arrays and use two property accesses to get to a specific square, like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " Or we can use a single array, with size width × height, and decide that the element at (",
+            {
+              "element": "em",
+              "content": [
+                "x"
+              ]
+            },
+            ",",
+            {
+              "element": "em",
+              "content": [
+                "y"
+              ]
+            },
+            ") is found at position ",
+            {
+              "element": "em",
+              "content": [
+                "x"
+              ]
+            },
+            " + (",
+            {
+              "element": "em",
+              "content": [
+                "y"
+              ]
+            },
+            " × width) in the array."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "  Since the actual access to this array will be wrapped in methods on the grid object type, it doesn’t matter to outside code which approach we take. I chose the second representation because it makes it much easier to create the array. When calling the ",
+            {
+              "element": "literal",
+              "content": [
+                "Array"
+              ]
+            },
+            " constructor with a single number as an argument, it creates a new empty array of the given length."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This code defines the ",
+            {
+              "element": "literal",
+              "content": [
+                "Grid"
+              ]
+            },
+            " object, with some basic methods:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "And here is a trivial test:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Representing space"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Before we can start on the ",
+            {
+              "element": "literal",
+              "content": [
+                "World"
+              ]
+            },
+            " constructor, we must get more specific about the critter objects that will be living inside it. I mentioned that the world will ask the critters what actions they want to take. This works as follows: each critter object has an ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method that, when called, returns an ",
+            {
+              "element": "em",
+              "content": [
+                "action"
+              ]
+            },
+            ". An action is an object with a ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " property, which names the type of action the critter wants to take, for example ",
+            {
+              "element": "literal",
+              "content": [
+                "\"move\""
+              ]
+            },
+            ". The action may also contain extra information, such as the direction the critter wants to move in."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Critters are terribly myopic and can see only the squares directly around them on the grid. But even this limited vision can be useful when deciding which action to take. When the ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method is called, it is given a ",
+            {
+              "element": "em",
+              "content": [
+                "view"
+              ]
+            },
+            " object that allows the critter to inspect its surroundings. We name the eight surrounding squares by their compass directions: ",
+            {
+              "element": "literal",
+              "content": [
+                "\"n\""
+              ]
+            },
+            " for north, ",
+            {
+              "element": "literal",
+              "content": [
+                "\"ne\""
+              ]
+            },
+            " for northeast, and so on. Here’s the object we will use to map from direction names to coordinate offsets:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The view object has a method ",
+            {
+              "element": "literal",
+              "content": [
+                "look"
+              ]
+            },
+            ", which takes a direction and returns a character, for example ",
+            {
+              "element": "literal",
+              "content": [
+                "\"#\""
+              ]
+            },
+            " when there is a wall in that direction, or ",
+            {
+              "element": "literal",
+              "content": [
+                "\" \""
+              ]
+            },
+            " (space) when there is nothing there. The object also provides the convenient methods ",
+            {
+              "element": "literal",
+              "content": [
+                "find"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "findAll"
+              ]
+            },
+            ". Both take a map character as an argument. The first returns a direction in which the character can be found next to the critter or returns ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " if no such direction exists. The second returns an array containing all directions with that character. For example, a creature sitting left (west) of a wall will get ",
+            {
+              "element": "literal",
+              "content": [
+                "[\"ne\", \"e\", \"se\"]"
+              ]
+            },
+            " when calling ",
+            {
+              "element": "literal",
+              "content": [
+                "findAll"
+              ]
+            },
+            " on its view object with the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"#\""
+              ]
+            },
+            " character as argument."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Here is a simple, stupid critter that just follows its nose until it hits an obstacle and then bounces off in a random open direction:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "randomElement"
+              ]
+            },
+            " helper function simply picks a random element from an array, using ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.random"
+              ]
+            },
+            " plus some arithmetic to get a random index. We’ll use this again later because randomness can be useful in simulations."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To pick a random direction, the ",
+            {
+              "element": "literal",
+              "content": [
+                "BouncingCritter"
+              ]
+            },
+            " constructor calls ",
+            {
+              "element": "literal",
+              "content": [
+                "randomElement"
+              ]
+            },
+            " on an array of direction names. We could also have used ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.keys"
+              ]
+            },
+            " to get this array from the ",
+            {
+              "element": "literal",
+              "content": [
+                "directions"
+              ]
+            },
+            " object we defined ",
+            {
+              "element": "reference",
+              "content": "earlier"
+            },
+            ", but that provides no guarantees about the order in which the properties are listed. In most situations, modern JavaScript engines will return properties in the order they were defined, but they are not required to."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The “",
+            {
+              "element": "literal",
+              "content": [
+                "|| \"s\""
+              ]
+            },
+            "” in the ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method is there to prevent ",
+            {
+              "element": "literal",
+              "content": [
+                "this.direction"
+              ]
+            },
+            " from getting the value ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " if the critter is somehow trapped with no empty space around it (for example when crowded into a corner by other critters)."
+          ]
+        }
+      ],
+      "title": "s programming interface"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Now we can start on the ",
+            {
+              "element": "literal",
+              "content": [
+                "World"
+              ]
+            },
+            " object type. The constructor takes a plan (the array of strings representing the world’s grid, described ",
+            {
+              "element": "reference",
+              "content": "earlier"
+            },
+            ") and a ",
+            {
+              "element": "em",
+              "content": [
+                "legend"
+              ]
+            },
+            " as arguments. A legend is an object that tells us what each character in the map means. It contains a constructor for every character—except for the space character, which always refers to ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            ", the value we’ll use to represent empty space."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " In ",
+            {
+              "element": "literal",
+              "content": [
+                "elementFromChar"
+              ]
+            },
+            ", first we create an instance of the right type by looking up the character’s constructor and applying ",
+            {
+              "element": "literal",
+              "content": [
+                "new"
+              ]
+            },
+            " to it. Then we add an ",
+            {
+              "element": "literal",
+              "content": [
+                "originChar"
+              ]
+            },
+            " property to it to make it easy to find out what character the element was originally created from."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " We need this ",
+            {
+              "element": "literal",
+              "content": [
+                "originChar"
+              ]
+            },
+            " property when implementing the world’s ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " method. This method builds up a maplike string from the world’s current state by performing a two-dimensional loop over the squares on the grid."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A wall is a simple object—it is used only for taking up space and has no ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "When we try the ",
+            {
+              "element": "literal",
+              "content": [
+                "World"
+              ]
+            },
+            " object by creating an instance based on the plan from ",
+            {
+              "element": "reference",
+              "content": "earlier in the\nchapter"
+            },
+            " and then calling ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " on it, we get a string very similar to the plan we put in."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "The world object"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "World"
+              ]
+            },
+            " constructor contains a call to ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            ". One interesting thing to note is that inside the function passed to ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            ", we are no longer directly in the function scope of the constructor. Each function call gets its own ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " binding, so the ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " in the inner function does ",
+            {
+              "element": "em",
+              "content": [
+                "not"
+              ]
+            },
+            " refer to the newly constructed object that the outer ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " refers to. In fact, when a function isn’t called as a method, ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " will refer to the global object."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This means that we can’t write ",
+            {
+              "element": "literal",
+              "content": [
+                "this.grid"
+              ]
+            },
+            " to access the grid from inside the loop. Instead, the outer function creates a normal local variable, ",
+            {
+              "element": "literal",
+              "content": [
+                "grid"
+              ]
+            },
+            ", through which the inner function gets access to the grid."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is a bit of a design blunder in JavaScript. Fortunately, the next version of the language provides a solution for this problem. Meanwhile, there are workarounds. A common pattern is to say ",
+            {
+              "element": "literal",
+              "content": [
+                "var self = this"
+              ]
+            },
+            " and from then on refer to ",
+            {
+              "element": "literal",
+              "content": [
+                "self"
+              ]
+            },
+            ", which is a normal variable and thus visible to inner functions."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Another solution is to use the ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            " method, which allows us to provide an explicit ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " object to bind to."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The function passed to ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            " is the result of the ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            " call and thus has its ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " bound to the first argument given to ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            "—the outer function’s ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " value (which holds the ",
+            {
+              "element": "literal",
+              "content": [
+                "test"
+              ]
+            },
+            " object)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Most standard higher-order methods on arrays, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            ", take an optional second argument that can also be used to provide a ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " for the calls to the iteration function. So you could express the previous example in a slightly simpler way."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This works only for higher-order functions that support such a ",
+            {
+              "element": "em",
+              "content": [
+                "context"
+              ]
+            },
+            " parameter. When they don’t, you’ll need to use one of the other approaches."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " In our own higher-order functions, we can support such a context parameter by using the ",
+            {
+              "element": "literal",
+              "content": [
+                "call"
+              ]
+            },
+            " method to call the function given as an argument. For example, here is a ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " method for our ",
+            {
+              "element": "literal",
+              "content": [
+                "Grid"
+              ]
+            },
+            " type, which calls a given function for each element in the grid that isn’t null or undefined:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "this and its scope"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The next step is to write a ",
+            {
+              "element": "literal",
+              "content": [
+                "turn"
+              ]
+            },
+            " method for the world object that gives the critters a chance to act. It will go over the grid using the ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " method we just defined, looking for objects with an ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method. When it finds one, ",
+            {
+              "element": "literal",
+              "content": [
+                "turn"
+              ]
+            },
+            " calls that method to get an action object and carries out the action when it is valid. For now, only ",
+            {
+              "element": "literal",
+              "content": [
+                "\"move\""
+              ]
+            },
+            " actions are understood."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There is one potential problem with this approach. Can you spot it? If we let critters move as we come across them, they may move to a square that we haven’t looked at yet, and we’ll allow them to move ",
+            {
+              "element": "em",
+              "content": [
+                "again"
+              ]
+            },
+            " when we reach that square. Thus, we have to keep an array of critters that have already had their turn and ignore them when we see them again."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We use the second parameter to the grid’s ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            " method to be able to access the correct ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " inside the inner function. The ",
+            {
+              "element": "literal",
+              "content": [
+                "letAct"
+              ]
+            },
+            " method contains the actual logic that allows the critters to move."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "First, we simply ask the critter to act, passing it a view object that knows about the world and the critter’s current position in that world (we’ll define ",
+            {
+              "element": "literal",
+              "content": [
+                "View"
+              ]
+            },
+            " in a ",
+            {
+              "element": "reference",
+              "content": "moment"
+            },
+            "). The ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method returns an action of some kind."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If the action’s ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " is not ",
+            {
+              "element": "literal",
+              "content": [
+                "\"move\""
+              ]
+            },
+            ", it is ignored. If it ",
+            {
+              "element": "em",
+              "content": [
+                "is"
+              ]
+            },
+            " ",
+            {
+              "element": "literal",
+              "content": [
+                "\"move\""
+              ]
+            },
+            ", if it has a ",
+            {
+              "element": "literal",
+              "content": [
+                "direction"
+              ]
+            },
+            " property that refers to a valid direction, ",
+            {
+              "element": "em",
+              "content": [
+                "and"
+              ]
+            },
+            " if the square in that direction is empty (null), we set the square where the critter used to be to hold null and store the critter in the destination square."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Note that ",
+            {
+              "element": "literal",
+              "content": [
+                "letAct"
+              ]
+            },
+            " takes care to ignore nonsense input—it doesn’t assume that the action’s ",
+            {
+              "element": "literal",
+              "content": [
+                "direction"
+              ]
+            },
+            " property is valid or that the ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " property makes sense. This kind of ",
+            {
+              "element": "em",
+              "content": [
+                "defensive"
+              ]
+            },
+            " programming makes sense in some situations. The main reason for doing it is to validate inputs coming from sources you don’t control (such as user or file input), but it can also be useful to isolate subsystems from each other. In this case, the intention is that the critters themselves can be programmed sloppily—they don’t have to verify if their intended actions make sense. They can just request an action, and the world will figure out whether to allow it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " These two methods are not part of the external interface of a ",
+            {
+              "element": "literal",
+              "content": [
+                "World"
+              ]
+            },
+            " object. They are an internal detail. Some languages provide ways to explicitly declare certain methods and properties ",
+            {
+              "element": "em",
+              "content": [
+                "private"
+              ]
+            },
+            " and signal an error when you try to use them from outside the object. JavaScript does not, so you will have to rely on some other form of communication to describe what is part of an object’s interface. Sometimes it can help to use a naming scheme to distinguish between external and internal properties, for example by prefixing all internal ones with an underscore character (_). This will make accidental uses of properties that are not part of an object’s interface easier to spot."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The one missing part, the ",
+            {
+              "element": "literal",
+              "content": [
+                "View"
+              ]
+            },
+            " type, looks like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "look"
+              ]
+            },
+            " method figures out the coordinates that we are trying to look at and, if they are inside the grid, finds the character corresponding to the element that sits there. For coordinates outside the grid, ",
+            {
+              "element": "literal",
+              "content": [
+                "look"
+              ]
+            },
+            " simply pretends that there is a wall there so that if you define a world that isn’t walled in, the critters still won’t be tempted to try to walk off the edges."
+          ]
+        }
+      ],
+      "title": "Animating life"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "We instantiated a world object earlier. Now that we’ve added all the necessary methods, it should be possible to actually make the world move."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "It moves"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The dramatic highlight of our world, if you watch for a bit, is when two critters bounce off each other. Can you think of another interesting form of behavior?"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The one I came up with is a critter that moves along walls. Conceptually, the critter keeps its left hand (paw, tentacle, whatever) to the wall and follows along. This turns out to be not entirely trivial to implement."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We need to be able to “compute” with compass directions. Since directions are modeled by a set of strings, we need to define our own operation (",
+            {
+              "element": "literal",
+              "content": [
+                "dirPlus"
+              ]
+            },
+            ") to calculate relative directions. So ",
+            {
+              "element": "literal",
+              "content": [
+                "dirPlus(\"n\", 1)"
+              ]
+            },
+            " means one 45-degree turn clockwise from north, giving ",
+            {
+              "element": "literal",
+              "content": [
+                "\"ne\""
+              ]
+            },
+            ". Similarly, ",
+            {
+              "element": "literal",
+              "content": [
+                "dirPlus(\"s\", -2)"
+              ]
+            },
+            " means 90 degrees counterclockwise from south, which is east."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method only has to “scan” the critter’s surroundings, starting from its left side and going clockwise until it finds an empty square. It then moves in the direction of that empty square."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "What complicates things is that a critter may end up in the middle of empty space, either as its start position or as a result of walking around another critter. If we apply the approach I just described in empty space, the poor critter will just keep on turning left at every step, running in circles."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "So there is an extra check (the ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " statement) to start scanning to the left only if it looks like the critter has just passed some kind of obstacle—that is, if the space behind and to the left of the critter is not empty. Otherwise, the critter starts scanning directly ahead, so that it’ll walk straight when in empty space."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "And finally, there’s a test comparing ",
+            {
+              "element": "literal",
+              "content": [
+                "this.dir"
+              ]
+            },
+            " to ",
+            {
+              "element": "literal",
+              "content": [
+                "start"
+              ]
+            },
+            " after every pass through the loop to make sure that the loop won’t run forever when the critter is walled in or crowded in by other critters and can’t find an empty square."
+          ]
+        }
+      ],
+      "title": "More life forms"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "To make life in our world more interesting, we will add the concepts of food and reproduction. Each living thing in the world gets a new property, ",
+            {
+              "element": "literal",
+              "content": [
+                "energy"
+              ]
+            },
+            ", which is reduced by performing actions and increased by eating things. When the critter has enough energy, it can reproduce, generating a new critter of the same kind. To keep things simple, the critters in our world reproduce asexually, all by themselves."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If critters only move around and eat one another, the world will soon succumb to the law of increasing entropy, run out of energy, and become a lifeless wasteland. To prevent this from happening (too quickly, at least), we add plants to the world. Plants do not move. They just use photosynthesis to grow (that is, increase their energy) and reproduce."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To make this work, we’ll need a world with a different ",
+            {
+              "element": "literal",
+              "content": [
+                "letAct"
+              ]
+            },
+            " method. We could just replace the method of the ",
+            {
+              "element": "literal",
+              "content": [
+                "World"
+              ]
+            },
+            " prototype, but I’ve become very attached to our simulation with the wall-following critters and would hate to break that old world."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "One solution is to use inheritance. We create a new constructor, ",
+            {
+              "element": "literal",
+              "content": [
+                "LifelikeWorld"
+              ]
+            },
+            ", whose prototype is based on the ",
+            {
+              "element": "literal",
+              "content": [
+                "World"
+              ]
+            },
+            " prototype but which overrides the ",
+            {
+              "element": "literal",
+              "content": [
+                "letAct"
+              ]
+            },
+            " method. The new ",
+            {
+              "element": "literal",
+              "content": [
+                "letAct"
+              ]
+            },
+            " method delegates the work of actually performing an action to various functions stored in the ",
+            {
+              "element": "literal",
+              "content": [
+                "actionTypes"
+              ]
+            },
+            " object."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The new ",
+            {
+              "element": "literal",
+              "content": [
+                "letAct"
+              ]
+            },
+            " method first checks whether an action was returned at all, then whether a handler function for this type of action exists, and finally whether that handler returned true, indicating that it successfully handled the action. Note the use of ",
+            {
+              "element": "literal",
+              "content": [
+                "call"
+              ]
+            },
+            " to give the handler access to the world, through its ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " binding."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If the action didn’t work for whatever reason, the default action is for the creature to simply wait. It loses one-fifth point of energy, and if its energy level drops to zero or below, the creature dies and is removed from the grid."
+          ]
+        }
+      ],
+      "title": "A more lifelike simulation"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The simplest action a creature can perform is ",
+            {
+              "element": "literal",
+              "content": [
+                "\"grow\""
+              ]
+            },
+            ", used by plants. When an action object like ",
+            {
+              "element": "literal",
+              "content": [
+                "{type:",
+                " ",
+                "\"grow\"}"
+              ]
+            },
+            " is returned, the following handler method will be called:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Growing always succeeds and adds half a point to the plant’s energy level."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Moving is more involved."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This action first checks, using the ",
+            {
+              "element": "literal",
+              "content": [
+                "checkDestination"
+              ]
+            },
+            " method defined ",
+            {
+              "element": "reference",
+              "content": "earlier"
+            },
+            ", whether the action provides a valid destination. If not, or if the destination isn’t empty, or if the critter lacks the required energy, ",
+            {
+              "element": "literal",
+              "content": [
+                "move"
+              ]
+            },
+            " returns false to indicate no action was taken. Otherwise, it moves the critter and subtracts the energy cost."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In addition to moving, critters can eat."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Eating another critter also involves providing a valid destination square. This time, the destination must not be empty and must contain something with energy, like a critter (but not a wall—walls are not edible). If so, the energy from the eaten is transferred to the eater, and the victim is removed from the grid."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "And finally, we allow our critters to reproduce."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Reproducing costs twice the energy level of the newborn critter. So we first create a (hypothetical) baby using ",
+            {
+              "element": "literal",
+              "content": [
+                "elementFromChar"
+              ]
+            },
+            " on the critter’s own origin character. Once we have a baby, we can find its energy level and test whether the parent has enough energy to successfully bring it into the world. We also require a valid (and empty) destination."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If everything is okay, the baby is put onto the grid (it is now no longer hypothetical), and the energy is spent."
+          ]
+        }
+      ],
+      "title": "Action handlers"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "We now have a framework to simulate these more lifelike creatures. We could put the critters from the old world into it, but they would just die since they don’t have an energy property. So let’s make new ones. First we’ll write a plant, which is a rather simple life-form."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Plants start with an energy level between 3 and 7, randomized so that they don’t all reproduce in the same turn. When a plant reaches 15 energy points and there is empty space nearby, it reproduces into that empty space. If a plant can’t reproduce, it simply grows until it reaches energy level 20."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We now define a plant eater."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We’ll use the ",
+            {
+              "element": "literal",
+              "content": [
+                "*"
+              ]
+            },
+            " character for plants, so that’s what this creature will look for when it searches for food."
+          ]
+        }
+      ],
+      "title": "Populating the new world"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "And that gives us enough elements to try our new world. Imagine the following map as a grassy valley with a herd of herbivores in it, some boulders, and lush plant life everywhere."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Let’s see what happens if we run this."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Most of the time, the plants multiply and expand quite quickly, but then the abundance of food causes a population explosion of the herbivores, who proceed to wipe out all or nearly all of the plants, resulting in a mass starvation of the critters. Sometimes, the ecosystem recovers and another cycle starts. At other times, one of the species dies out completely. If it’s the herbivores, the whole space will fill with plants. If it’s the plants, the remaining critters starve, and the valley becomes a desolate wasteland. Ah, the cruelty of nature."
+          ]
+        }
+      ],
+      "title": "Bringing it to life"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Having the inhabitants of our world go extinct after a few minutes is kind of depressing. To deal with this, we could try to create a smarter plant eater."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "There are several obvious problems with our herbivores. First, they are terribly greedy, stuffing themselves with every plant they see until they have wiped out the local plant life. Second, their randomized movement (recall that the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "view.find"
+                  ]
+                },
+                " method returns a random direction when multiple directions match) causes them to stumble around ineffectively and starve if there don’t happen to be any plants nearby. And finally, they breed very fast, which makes the cycles between abundance and famine quite intense."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Write a new critter type that tries to address one or more of these points and substitute it for the old ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "PlantEater"
+                  ]
+                },
+                " type in the valley world. See how it fares. Tweak it some more if necessary."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The greediness problem can be attacked in several ways. The critters could stop eating when they reach a certain energy level. Or they could eat only every N turns (by keeping a counter of the turns since their last meal in a property on the creature object). Or, to make sure plants never go entirely extinct, the animals could refuse to eat a plant unless they see at least one other plant nearby (using the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "findAll"
+                  ]
+                },
+                " method on the view). A combination of these, or some entirely different strategy, might also work."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Making the critters move more effectively could be done by stealing one of the movement strategies from the critters in our old, energyless world. Both the bouncing behavior and the wall-following behavior showed a much wider range of movement than completely random staggering."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Making creatures breed more slowly is trivial. Just increase the minimum energy level at which they reproduce. Of course, making the ecosystem more stable also makes it more boring. If you have a handful of fat, immobile critters forever munching on a sea of plants and never reproducing, that makes for a very stable ecosystem. But no one wants to watch that."
+              ]
+            }
+          ],
+          "title": "Artificial stupidity"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Any serious ecosystem has a food chain longer than a single link. Write another critter that survives by eating the herbivore critter. You’ll notice that stability is even harder to achieve now that there are cycles at multiple levels. Try to find a strategy to make the ecosystem run smoothly for at least a little while."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "One thing that will help is to make the world bigger. This way, local population booms or busts are less likely to wipe out a species entirely, and there is space for the relatively large prey population needed to sustain a small predator population."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Many of the same tricks that worked for the previous exercise also apply here. Making the predators big (lots of energy) and having them reproduce slowly is recommended. That’ll make them less vulnerable to periods of starvation when the herbivores are scarce."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Beyond staying alive, keeping its food stock alive is a predator’s main objective. Find some way to make predators hunt more aggressively when there are a lot of herbivores and hunt more slowly (or not at all) when prey is rare. Since plant eaters move around, the simple trick of eating one only when others are nearby is unlikely to work—that’ll happen so rarely that your predator will starve. But you could keep track of observations in previous turns, in some data structure kept on the predator objects, and have it base its behavior on what it has seen recently."
+              ]
+            }
+          ],
+          "title": "Predators"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Project: Electronic Life"
+}

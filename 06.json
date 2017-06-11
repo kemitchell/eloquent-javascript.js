@@ -1,0 +1,2439 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Joe Armstrong interviewed in Coders at Work",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana and the entire jungle."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "When a programmer says “object”, this is a loaded term. In my profession, objects are a way of life, the subject of holy wars, and a beloved buzzword that still hasn’t quite lost its power."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "To an outsider, this is probably a little confusing. Let’s start with a brief history of objects as a programming construct."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "This story, like most programming stories, starts with the problem of complexity. One philosophy is that complexity can be made manageable by separating it into small compartments that are isolated from each other. These compartments have ended up with the name ",
+            {
+              "element": "em",
+              "content": [
+                "objects"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "An object is a hard shell that hides the gooey complexity inside it and instead offers us a few knobs and connectors (such as methods) that present an ",
+            {
+              "element": "em",
+              "content": [
+                "interface"
+              ]
+            },
+            " through which the object is to be used. The idea is that the interface is relatively simple and all the complex things going on ",
+            {
+              "element": "em",
+              "content": [
+                "inside"
+              ]
+            },
+            " the object can be ignored when working with it."
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/object.jpg"
+        },
+        {
+          "element": "p",
+          "content": [
+            "As an example, you can imagine an object that provides an interface to an area on your screen. It provides a way to draw shapes or text onto this area but hides all the details of how these shapes are converted to the actual pixels that make up the screen. You’d have a set of methods—for example, ",
+            {
+              "element": "literal",
+              "content": [
+                "drawCircle"
+              ]
+            },
+            "—and those are the only things you need to know in order to use such an object."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "These ideas were initially worked out in the 1970s and 1980s and, in the 1990s, were carried up by a huge wave of hype—the object-oriented programming revolution. Suddenly, there was a large tribe of people declaring that objects were the ",
+            {
+              "element": "em",
+              "content": [
+                "right"
+              ]
+            },
+            " way to program—and that anything that did not involve objects was outdated nonsense."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "That kind of zealotry always produces a lot of impractical silliness, and there has been a sort of counter-revolution since then. In some circles, objects have a rather bad reputation nowadays."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "I prefer to look at the issue from a practical, rather than ideological, angle. There are several useful concepts, most importantly that of ",
+            {
+              "element": "em",
+              "content": [
+                "encapsulation"
+              ]
+            },
+            " (distinguishing between internal complexity and external interface), that the object-oriented culture has popularized. These are worth studying."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This chapter describes JavaScript’s rather eccentric take on objects and the way they relate to some classical object-oriented techniques."
+          ]
+        }
+      ],
+      "title": "History"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Methods are simply properties that hold function values. This is a simple method:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Usually a method needs to do something with the object it was called on. When a function is called as a method—looked up as a property and immediately called, as in ",
+            {
+              "element": "literal",
+              "content": [
+                "object.method()"
+              ]
+            },
+            "—the special variable ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " in its body will point to the object that it was called on."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The code uses the ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " keyword to output the type of rabbit that is speaking. Recall that the ",
+            {
+              "element": "literal",
+              "content": [
+                "apply"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            " methods both take a first argument that can be used to simulate method calls. This first argument is in fact used to give a value to ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There is a method similar to ",
+            {
+              "element": "literal",
+              "content": [
+                "apply"
+              ]
+            },
+            ", called ",
+            {
+              "element": "literal",
+              "content": [
+                "call"
+              ]
+            },
+            ". It also calls the function it is a method of but takes its arguments normally, rather than as an array. Like ",
+            {
+              "element": "literal",
+              "content": [
+                "apply"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "bind"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "call"
+              ]
+            },
+            " can be passed a specific ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " value."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Methods"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Watch closely."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "I just pulled a property out of an empty object. Magic!"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Well, not really. I have simply been withholding information about the way JavaScript objects work. In addition to their set of properties, almost all objects also have a ",
+            {
+              "element": "em",
+              "content": [
+                "prototype"
+              ]
+            },
+            ". A prototype is another object that is used as a fallback source of properties. When an object gets a request for a property that it does not have, its prototype will be searched for the property, then the prototype’s prototype, and so on."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "So who is the prototype of that empty object? It is the great ancestral prototype, the entity behind almost all objects, ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "As you might expect, the ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.getPrototypeOf"
+              ]
+            },
+            " function returns the prototype of an object."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The prototype relations of JavaScript objects form a tree-shaped structure, and at the root of this structure sits ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            ". It provides a few methods that show up in all objects, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            ", which converts an object to a string representation."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Many objects don’t directly have ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            " as their prototype, but instead have another object, which provides its own default properties. Functions derive from ",
+            {
+              "element": "literal",
+              "content": [
+                "Function.prototype"
+              ]
+            },
+            ", and arrays derive from ",
+            {
+              "element": "literal",
+              "content": [
+                "Array.prototype"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Such a prototype object will itself have a prototype, often ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            ", so that it still indirectly provides methods like ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.getPrototypeOf"
+              ]
+            },
+            " function obviously returns the prototype of an object. You can use ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.create"
+              ]
+            },
+            " to create an object with a specific prototype."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The “proto” rabbit acts as a container for the properties that are shared by all rabbits. An individual rabbit object, like the killer rabbit, contains properties that apply only to itself—in this case its type—and derives shared properties from its prototype."
+          ]
+        }
+      ],
+      "title": "Prototypes"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " A more convenient way to create objects that derive from some shared prototype is to use a ",
+            {
+              "element": "em",
+              "content": [
+                "constructor"
+              ]
+            },
+            ". In JavaScript, calling a function with the ",
+            {
+              "element": "literal",
+              "content": [
+                "new"
+              ]
+            },
+            " keyword in front of it causes it to be treated as a constructor. The constructor will have its ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " variable bound to a fresh object, and unless it explicitly returns another object value, this new object will be returned from the call."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "An object created with ",
+            {
+              "element": "literal",
+              "content": [
+                "new"
+              ]
+            },
+            " is said to be an ",
+            {
+              "element": "em",
+              "content": [
+                "instance"
+              ]
+            },
+            " of its constructor."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Here is a simple constructor for rabbits. It is a convention to capitalize the names of constructors so that they are easily distinguished from other functions."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Constructors (in fact, all functions) automatically get a property named ",
+            {
+              "element": "literal",
+              "content": [
+                "prototype"
+              ]
+            },
+            ", which by default holds a plain, empty object that derives from ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            ". Every instance created with this constructor will have this object as its prototype. So to add a ",
+            {
+              "element": "literal",
+              "content": [
+                "speak"
+              ]
+            },
+            " method to rabbits created with the ",
+            {
+              "element": "literal",
+              "content": [
+                "Rabbit"
+              ]
+            },
+            " constructor, we can simply do this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is important to note the distinction between the way a prototype is associated with a constructor (through its ",
+            {
+              "element": "literal",
+              "content": [
+                "prototype"
+              ]
+            },
+            " property) and the way objects ",
+            {
+              "element": "em",
+              "content": [
+                "have"
+              ]
+            },
+            " a prototype (which can be retrieved with ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.getPrototypeOf"
+              ]
+            },
+            "). The actual prototype of a constructor is ",
+            {
+              "element": "literal",
+              "content": [
+                "Function.prototype"
+              ]
+            },
+            " since constructors are functions. Its ",
+            {
+              "element": "literal",
+              "content": [
+                "prototype"
+              ]
+            },
+            " ",
+            {
+              "element": "em",
+              "content": [
+                "property"
+              ]
+            },
+            " will be the prototype of instances created through it but is not its ",
+            {
+              "element": "em",
+              "content": [
+                "own"
+              ]
+            },
+            " prototype."
+          ]
+        }
+      ],
+      "title": "Constructors"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When you add a property to an object, whether it is present in the prototype or not, the property is added to the object ",
+            {
+              "element": "em",
+              "content": [
+                "itself"
+              ]
+            },
+            ", which will henceforth have it as its own property. If there ",
+            {
+              "element": "em",
+              "content": [
+                "is"
+              ]
+            },
+            " a property by the same name in the prototype, this property will no longer affect the object. The prototype itself is not changed."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The following diagram sketches the situation after this code has run. The ",
+            {
+              "element": "literal",
+              "content": [
+                "Rabbit"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "Object"
+              ]
+            },
+            " prototypes lie behind ",
+            {
+              "element": "literal",
+              "content": [
+                "killerRabbit"
+              ]
+            },
+            " as a kind of backdrop, where properties that are not found in the object itself can be looked up."
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/rabbits.svg"
+        },
+        {
+          "element": "p",
+          "content": [
+            "Overriding properties that exist in a prototype is often a useful thing to do. As the rabbit teeth example shows, it can be used to express exceptional properties in instances of a more generic class of objects, while letting the nonexceptional objects simply take a standard value from their prototype."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is also used to give the standard function and array prototypes a different ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " method than the basic object prototype."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Calling ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " on an array gives a result similar to calling ",
+            {
+              "element": "literal",
+              "content": [
+                ".join(\",\")"
+              ]
+            },
+            " on it—it puts commas between the values in the array. Directly calling ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype.toString"
+              ]
+            },
+            " with an array produces a different string. That function doesn’t know about arrays, so it simply puts the word “object” and the name of the type between square brackets."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Overriding derived properties"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " A prototype can be used at any time to add new properties and methods to all objects based on it. For example, it might become necessary for our rabbits to dance."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " That’s convenient. But there are situations where it causes problems. In previous chapters, we used an object as a way to associate values with names by creating properties for the names and giving them the corresponding value as their value. Here’s an example from ",
+            {
+              "element": "reference",
+              "content": "Chapter 4"
+            },
+            ":"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can iterate over all phi values in the object using a ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            "/",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " loop and test whether a name is in there using the regular ",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " operator. But unfortunately, the object’s prototype gets in the way."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " That’s all wrong. There is no event called “nonsense” in our data set. And there ",
+            {
+              "element": "em",
+              "content": [
+                "definitely"
+              ]
+            },
+            " is no event called “toString”."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Oddly, ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " did not show up in the ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            "/",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " loop, but the ",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " operator did return true for it. This is because JavaScript distinguishes between ",
+            {
+              "element": "em",
+              "content": [
+                "enumerable"
+              ]
+            },
+            " and ",
+            {
+              "element": "em",
+              "content": [
+                "nonenumerable"
+              ]
+            },
+            " properties."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "All properties that we create by simply assigning to them are enumerable. The standard properties in ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            " are all nonenumerable, which is why they do not show up in such a ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            "/",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " loop."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is possible to define our own nonenumerable properties by using the ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.defineProperty"
+              ]
+            },
+            " function, which allows us to control the type of property we are creating."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " So now the property is there, but it won’t show up in a loop. That’s good. But we still have the problem with the regular ",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " operator claiming that the ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            " properties exist in our object. For that, we can use the object’s ",
+            {
+              "element": "literal",
+              "content": [
+                "hasOwnProperty"
+              ]
+            },
+            " method."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " This method tells us whether the object ",
+            {
+              "element": "em",
+              "content": [
+                "itself"
+              ]
+            },
+            " has the property, without looking at its prototypes. This is often a more useful piece of information than what the ",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " operator gives us."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " When you are worried that someone (some other code you loaded into your program) might have messed with the base object prototype, I recommend you write your ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            "/",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " loops like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Prototype interference"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " But the rabbit hole doesn’t end there. What if someone registered the name ",
+            {
+              "element": "literal",
+              "content": [
+                "hasOwnProperty"
+              ]
+            },
+            " in our ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            " object and set it to the value 42? Now the call to ",
+            {
+              "element": "literal",
+              "content": [
+                "map.hasOwnProperty"
+              ]
+            },
+            " will try to call the local property, which holds a number, not a function."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " In such a case, prototypes just get in the way, and we would actually prefer to have objects without prototypes. We saw the ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.create"
+              ]
+            },
+            " function, which allows us to create an object with a specific prototype. You are allowed to pass ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " as the prototype to create a fresh object with no prototype. For objects like ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            ", where the properties could be anything, this is exactly what we want."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Much better! We no longer need the ",
+            {
+              "element": "literal",
+              "content": [
+                "hasOwnProperty"
+              ]
+            },
+            " kludge because all the properties the object has are its own properties. Now we can safely use ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            "/",
+            {
+              "element": "literal",
+              "content": [
+                "in"
+              ]
+            },
+            " loops, no matter what people have been doing to ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "Prototype-less objects"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When you call the ",
+            {
+              "element": "literal",
+              "content": [
+                "String"
+              ]
+            },
+            " function, which converts a value to a string, on an object, it will call the ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " method on that object to try to create a meaningful string to return. I mentioned that some of the standard prototypes define their own version of ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " so they can create a string that contains more useful information than ",
+            {
+              "element": "literal",
+              "content": [
+                "\"[object Object]\""
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is a simple instance of a powerful idea. When a piece of code is written to work with objects that have a certain interface—in this case, a ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " method—any kind of object that happens to support this interface can be plugged into the code, and it will just work."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This technique is called ",
+            {
+              "element": "em",
+              "content": [
+                "polymorphism"
+              ]
+            },
+            "—though no actual shape-shifting is involved. Polymorphic code can work with values of different shapes, as long as they support the interface it expects."
+          ]
+        }
+      ],
+      "title": "Polymorphism"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "I am going to work through a slightly more involved example in an attempt to give you a better idea what polymorphism, as well as object-oriented programming in general, looks like. The project is this: we will write a program that, given an array of arrays of table cells, builds up a string that contains a nicely laid out table—meaning that the columns are straight and the rows are aligned. Something like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The way our table-building system will work is that the builder function will ask each cell how wide and high it wants to be and then use this information to determine the width of the columns and the height of the rows. The builder function will then ask the cells to draw themselves at the correct size and assemble the results into a single string."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The layout program will communicate with the cell objects through a well-defined interface. That way, the types of cells that the program supports is not fixed in advance. We can add new cell styles later—for example, underlined cells for table headers—and if they support our interface, they will just work, without requiring changes to the layout program."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is the interface:"
+          ]
+        },
+        {
+          "element": "ul",
+          "content": [
+            {
+              "element": "item",
+              "content": [
+                {
+                  "element": "p",
+                  "content": [
+                    " ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "minHeight()"
+                      ]
+                    },
+                    " returns a number indicating the minimum height this  cell requires (in lines). "
+                  ]
+                }
+              ]
+            },
+            {
+              "element": "item",
+              "content": [
+                {
+                  "element": "p",
+                  "content": [
+                    " ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "minWidth()"
+                      ]
+                    },
+                    " returns a number indicating this cell’s minimum width (in  characters). "
+                  ]
+                }
+              ]
+            },
+            {
+              "element": "item",
+              "content": [
+                {
+                  "element": "p",
+                  "content": [
+                    " ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "draw(width, height)"
+                      ]
+                    },
+                    " returns an array of length  ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "height"
+                      ]
+                    },
+                    ", which contains a series of strings that are each ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "width"
+                      ]
+                    },
+                    " characters wide.  This represents the content of the cell. "
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " I’m going to make heavy use of higher-order array methods in this example since it lends itself well to that approach."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The first part of the program computes arrays of minimum column widths and row heights for a grid of cells. The ",
+            {
+              "element": "literal",
+              "content": [
+                "rows"
+              ]
+            },
+            " variable will hold an array of arrays, with each inner array representing a row of cells."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Using a variable name starting with an underscore (_) or consisting entirely of a single underscore is a way to indicate (to human readers) that this argument is not going to be used."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "rowHeights"
+              ]
+            },
+            " function shouldn’t be too hard to follow. It uses ",
+            {
+              "element": "literal",
+              "content": [
+                "reduce"
+              ]
+            },
+            " to compute the maximum height of an array of cells and wraps that in ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            " in order to do it for all rows in the ",
+            {
+              "element": "literal",
+              "content": [
+                "rows"
+              ]
+            },
+            " array."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Things are slightly harder for the ",
+            {
+              "element": "literal",
+              "content": [
+                "colWidths"
+              ]
+            },
+            " function because the outer array is an array of rows, not of columns. I have failed to mention so far that ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            " (as well as ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "filter"
+              ]
+            },
+            ", and similar array methods) passes a second argument to the function it is given: the index of the current element. By mapping over the elements of the first row and only using the mapping function’s second argument, ",
+            {
+              "element": "literal",
+              "content": [
+                "colWidths"
+              ]
+            },
+            " builds up an array with one element for every column index. The call to ",
+            {
+              "element": "literal",
+              "content": [
+                "reduce"
+              ]
+            },
+            " runs over the outer ",
+            {
+              "element": "literal",
+              "content": [
+                "rows"
+              ]
+            },
+            " array for each index and picks out the width of the widest cell at that index."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Here’s the code to draw a table:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "drawTable"
+              ]
+            },
+            " function uses the internal helper function ",
+            {
+              "element": "literal",
+              "content": [
+                "drawRow"
+              ]
+            },
+            " to draw all rows and then joins them together with newline characters."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "drawRow"
+              ]
+            },
+            " function itself first converts the cell objects in the row to ",
+            {
+              "element": "em",
+              "content": [
+                "blocks"
+              ]
+            },
+            ", which are arrays of strings representing the content of the cells, split by line. A single cell containing simply the number 3776 might be represented by a single-element array like ",
+            {
+              "element": "literal",
+              "content": [
+                "[\"3776\"]"
+              ]
+            },
+            ", whereas an underlined cell might take up two lines and be represented by the array ",
+            {
+              "element": "literal",
+              "content": [
+                "[\"name\", \"----\"]"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The blocks for a row, which all have the same height, should appear next to each other in the final output. The second call to ",
+            {
+              "element": "literal",
+              "content": [
+                "map"
+              ]
+            },
+            " in ",
+            {
+              "element": "literal",
+              "content": [
+                "drawRow"
+              ]
+            },
+            " builds up this output line by line by mapping over the lines in the leftmost block and, for each of those, collecting a line that spans the full width of the table. These lines are then joined with newline characters to provide the whole row as ",
+            {
+              "element": "literal",
+              "content": [
+                "drawRow"
+              ]
+            },
+            "’s return value."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The function ",
+            {
+              "element": "literal",
+              "content": [
+                "drawLine"
+              ]
+            },
+            " extracts lines that should appear next to each other from an array of blocks and joins them with a space character to create a one-character gap between the table’s columns."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Now let’s write a constructor for cells that contain text, which implements the interface for table cells. The constructor splits a string into an array of lines using the string method ",
+            {
+              "element": "literal",
+              "content": [
+                "split"
+              ]
+            },
+            ", which cuts up a string at every occurrence of its argument and returns an array of the pieces. The ",
+            {
+              "element": "literal",
+              "content": [
+                "minWidth"
+              ]
+            },
+            " method finds the maximum line width in this array."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The code uses a helper function called ",
+            {
+              "element": "literal",
+              "content": [
+                "repeat"
+              ]
+            },
+            ", which builds a string whose value is the ",
+            {
+              "element": "literal",
+              "content": [
+                "string"
+              ]
+            },
+            " argument repeated ",
+            {
+              "element": "literal",
+              "content": [
+                "times"
+              ]
+            },
+            " number of times. The ",
+            {
+              "element": "literal",
+              "content": [
+                "draw"
+              ]
+            },
+            " method uses it to add “padding” to lines so that they all have the required length."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Let’s try everything we’ve written so far by building up a 5 × 5 checkerboard."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "It works! But since all cells have the same size, the table-layout code doesn’t really do anything interesting."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The source data for the table of mountains that we are trying to build is available in the ",
+            {
+              "element": "literal",
+              "content": [
+                "MOUNTAINS"
+              ]
+            },
+            " variable in the sandbox and also ",
+            {
+              "element": "reference",
+              "content": "downloadable"
+            },
+            " from the website."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We will want to highlight the top row, which contains the column names, by underlining the cells with a series of dash characters. No problem—we simply write a cell type that handles underlining."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "An underlined cell ",
+            {
+              "element": "em",
+              "content": [
+                "contains"
+              ]
+            },
+            " another cell. It reports its minimum size as being the same as that of its inner cell (by calling through to that cell’s ",
+            {
+              "element": "literal",
+              "content": [
+                "minWidth"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "minHeight"
+              ]
+            },
+            " methods) but adds one to the height to account for the space taken up by the underline."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Drawing such a cell is quite simple—we take the content of the inner cell and concatenate a single line full of dashes to it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Having an underlining mechanism, we can now write a function that builds up a grid of cells from our data set."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The standard ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.keys"
+              ]
+            },
+            " function returns an array of property names in an object. The top row of the table must contain underlined cells that give the names of the columns. Below that, the values of all the objects in the data set appear as normal cells—we extract them by mapping over the ",
+            {
+              "element": "literal",
+              "content": [
+                "keys"
+              ]
+            },
+            " array so that we are sure that the order of the cells is the same in every row."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The resulting table resembles the example shown before, except that it does not right-align the numbers in the ",
+            {
+              "element": "literal",
+              "content": [
+                "height"
+              ]
+            },
+            " column. We will get to that in a moment."
+          ]
+        }
+      ],
+      "title": "Laying out a table"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When specifying an interface, it is possible to include properties that are not methods. We could have defined ",
+            {
+              "element": "literal",
+              "content": [
+                "minHeight"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "minWidth"
+              ]
+            },
+            " to simply hold numbers. But that’d have required us to compute them in the constructor, which adds code there that isn’t strictly relevant to ",
+            {
+              "element": "em",
+              "content": [
+                "constructing"
+              ]
+            },
+            " the object. It would cause problems if, for example, the inner cell of an underlined cell was changed, at which point the size of the underlined cell should also change."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This has led some people to adopt a principle of never including nonmethod properties in interfaces. Rather than directly access a simple value property, they’d use ",
+            {
+              "element": "literal",
+              "content": [
+                "getSomething"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "setSomething"
+              ]
+            },
+            " methods to read and write the property. This approach has the downside that you will end up writing—and reading—a lot of additional methods."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Fortunately, JavaScript provides a technique that gets us the best of both worlds. We can specify properties that, from the outside, look like normal properties but secretly have methods associated with them."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "In an object literal, the ",
+            {
+              "element": "literal",
+              "content": [
+                "get"
+              ]
+            },
+            " or ",
+            {
+              "element": "literal",
+              "content": [
+                "set"
+              ]
+            },
+            " notation for properties allows you to specify a function to be run when the property is read or written. You can also add such a property to an existing object, for example a prototype, using the ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.defineProperty"
+              ]
+            },
+            " function (which we previously used to create nonenumerable properties)."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "You can use a similar ",
+            {
+              "element": "literal",
+              "content": [
+                "set"
+              ]
+            },
+            " property, in the object passed to ",
+            {
+              "element": "literal",
+              "content": [
+                "defineProperty"
+              ]
+            },
+            ", to specify a setter method. When a getter but no setter is defined, writing to the property is simply ignored."
+          ]
+        }
+      ],
+      "title": "Getters and setters"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "We are not quite done yet with our table layout exercise. It helps readability to right-align columns of numbers. We should create another cell type that is like ",
+            {
+              "element": "literal",
+              "content": [
+                "TextCell"
+              ]
+            },
+            ", but rather than padding the lines on the right side, it pads them on the left side so that they align to the right."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We could simply write a whole new constructor with all three methods in its prototype. But prototypes may themselves have prototypes, and this allows us to do something clever."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We reuse the constructor and the ",
+            {
+              "element": "literal",
+              "content": [
+                "minHeight"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "minWidth"
+              ]
+            },
+            " methods from the regular ",
+            {
+              "element": "literal",
+              "content": [
+                "TextCell"
+              ]
+            },
+            ". An ",
+            {
+              "element": "literal",
+              "content": [
+                "RTextCell"
+              ]
+            },
+            " is now basically equivalent to a ",
+            {
+              "element": "literal",
+              "content": [
+                "TextCell"
+              ]
+            },
+            ", except that its ",
+            {
+              "element": "literal",
+              "content": [
+                "draw"
+              ]
+            },
+            " method contains a different function."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This pattern is called ",
+            {
+              "element": "em",
+              "content": [
+                "inheritance"
+              ]
+            },
+            ". It allows us to build slightly different data types from existing data types with relatively little work. Typically, the new constructor will call the old constructor (using the ",
+            {
+              "element": "literal",
+              "content": [
+                "call"
+              ]
+            },
+            " method in order to be able to give it the new object as its ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " value). Once this constructor has been called, we can assume that all the fields that the old object type is supposed to contain have been added. We arrange for the constructor’s prototype to derive from the old prototype so that instances of this type will also have access to the properties in that prototype. Finally, we can override some of these properties by adding them to our new prototype."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Now, if we slightly adjust the ",
+            {
+              "element": "literal",
+              "content": [
+                "dataTable"
+              ]
+            },
+            " function to use ",
+            {
+              "element": "literal",
+              "content": [
+                "RTextCell"
+              ]
+            },
+            "s for cells whose value is a number, we get the table we were aiming for."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Inheritance is a fundamental part of the object-oriented tradition, alongside encapsulation and polymorphism. But while the latter two are now generally regarded as wonderful ideas, inheritance is somewhat controversial."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The main reason for this is that it is often confused with polymorphism, sold as a more powerful tool than it really is, and subsequently overused in all kinds of ugly ways. Whereas encapsulation and polymorphism can be used to ",
+            {
+              "element": "em",
+              "content": [
+                "separate"
+              ]
+            },
+            " pieces of code from each other, reducing the tangledness of the overall program, inheritance fundamentally ties types together, creating ",
+            {
+              "element": "em",
+              "content": [
+                "more"
+              ]
+            },
+            " tangle."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "You can have polymorphism without inheritance, as we saw. I am not going to tell you to avoid inheritance entirely—I use it regularly in my own programs. But you should see it as a slightly dodgy trick that can help you define new types with little code, not as a grand principle of code organization. A preferable way to extend types is through composition, such as how ",
+            {
+              "element": "literal",
+              "content": [
+                "UnderlinedCell"
+              ]
+            },
+            " builds on another cell object by simply storing it in a property and forwarding method calls to it in its own methods."
+          ]
+        }
+      ],
+      "title": "Inheritance"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "It is occasionally useful to know whether an object was derived from a specific constructor. For this, JavaScript provides a binary operator called ",
+            {
+              "element": "literal",
+              "content": [
+                "instanceof"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The operator will see through inherited types. An ",
+            {
+              "element": "literal",
+              "content": [
+                "RTextCell"
+              ]
+            },
+            " is an instance of ",
+            {
+              "element": "literal",
+              "content": [
+                "TextCell"
+              ]
+            },
+            " because ",
+            {
+              "element": "literal",
+              "content": [
+                "RTextCell.prototype"
+              ]
+            },
+            " derives from ",
+            {
+              "element": "literal",
+              "content": [
+                "TextCell.prototype"
+              ]
+            },
+            ". The operator can be applied to standard constructors like ",
+            {
+              "element": "literal",
+              "content": [
+                "Array"
+              ]
+            },
+            ". Almost every object is an instance of ",
+            {
+              "element": "literal",
+              "content": [
+                "Object"
+              ]
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "The instanceof operator"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "So objects are more complicated than I initially portrayed them. They have prototypes, which are other objects, and will act as if they have properties they don’t have as long as the prototype has that property. Simple objects have ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.prototype"
+              ]
+            },
+            " as their prototype."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Constructors, which are functions whose names usually start with a capital letter, can be used with the ",
+            {
+              "element": "literal",
+              "content": [
+                "new"
+              ]
+            },
+            " operator to create new objects. The new object’s prototype will be the object found in the ",
+            {
+              "element": "literal",
+              "content": [
+                "prototype"
+              ]
+            },
+            " property of the constructor function. You can make good use of this by putting the properties that all values of a given type share into their prototype. The ",
+            {
+              "element": "literal",
+              "content": [
+                "instanceof"
+              ]
+            },
+            " operator can, given an object and a constructor, tell you whether that object is an instance of that constructor."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "One useful thing to do with objects is to specify an interface for them and tell everybody that they are supposed to talk to your object only through that interface. The rest of the details that make up your object are now ",
+            {
+              "element": "em",
+              "content": [
+                "encapsulated"
+              ]
+            },
+            ", hidden behind the interface."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Once you are talking in terms of interfaces, who says that only one kind of object may implement this interface? Having different objects expose the same interface and then writing code that works on any object with the interface is called ",
+            {
+              "element": "em",
+              "content": [
+                "polymorphism"
+              ]
+            },
+            ". It is very useful."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When implementing multiple types that differ in only some details, it can be helpful to simply make the prototype of your new type derive from the prototype of your old type and have your new constructor call the old one. This gives you an object type similar to the old type but for which you can add and override properties as you see fit."
+          ]
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Write a constructor ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Vector"
+                  ]
+                },
+                " that represents a vector in two-dimensional space. It takes ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "x"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "y"
+                  ]
+                },
+                " parameters (numbers), which it should save to properties of the same name."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Give the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Vector"
+                  ]
+                },
+                " prototype two methods, ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "plus"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "minus"
+                  ]
+                },
+                ", that take another vector as a parameter and return a new vector that has the sum or difference of the two vectors’ (the one in ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "this"
+                  ]
+                },
+                " and the parameter) ",
+                {
+                  "element": "em",
+                  "content": [
+                    "x"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "em",
+                  "content": [
+                    "y"
+                  ]
+                },
+                " values."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Add a getter property ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "length"
+                  ]
+                },
+                " to the prototype that computes the length of the vector—that is, the distance of the point (",
+                {
+                  "element": "em",
+                  "content": [
+                    "x"
+                  ]
+                },
+                ", ",
+                {
+                  "element": "em",
+                  "content": [
+                    "y"
+                  ]
+                },
+                ") from the origin (0, 0)."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Your solution can follow the pattern of the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Rabbit"
+                  ]
+                },
+                " constructor from this chapter quite closely."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Adding a getter property to the constructor can be done with the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Object.defineProperty"
+                  ]
+                },
+                " function. To compute the distance from (0, 0) to (x, y), you can use the Pythagorean theorem, which says that the square of the distance we are looking for is equal to the square of the x-coordinate plus the square of the y-coordinate. Thus, √(x",
+                {
+                  "element": "superscript",
+                  "content": [
+                    "2"
+                  ]
+                },
+                " + y",
+                {
+                  "element": "superscript",
+                  "content": [
+                    "2"
+                  ]
+                },
+                ") is the number you want, and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.sqrt"
+                  ]
+                },
+                " is the way you compute a square root in JavaScript."
+              ]
+            }
+          ],
+          "title": "A vector type"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Implement a cell type named ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "StretchCell(inner, width, height)"
+                  ]
+                },
+                " that conforms to the ",
+                {
+                  "element": "reference",
+                  "content": "table cell interface"
+                },
+                " described earlier in the chapter. It should wrap another cell (like ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "UnderlinedCell"
+                  ]
+                },
+                " does) and ensure that the resulting cell has at least the given ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "width"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "height"
+                  ]
+                },
+                ", even if the inner cell would naturally be smaller."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You’ll have to store all three constructor arguments in the instance object. The ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "minWidth"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "minHeight"
+                  ]
+                },
+                " methods should call through to the corresponding methods in the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "inner"
+                  ]
+                },
+                " cell but ensure that no number less than the given size is returned (possibly using ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.max"
+                  ]
+                },
+                ")."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Don’t forget to add a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "draw"
+                  ]
+                },
+                " method that simply forwards the call to the inner cell."
+              ]
+            }
+          ],
+          "title": "Another cell"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Design an ",
+                {
+                  "element": "em",
+                  "content": [
+                    "interface"
+                  ]
+                },
+                " that abstracts iteration over a collection of values. An object that provides this interface represents a sequence, and the interface must somehow make it possible for code that uses such an object to iterate over the sequence, looking at the element values it is made up of and having some way to find out when the end of the sequence is reached."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "When you have specified your interface, try to write a function ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "logFive"
+                  ]
+                },
+                " that takes a sequence object and calls ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "console.log"
+                  ]
+                },
+                " on its first five elements—or fewer, if the sequence has fewer than five elements."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Then implement an object type ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "ArraySeq"
+                  ]
+                },
+                " that wraps an array and allows iteration over the array using the interface you designed. Implement another object type ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "RangeSeq"
+                  ]
+                },
+                " that iterates over a range of integers (taking ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "from"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "to"
+                  ]
+                },
+                " arguments to its constructor) instead."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "One way to solve this is to give the sequence objects ",
+                {
+                  "element": "em",
+                  "content": [
+                    "state"
+                  ]
+                },
+                ", meaning their properties are changed in the process of using them. You could store a counter that indicates how far the sequence object has advanced."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Your interface will need to expose at least a way to get the next element and to find out whether the iteration has reached the end of the sequence yet. It is tempting to roll these into one method, ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "next"
+                  ]
+                },
+                ", which returns ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "null"
+                  ]
+                },
+                " or ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "undefined"
+                  ]
+                },
+                " when the sequence is at its end. But now you have a problem when a sequence actually contains ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "null"
+                  ]
+                },
+                ". So a separate method (or getter property) to find out whether the end has been reached is probably preferable."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Another solution is to avoid changing state in the object. You can expose a method for getting the current element (without advancing any counter) and another for getting a new sequence that represents the remaining elements after the current one (or a special value if the end of the sequence is reached). This is quite elegant—a sequence value will “stay itself” even after it is used and can thus be shared with other code without worrying about what might happen to it. It is, unfortunately, also somewhat inefficient in a language like JavaScript because it involves creating a lot of objects during iteration."
+              ]
+            }
+          ],
+          "title": "Sequence interface"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "The Secret Life of Objects"
+}

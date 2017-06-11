@@ -1,0 +1,1444 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Hal Abelson and Gerald Sussman Structure and Interpretation of Computer Programs",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The evaluator, which determines the meaning of expressions in a programming language, is just another program."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Building your own programming language is surprisingly easy (as long as you do not aim too high) and very enlightening."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "The main thing I want to show in this chapter is that there is no magic involved in building your own language. I’ve often felt that some human inventions were so immensely clever and complicated that I’d never be able to understand them. But with a little reading and tinkering, such things often turn out to be quite mundane."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "We will build a programming language called Egg. It will be a tiny, simple language but one that is powerful enough to express any computation you can think of. It will also allow simple abstraction based on functions."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The most immediately visible part of a programming language is its ",
+            {
+              "element": "em",
+              "content": [
+                "syntax"
+              ]
+            },
+            ", or notation. A ",
+            {
+              "element": "em",
+              "content": [
+                "parser"
+              ]
+            },
+            " is a program that reads a piece of text and produces a data structure that reflects the structure of the program contained in that text. If the text does not form a valid program, the parser should complain and point out the error."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Our language will have a simple and uniform syntax. Everything in Egg is an expression. An expression can be a variable, a number, a string, or an ",
+            {
+              "element": "em",
+              "content": [
+                "application"
+              ]
+            },
+            ". Applications are used for function calls but also for constructs such as ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " or ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " To keep the parser simple, strings in Egg do not support anything like backslash escapes. A string is simply a sequence of characters that are not double quotes, wrapped in double quotes. A number is a sequence of digits. Variable names can consist of any character that is not whitespace and does not have a special meaning in the syntax."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Applications are written the way they are in JavaScript, by putting parentheses after an expression and having any number of arguments between those parentheses, separated by commas."
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "do(define(x, 10),\n   if(>(x, 5),\n      print(\"large\"),\n      print(\"small\")))"
+        },
+        {
+          "element": "p",
+          "content": [
+            "The uniformity of the Egg language means that things that are operators in JavaScript (such as ",
+            {
+              "element": "literal",
+              "content": [
+                ">"
+              ]
+            },
+            ") are normal variables in this language, applied just like other functions. And since the syntax has no concept of a block, we need a ",
+            {
+              "element": "literal",
+              "content": [
+                "do"
+              ]
+            },
+            " construct to represent doing multiple things in sequence."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The data structure that the parser will use to describe a program will consist of expression objects, each of which has a ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " property indicating the kind of expression it is and other properties to describe its content."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Expressions of type ",
+            {
+              "element": "literal",
+              "content": [
+                "\"value\""
+              ]
+            },
+            " represent literal strings or numbers. Their ",
+            {
+              "element": "literal",
+              "content": [
+                "value"
+              ]
+            },
+            " property contains the string or number value that they represent. Expressions of type ",
+            {
+              "element": "literal",
+              "content": [
+                "\"word\""
+              ]
+            },
+            " are used for identifiers (names). Such objects have a ",
+            {
+              "element": "literal",
+              "content": [
+                "name"
+              ]
+            },
+            " property that holds the identifier’s name as a string. Finally, ",
+            {
+              "element": "literal",
+              "content": [
+                "\"apply\""
+              ]
+            },
+            " expressions represent applications. They have an ",
+            {
+              "element": "literal",
+              "content": [
+                "operator"
+              ]
+            },
+            " property that refers to the expression that is being applied, and they have an ",
+            {
+              "element": "literal",
+              "content": [
+                "args"
+              ]
+            },
+            " property that refers to an array of argument expressions."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                ">",
+                "(x, 5)"
+              ]
+            },
+            " part of the previous program would be represented like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Such a data structure is called a ",
+            {
+              "element": "em",
+              "content": [
+                "syntax tree"
+              ]
+            },
+            ". If you imagine the objects as dots and the links between them as lines between those dots, it has a treelike shape. The fact that expressions contain other expressions, which in turn might contain more expressions, is similar to the way branches split and split again."
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/syntax_tree.svg"
+        },
+        {
+          "element": "p",
+          "content": [
+            "Contrast this to the parser we wrote for the configuration file format in ",
+            {
+              "element": "reference",
+              "content": "Chapter 9"
+            },
+            ", which had a simple structure: it split the input into lines and handled those lines one at a time. There were only a few simple forms that a line was allowed to have."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Here we must find a different approach. Expressions are not separated into lines, and they have a recursive structure. Application expressions ",
+            {
+              "element": "em",
+              "content": [
+                "contain"
+              ]
+            },
+            " other expressions."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Fortunately, this problem can be solved elegantly by writing a parser function that is recursive in a way that reflects the recursive nature of the language."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We define a function ",
+            {
+              "element": "literal",
+              "content": [
+                "parseExpression"
+              ]
+            },
+            ", which takes a string as input and returns an object containing the data structure for the expression at the start of the string, along with the part of the string left after parsing this expression. When parsing subexpressions (the argument to an application, for example), this function can be called again, yielding the argument expression as well as the text that remains. This text may in turn contain more arguments or may be the closing parenthesis that ends the list of arguments."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is the first part of the parser:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Because Egg allows any amount of whitespace between its elements, we have to repeatedly cut the whitespace off the start of the program string. This is what the ",
+            {
+              "element": "literal",
+              "content": [
+                "skipSpace"
+              ]
+            },
+            " function helps with."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "After skipping any leading space, ",
+            {
+              "element": "literal",
+              "content": [
+                "parseExpression"
+              ]
+            },
+            " uses three regular expressions to spot the three simple (atomic) elements that Egg supports: strings, numbers, and words. The parser constructs a different kind of data structure depending on which one matches. If the input does not match one of these three forms, it is not a valid expression, and the parser throws an error. ",
+            {
+              "element": "literal",
+              "content": [
+                "SyntaxError"
+              ]
+            },
+            " is a standard error object type, which is raised when an attempt is made to run an invalid JavaScript program."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can then cut off the part that we matched from the program string and pass that, along with the object for the expression, to ",
+            {
+              "element": "literal",
+              "content": [
+                "parseApply"
+              ]
+            },
+            ", which checks whether the expression is an application. If so, it parses a parenthesized list of arguments."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "If the next character in the program is not an opening parenthesis, this is not an application, and ",
+            {
+              "element": "literal",
+              "content": [
+                "parseApply"
+              ]
+            },
+            " simply returns the expression it was given."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Otherwise, it skips the opening parenthesis and creates the syntax tree object for this application expression. It then recursively calls ",
+            {
+              "element": "literal",
+              "content": [
+                "parseExpression"
+              ]
+            },
+            " to parse each argument until a closing parenthesis is found. The recursion is indirect, through ",
+            {
+              "element": "literal",
+              "content": [
+                "parseApply"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "parseExpression"
+              ]
+            },
+            " calling each other."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Because an application expression can itself be applied (such as in ",
+            {
+              "element": "literal",
+              "content": [
+                "multiplier(2)(1)"
+              ]
+            },
+            "), ",
+            {
+              "element": "literal",
+              "content": [
+                "parseApply"
+              ]
+            },
+            " must, after it has parsed an application, call itself again to check whether another pair of parentheses follows."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is all we need to parse Egg. We wrap it in a convenient ",
+            {
+              "element": "literal",
+              "content": [
+                "parse"
+              ]
+            },
+            " function that verifies that it has reached the end of the input string after parsing the expression (an Egg program is a single expression), and that gives us the program’s data structure."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "It works! It doesn’t give us very helpful information when it fails and doesn’t store the line and column on which each expression starts, which might be helpful when reporting errors later, but it’s good enough for our purposes."
+          ]
+        }
+      ],
+      "title": "Parsing"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "What can we do with the syntax tree for a program? Run it, of course! And that is what the evaluator does. You give it a syntax tree and an environment object that associates names with values, and it will evaluate the expression that the tree represents and return the value that this produces."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The evaluator has code for each of the expression types. A literal value expression simply produces its value. (For example, the expression ",
+            {
+              "element": "literal",
+              "content": [
+                "100"
+              ]
+            },
+            " just evaluates to the number 100.) For a variable, we must check whether it is actually defined in the environment and, if it is, fetch the variable’s value."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Applications are more involved. If they are a special form, like ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            ", we do not evaluate anything and simply pass the argument expressions, along with the environment, to the function that handles this form. If it is a normal call, we evaluate the operator, verify that it is a function, and call it with the result of evaluating the arguments."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We will use plain JavaScript function values to represent Egg’s function values. We will come back to this ",
+            {
+              "element": "reference",
+              "content": "later"
+            },
+            ", when the special form called ",
+            {
+              "element": "literal",
+              "content": [
+                "fun"
+              ]
+            },
+            " is defined."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The recursive structure of ",
+            {
+              "element": "literal",
+              "content": [
+                "evaluate"
+              ]
+            },
+            " resembles the similar structure of the parser. Both mirror the structure of the language itself. It would also be possible to integrate the parser with the evaluator and evaluate during parsing, but splitting them up this way makes the program more readable."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is really all that is needed to interpret Egg. It is that simple. But without defining a few special forms and adding some useful values to the environment, you can’t do anything with this language yet."
+          ]
+        }
+      ],
+      "title": "The evaluator"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "specialForms"
+              ]
+            },
+            " object is used to define special syntax in Egg. It associates words with functions that evaluate such special forms. It is currently empty. Let’s add some forms."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Egg’s ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " construct expects exactly three arguments. It will evaluate the first, and if the result isn’t the value ",
+            {
+              "element": "literal",
+              "content": [
+                "false"
+              ]
+            },
+            ", it will evaluate the second. Otherwise, the third gets evaluated. This ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " form is more similar to JavaScript’s ternary ",
+            {
+              "element": "literal",
+              "content": [
+                "?:"
+              ]
+            },
+            " operator than to JavaScript’s ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            ". It is an expression, not a statement, and it produces a value, namely, the result of the second or third argument."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Egg differs from JavaScript in how it handles the condition value to ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            ". It will not treat things like zero or the empty string as false, but only the precise value ",
+            {
+              "element": "literal",
+              "content": [
+                "false"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The reason we need to represent ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " as a special form, rather than a regular function, is that all arguments to functions are evaluated before the function is called, whereas ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " should evaluate only ",
+            {
+              "element": "em",
+              "content": [
+                "either"
+              ]
+            },
+            " its second or its third argument, depending on the value of the first."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            " form is similar."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Another basic building block is ",
+            {
+              "element": "literal",
+              "content": [
+                "do"
+              ]
+            },
+            ", which executes all its arguments from top to bottom. Its value is the value produced by the last argument."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "To be able to create variables and give them new values, we also create a form called ",
+            {
+              "element": "literal",
+              "content": [
+                "define"
+              ]
+            },
+            ". It expects a word as its first argument and an expression producing the value to assign to that word as its second argument. Since ",
+            {
+              "element": "literal",
+              "content": [
+                "define"
+              ]
+            },
+            ", like everything, is an expression, it must return a value. We’ll make it return the value that was assigned (just like JavaScript’s ",
+            {
+              "element": "literal",
+              "content": [
+                "="
+              ]
+            },
+            " operator)."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Special forms"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The environment accepted by ",
+            {
+              "element": "literal",
+              "content": [
+                "evaluate"
+              ]
+            },
+            " is an object with properties whose names correspond to variable names and whose values correspond to the values those variables are bound to. Let’s define an environment object to represent the global scope."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To be able to use the ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " construct we just defined, we must have access to Boolean values. Since there are only two Boolean values, we do not need special syntax for them. We simply bind two variables to the values ",
+            {
+              "element": "literal",
+              "content": [
+                "true"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "false"
+              ]
+            },
+            " and use those."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can now evaluate a simple expression that negates a Boolean value."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "To supply basic arithmetic and comparison operators, we will also add some function values to the environment. In the interest of keeping the code short, we’ll use ",
+            {
+              "element": "literal",
+              "content": [
+                "new Function"
+              ]
+            },
+            " to synthesize a bunch of operator functions in a loop, rather than defining them all individually."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A way to output values is also very useful, so we’ll wrap ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " in a function and call it ",
+            {
+              "element": "literal",
+              "content": [
+                "print"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "That gives us enough elementary tools to write simple programs. The following ",
+            {
+              "element": "literal",
+              "content": [
+                "run"
+              ]
+            },
+            " function provides a convenient way to write and run them. It creates a fresh environment and parses and evaluates the strings we give it as a single program."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The use of ",
+            {
+              "element": "literal",
+              "content": [
+                "Array.prototype.slice.call"
+              ]
+            },
+            " is a trick to turn an array-like object, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "arguments"
+              ]
+            },
+            ", into a real array so that we can call ",
+            {
+              "element": "literal",
+              "content": [
+                "join"
+              ]
+            },
+            " on it. It takes all the arguments given to ",
+            {
+              "element": "literal",
+              "content": [
+                "run"
+              ]
+            },
+            " and treats them as the lines of a program."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is the program we’ve seen several times before, which computes the sum of the numbers 1 to 10, expressed in Egg. It is clearly uglier than the equivalent JavaScript program but not bad for a language implemented in less than 150 lines of code."
+          ]
+        }
+      ],
+      "title": "The environment"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "A programming language without functions is a poor programming language indeed."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Fortunately, it is not hard to add a ",
+            {
+              "element": "literal",
+              "content": [
+                "fun"
+              ]
+            },
+            " construct, which treats its last argument as the function’s body and treats all the arguments before that as the names of the function’s arguments."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Functions in Egg have their own local environment, just like in JavaScript. We use ",
+            {
+              "element": "literal",
+              "content": [
+                "Object.create"
+              ]
+            },
+            " to make a new object that has access to the variables in the outer environment (its prototype) but that can also contain new variables without modifying that outer scope."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The function created by the ",
+            {
+              "element": "literal",
+              "content": [
+                "fun"
+              ]
+            },
+            " form creates this local environment and adds the argument variables to it. It then evaluates the function body in this environment and returns the result."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Functions"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "What we have built is an interpreter. During evaluation, it acts directly on the representation of the program produced by the parser."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            {
+              "element": "em",
+              "content": [
+                "Compilation"
+              ]
+            },
+            " is the process of adding another step between the parsing and the running of a program, which transforms the program into something that can be evaluated more efficiently by doing as much work as possible in advance. For example, in well-designed languages it is obvious, for each use of a variable, which variable is being referred to, without actually running the program. This can be used to avoid looking up the variable by name every time it is accessed and to directly fetch it from some predetermined memory location."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Traditionally, compilation involves converting the program to machine code, the raw format that a computer’s processor can execute. But any process that converts a program to a different representation can be thought of as compilation."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It would be possible to write an alternative evaluation strategy for Egg, one that first converts the program to a JavaScript program, uses ",
+            {
+              "element": "literal",
+              "content": [
+                "new",
+                " ",
+                "Function"
+              ]
+            },
+            " to invoke the JavaScript compiler on it, and then runs the result. When done right, this would make Egg run very fast while still being quite simple to implement."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If you are interested in this topic and willing to spend some time on it, I encourage you to try to implement such a compiler as an exercise."
+          ]
+        }
+      ],
+      "title": "Compilation"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When we defined ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            ", you probably noticed that they were more or less trivial wrappers around JavaScript’s own ",
+            {
+              "element": "literal",
+              "content": [
+                "if"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            ". Similarly, the values in Egg are just regular old JavaScript values."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If you compare the implementation of Egg, built on top of JavaScript, with the amount of work and complexity required to build a programming language directly on the raw functionality provided by a machine, the difference is huge. Regardless, this example hopefully gave you an impression of the way programming languages work."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "And when it comes to getting something done, cheating is more effective than doing everything yourself. Though the toy language in this chapter doesn’t do anything that couldn’t be done better in JavaScript, there ",
+            {
+              "element": "em",
+              "content": [
+                "are"
+              ]
+            },
+            " situations where writing small languages helps get real work done."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Such a language does not have to resemble a typical programming language. If JavaScript didn’t come equipped with regular expressions, you could write your own parser and evaluator for such a sublanguage."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Or imagine you are building a giant robotic dinosaur and need to program its behavior. JavaScript might not be the most effective way to do this. You might instead opt for a language that looks like this:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "behavior walk\n  perform when\n    destination ahead\n  actions\n    move left-foot\n    move right-foot\n\nbehavior attack\n  perform when\n    Godzilla in-view\n  actions\n    fire laser-eyes\n    launch arm-rockets"
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is what is usually called a ",
+            {
+              "element": "em",
+              "content": [
+                "domain-specific language"
+              ]
+            },
+            ", a language tailored to express a narrow domain of knowledge. Such a language can be more expressive than a general-purpose language because it is designed to express exactly the things that need expressing in its domain and nothing else."
+          ]
+        }
+      ],
+      "title": "Cheating"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Add support for arrays to Egg by adding the following three functions to the top scope: ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "array(...)"
+                  ]
+                },
+                " to construct an array containing the argument values, ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "length(array)"
+                  ]
+                },
+                " to get an array’s length, and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "element(array, n)"
+                  ]
+                },
+                " to fetch the n",
+                {
+                  "element": "superscript",
+                  "content": [
+                    "th"
+                  ]
+                },
+                " element from an array."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The easiest way to do this is to represent Egg arrays with JavaScript arrays."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The values added to the top environment must be functions. ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Array.prototype.slice"
+                  ]
+                },
+                " can be used to convert an ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "arguments"
+                  ]
+                },
+                " array-like object into a regular array."
+              ]
+            }
+          ],
+          "title": "Arrays"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                " The way we have defined ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "fun"
+                  ]
+                },
+                " allows functions in Egg to “close over” the surrounding environment, allowing the function’s body to use local values that were visible at the time the function was defined, just like JavaScript functions do."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The following program illustrates this: function ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "f"
+                  ]
+                },
+                " returns a function that adds its argument to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "f"
+                  ]
+                },
+                "'s argument, meaning that it needs access to the local scope inside ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "f"
+                  ]
+                },
+                " to be able to use variable ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "a"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "element": "listing",
+              "numbered": false,
+              "content": []
+            },
+            {
+              "element": "p",
+              "content": [
+                "Go back to the definition of the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "fun"
+                  ]
+                },
+                " form and explain which mechanism causes this to work."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Again, we are riding along on a JavaScript mechanism to get the equivalent feature in Egg. Special forms are passed the local environment in which they are evaluated so that they can evaluate their subforms in that environment. The function returned by ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "fun"
+                  ]
+                },
+                " closes over the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "env"
+                  ]
+                },
+                " argument given to its enclosing function and uses that to create the function’s local environment when it is called."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "This means that the prototype of the local environment will be the environment in which the function was created, which makes it possible to access variables in that environment from the function. This is all there is to implementing closure (though to compile it in a way that is actually efficient, you’d need to do some more work)."
+              ]
+            }
+          ],
+          "title": "Closure"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "It would be nice if we could write comments in Egg. For example, whenever we find a hash sign (",
+                {
+                  "element": "literal",
+                  "content": [
+                    "#"
+                  ]
+                },
+                "), we could treat the rest of the line as a comment and ignore it, similar to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "//"
+                  ]
+                },
+                " in JavaScript."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "We do not have to make any big changes to the parser to support this. We can simply change ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "skipSpace"
+                  ]
+                },
+                " to skip comments like they are whitespace so that all the points where ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "skipSpace"
+                  ]
+                },
+                " is called will now also skip comments. Make this change."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Make sure your solution handles multiple comments in a row, with potentially whitespace between or after them."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "A regular expression is probably the easiest way to solve this. Write something that matches “whitespace or a comment, zero or more times”. Use the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "exec"
+                  ]
+                },
+                " or ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "match"
+                  ]
+                },
+                " method and look at the length of the first element in the returned array (the whole match) to find out how many characters to slice off."
+              ]
+            }
+          ],
+          "title": "Comments"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                " Currently, the only way to assign a variable a value is ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "define"
+                  ]
+                },
+                ". This construct acts as a way both to define new variables and to give existing ones a new value."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "This ambiguity causes a problem. When you try to give a nonlocal variable a new value, you will end up defining a local one with the same name instead. (Some languages work like this by design, but I’ve always found it a silly way to handle scope.)"
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Add a special form ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "set"
+                  ]
+                },
+                ", similar to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "define"
+                  ]
+                },
+                ", which gives a variable a new value, updating the variable in an outer scope if it doesn’t already exist in the inner scope. If the variable is not defined at all, throw a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "ReferenceError"
+                  ]
+                },
+                " (which is another standard error type)."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The technique of representing scopes as simple objects, which has made things convenient so far, will get in your way a little at this point. You might want to use the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Object.getPrototypeOf"
+                  ]
+                },
+                " function, which returns the prototype of an object. Also remember that scopes do not derive from ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Object.prototype"
+                  ]
+                },
+                ", so if you want to call ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "hasOwnProperty"
+                  ]
+                },
+                " on them, you have to use this clumsy expression:"
+              ]
+            },
+            {
+              "element": "listing",
+              "numbered": false,
+              "content": []
+            },
+            {
+              "element": "p",
+              "content": [
+                "This fetches the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "hasOwnProperty"
+                  ]
+                },
+                " method from the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Object"
+                  ]
+                },
+                " prototype and then calls it on a scope object."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " You will have to loop through one scope at a time, using ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Object.getPrototypeOf"
+                  ]
+                },
+                " to go the next outer scope. For each scope, use ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "hasOwnProperty"
+                  ]
+                },
+                " to find out whether the variable, indicated by the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "name"
+                  ]
+                },
+                " property of the first argument to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "set"
+                  ]
+                },
+                ", exists in that scope. If it does, set it to the result of evaluating the second argument to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "set"
+                  ]
+                },
+                " and then return that value."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "If the outermost scope is reached (",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Object.getPrototypeOf"
+                  ]
+                },
+                " returns null) and we haven’t found the variable yet, it doesn’t exist, and an error should be thrown."
+              ]
+            }
+          ],
+          "title": "Fixing scope"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Project: A Programming Language"
+}

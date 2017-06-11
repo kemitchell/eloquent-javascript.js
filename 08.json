@@ -1,0 +1,1652 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Brian Kernighan and P.J. Plauger The Elements of Programming Style",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "A program is crystallized thought. Sometimes those thoughts are confused. Other times, mistakes are introduced when converting thought into code. Either way, the result is a flawed program."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Flaws in a program are usually called bugs. Bugs can be programmer errors or problems in other systems that the program interacts with. Some bugs are immediately apparent, while others are subtle and might remain hidden in a system for years."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Often, problems surface only when a program encounters a situation that the programmer didn’t originally consider. Sometimes such situations are unavoidable. When the user is asked to input their age and types ",
+        {
+          "element": "em",
+          "content": [
+            "orange"
+          ]
+        },
+        ", this puts our program in a difficult position. The situation has to be anticipated and handled somehow."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When it comes to programmer mistakes, our aim is simple. We want to find them and fix them. Such mistakes can range from simple typos that cause the computer to complain as soon as it lays eyes on our program to subtle mistakes in our understanding of the way the program operates, causing incorrect outcomes only in specific situations. Bugs of the latter type can take weeks to diagnose."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The degree to which languages help you find such mistakes varies. Unsurprisingly, JavaScript is at the “hardly helps at all” end of that scale. Some languages want to know the types of all your variables and expressions before even running a program and will tell you right away when a type is used in an inconsistent way. JavaScript considers types only when actually running the program, and even then, it allows you to do some clearly nonsensical things without complaint, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "x = true * \"monkey\""
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There are some things that JavaScript does complain about, though. Writing a program that is not syntactically valid will immediately trigger an error. Other things, such as calling something that’s not a function or looking up a property on an undefined value, will cause an error to be reported when the program is running and encounters the nonsensical action."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "But often, your nonsense computation will simply produce a ",
+            {
+              "element": "literal",
+              "content": [
+                "NaN"
+              ]
+            },
+            " (not a number) or undefined value. And the program happily continues, convinced that it’s doing something meaningful. The mistake will manifest itself only later, after the bogus value has traveled through several functions. It might not trigger an error at all but silently cause the program’s output to be wrong. Finding the source of such problems can be difficult."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The process of finding mistakes—bugs—in programs is called ",
+            {
+              "element": "em",
+              "content": [
+                "debugging"
+              ]
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "Programmer mistakes"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "JavaScript can be made a ",
+            {
+              "element": "em",
+              "content": [
+                "little"
+              ]
+            },
+            " more strict by enabling ",
+            {
+              "element": "em",
+              "content": [
+                "strict mode"
+              ]
+            },
+            ". This is done by putting the string ",
+            {
+              "element": "literal",
+              "content": [
+                "\"use strict\""
+              ]
+            },
+            " at the top of a file or a function body. Here’s an example:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " Normally, when you forget to put ",
+            {
+              "element": "literal",
+              "content": [
+                "var"
+              ]
+            },
+            " in front of your variable, as with ",
+            {
+              "element": "literal",
+              "content": [
+                "counter"
+              ]
+            },
+            " in the example, JavaScript quietly creates a global variable and uses that. In strict mode, however, an error is reported instead. This is very helpful. It should be noted, though, that this doesn’t work when the variable in question already exists as a global variable, but only when assigning to it would have created it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Another change in strict mode is that the ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " binding holds the value ",
+            {
+              "element": "literal",
+              "content": [
+                "undefined"
+              ]
+            },
+            " in functions that are not called as methods. When making such a call outside of strict mode, ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " refers to the global scope object. So if you accidentally call a method or constructor incorrectly in strict mode, JavaScript will produce an error as soon as it tries to read something from ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            ", rather than happily working with the global object, creating and reading global variables."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For example, consider the following code, which calls a constructor without the ",
+            {
+              "element": "literal",
+              "content": [
+                "new"
+              ]
+            },
+            " keyword so that its ",
+            {
+              "element": "literal",
+              "content": [
+                "this"
+              ]
+            },
+            " will ",
+            {
+              "element": "em",
+              "content": [
+                "not"
+              ]
+            },
+            " refer to a newly constructed object:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "So the bogus call to ",
+            {
+              "element": "literal",
+              "content": [
+                "Person"
+              ]
+            },
+            " succeeded but returned an undefined value and created the global variable ",
+            {
+              "element": "literal",
+              "content": [
+                "name"
+              ]
+            },
+            ". In strict mode, the result is different."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We are immediately told that something is wrong. This is helpful."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Strict mode does a few more things. It disallows giving a function multiple parameters with the same name and removes certain problematic language features entirely (such as the ",
+            {
+              "element": "literal",
+              "content": [
+                "with"
+              ]
+            },
+            " statement, which is so misguided it is not further discussed in this book)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In short, putting a ",
+            {
+              "element": "literal",
+              "content": [
+                "\"use strict\""
+              ]
+            },
+            " at the top of your program rarely hurts and might help you spot a problem."
+          ]
+        }
+      ],
+      "title": "Strict mode"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "If the language is not going to do much to help us find mistakes, we’ll have to find them the hard way: by running the program and seeing whether it does the right thing."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Doing this by hand, again and again, is a sure way to drive yourself insane. Fortunately, it is often possible to write a second program that automates testing your actual program."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "As an example, we once again use the ",
+            {
+              "element": "literal",
+              "content": [
+                "Vector"
+              ]
+            },
+            " type."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We will write a program to check that our implementation of ",
+            {
+              "element": "literal",
+              "content": [
+                "Vector"
+              ]
+            },
+            " works as intended. Then, every time we change the implementation, we follow up by running the test program so that we can be reasonably confident that we didn’t break anything. When we add extra functionality (for example, a new method) to the ",
+            {
+              "element": "literal",
+              "content": [
+                "Vector"
+              ]
+            },
+            " type, we also add tests for the new feature."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Writing tests like this tends to produce rather repetitive, awkward code. Fortunately, there exist pieces of software that help you build and run collections of tests (",
+            {
+              "element": "em",
+              "content": [
+                "test suites"
+              ]
+            },
+            ") by providing a language (in the form of functions and methods) suited to expressing tests and by outputting informative information when a test fails. These are called ",
+            {
+              "element": "em",
+              "content": [
+                "testing frameworks"
+              ]
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "Testing"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Once you notice that there is something wrong with your program because it misbehaves or produces errors, the next step is to figure out ",
+            {
+              "element": "em",
+              "content": [
+                "what"
+              ]
+            },
+            " the problem is."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Sometimes it is obvious. The error message will point at a specific line of your program, and if you look at the error description and that line of code, you can often see the problem."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "But not always. Sometimes the line that triggered the problem is simply the first place where a bogus value produced elsewhere gets used in an invalid way. And sometimes there is no error message at all—just an invalid result. If you have been solving the exercises in the earlier chapters, you will probably have already experienced such situations."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following example program tries to convert a whole number to a string in any base (decimal, binary, and so on) by repeatedly picking out the last digit and then dividing the number to get rid of this digit. But the insane output that it currently produces suggests that it has a bug."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Even if you see the problem already, pretend for a moment that you don’t. We know that our program is malfunctioning, and we want to find out why."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is where you must resist the urge to start making random changes to the code. Instead, ",
+            {
+              "element": "em",
+              "content": [
+                "think"
+              ]
+            },
+            ". Analyze what is happening and come up with a theory of why it might be happening. Then, make additional observations to test this theory—or, if you don’t yet have a theory, make additional observations that might help you come up with one."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Putting a few strategic ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " calls into the program is a good way to get additional information about what the program is doing. In this case, we want ",
+            {
+              "element": "literal",
+              "content": [
+                "n"
+              ]
+            },
+            " to take the values ",
+            {
+              "element": "literal",
+              "content": [
+                "13"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "1"
+              ]
+            },
+            ", and then ",
+            {
+              "element": "literal",
+              "content": [
+                "0"
+              ]
+            },
+            ". Let’s write out its value at the start of the loop."
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "13\n1.3\n0.13\n0.013\n…\n1.5e-323"
+        },
+        {
+          "element": "p",
+          "content": [
+            {
+              "element": "em",
+              "content": [
+                "Right"
+              ]
+            },
+            ". Dividing 13 by 10 does not produce a whole number. Instead of ",
+            {
+              "element": "literal",
+              "content": [
+                "n /= base"
+              ]
+            },
+            ", what we actually want is ",
+            {
+              "element": "literal",
+              "content": [
+                "n =",
+                " ",
+                "Math.floor(n / base)"
+              ]
+            },
+            " so that the number is properly “shifted” to the right."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "An alternative to using ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " is to use the ",
+            {
+              "element": "em",
+              "content": [
+                "debugger"
+              ]
+            },
+            " capabilities of your browser. Modern browsers come with the ability to set a ",
+            {
+              "element": "em",
+              "content": [
+                "breakpoint"
+              ]
+            },
+            " on a specific line of your code. This will cause the execution of the program to pause every time the line with the breakpoint is reached and allow you to inspect the values of variables at that point. I won’t go into details here since debuggers differ from browser to browser, but look in your browser’s developer tools and search the Web for more information. Another way to set a breakpoint is to include a ",
+            {
+              "element": "literal",
+              "content": [
+                "debugger"
+              ]
+            },
+            " statement (consisting of simply that keyword) in your program. If the developer tools of your browser are active, the program will pause whenever it reaches that statement, and you will be able to inspect its state."
+          ]
+        }
+      ],
+      "title": "Debugging"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Not all problems can be prevented by the programmer, unfortunately. If your program communicates with the outside world in any way, there is a chance that the input it gets will be invalid or that other systems that it tries to talk to are broken or unreachable."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Simple programs, or programs that run only under your supervision, can afford to just give up when such a problem occurs. You’ll look into the problem and try again. “Real” applications, on the other hand, are expected to not simply crash. Sometimes the right thing to do is take the bad input in stride and continue running. In other cases, it is better to report to the user what went wrong and then give up. But in either situation, the program has to actively do something in response to the problem."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Say you have a function ",
+            {
+              "element": "literal",
+              "content": [
+                "promptInteger"
+              ]
+            },
+            " that asks the user for a whole number and returns it. What should it return if the user inputs ",
+            {
+              "element": "em",
+              "content": [
+                "orange"
+              ]
+            },
+            "?"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "One option is to make it return a special value. Common choices for such values are ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "undefined"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is a sound strategy. Now any code that calls ",
+            {
+              "element": "literal",
+              "content": [
+                "promptNumber"
+              ]
+            },
+            " must check whether an actual number was read and, failing that, must somehow recover—maybe by asking again or by filling in a default value. Or it could again return a special value to ",
+            {
+              "element": "em",
+              "content": [
+                "its"
+              ]
+            },
+            " caller to indicate that it failed to do what it was asked."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In many situations, mostly when errors are common and the caller should be explicitly taking them into account, returning a special value is a perfectly fine way to indicate an error. It does, however, have its downsides. First, what if the function can already return every possible kind of value? For such a function, it is hard to find a special value that can be distinguished from a valid result."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The second issue with returning special values is that it can lead to some very cluttered code. If a piece of code calls ",
+            {
+              "element": "literal",
+              "content": [
+                "promptNumber"
+              ]
+            },
+            " 10 times, it has to check 10 times whether ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " was returned. And if its response to finding ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " is to simply return ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " itself, the caller will in turn have to check for it, and so on."
+          ]
+        }
+      ],
+      "title": "Error propagation"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When a function cannot proceed normally, what we would ",
+            {
+              "element": "em",
+              "content": [
+                "like"
+              ]
+            },
+            " to do is just stop what we are doing and immediately jump back to a place that knows how to handle the problem. This is what ",
+            {
+              "element": "em",
+              "content": [
+                "exception handling"
+              ]
+            },
+            " does."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Exceptions are a mechanism that make it possible for code that runs into a problem to ",
+            {
+              "element": "em",
+              "content": [
+                "raise"
+              ]
+            },
+            " (or ",
+            {
+              "element": "em",
+              "content": [
+                "throw"
+              ]
+            },
+            ") an exception, which is simply a value. Raising an exception somewhat resembles a super-charged return from a function: it jumps out of not just the current function but also out of its callers, all the way down to the first call that started the current execution. This is called ",
+            {
+              "element": "em",
+              "content": [
+                "unwinding the stack"
+              ]
+            },
+            ". You may remember the stack of function calls that was mentioned in ",
+            {
+              "element": "reference",
+              "content": "Chapter 3"
+            },
+            ". An exception zooms down this stack, throwing away all the call contexts it encounters."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If exceptions always zoomed right down to the bottom of the stack, they would not be of much use. They would just provide a novel way to blow up your program. Their power lies in the fact that you can set “obstacles” along the stack to ",
+            {
+              "element": "em",
+              "content": [
+                "catch"
+              ]
+            },
+            " the exception as it is zooming down. Then you can do something with it, after which the program continues running at the point where the exception was caught."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Here’s an example:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "throw"
+              ]
+            },
+            " keyword is used to raise an exception. Catching one is done by wrapping a piece of code in a ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " block, followed by the keyword ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            ". When the code in the ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " block causes an exception to be raised, the ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " block is evaluated. The variable name (in parentheses) after ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " will be bound to the exception value. After the ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " block finishes—or if the ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " block finishes without problems—control proceeds beneath the entire ",
+            {
+              "element": "literal",
+              "content": [
+                "try/catch"
+              ]
+            },
+            " statement."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In this case, we used the ",
+            {
+              "element": "literal",
+              "content": [
+                "Error"
+              ]
+            },
+            " constructor to create our exception value. This is a standard JavaScript constructor that creates an object with a ",
+            {
+              "element": "literal",
+              "content": [
+                "message"
+              ]
+            },
+            " property. In modern JavaScript environments, instances of this constructor also gather information about the call stack that existed when the exception was created, a so-called ",
+            {
+              "element": "em",
+              "content": [
+                "stack trace"
+              ]
+            },
+            ". This information is stored in the ",
+            {
+              "element": "literal",
+              "content": [
+                "stack"
+              ]
+            },
+            " property and can be helpful when trying to debug a problem: it tells us the precise function where the problem occurred and which other functions led up to the call that failed."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Note that the function ",
+            {
+              "element": "literal",
+              "content": [
+                "look"
+              ]
+            },
+            " completely ignores the possibility that ",
+            {
+              "element": "literal",
+              "content": [
+                "promptDirection"
+              ]
+            },
+            " might go wrong. This is the big advantage of exceptions—error-handling code is necessary only at the point where the error occurs and at the point where it is handled. The functions in between can forget all about it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Well, almost..."
+          ]
+        }
+      ],
+      "title": "Exceptions"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Consider the following situation: a function, ",
+            {
+              "element": "literal",
+              "content": [
+                "withContext"
+              ]
+            },
+            ", wants to make sure that, during its execution, the top-level variable ",
+            {
+              "element": "literal",
+              "content": [
+                "context"
+              ]
+            },
+            " holds a specific context value. After it finishes, it restores this variable to its old value."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "What if ",
+            {
+              "element": "literal",
+              "content": [
+                "body"
+              ]
+            },
+            " raises an exception? In that case, the call to ",
+            {
+              "element": "literal",
+              "content": [
+                "withContext"
+              ]
+            },
+            " will be thrown off the stack by the exception, and ",
+            {
+              "element": "literal",
+              "content": [
+                "context"
+              ]
+            },
+            " will never be set back to its old value."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There is one more feature that ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " statements have. They may be followed by a ",
+            {
+              "element": "literal",
+              "content": [
+                "finally"
+              ]
+            },
+            " block either instead of or in addition to a ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " block. A ",
+            {
+              "element": "literal",
+              "content": [
+                "finally"
+              ]
+            },
+            " block means “No matter ",
+            {
+              "element": "em",
+              "content": [
+                "what"
+              ]
+            },
+            " happens, run this code after trying to run the code in the ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " block”. If a function has to clean something up, the cleanup code should usually be put into a ",
+            {
+              "element": "literal",
+              "content": [
+                "finally"
+              ]
+            },
+            " block."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Note that we no longer have to store the result of ",
+            {
+              "element": "literal",
+              "content": [
+                "body"
+              ]
+            },
+            " (which we want to return) in a variable. Even if we return directly from the ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " block, the ",
+            {
+              "element": "literal",
+              "content": [
+                "finally"
+              ]
+            },
+            " block will be run. Now we can do this and be safe:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Even though the function called from ",
+            {
+              "element": "literal",
+              "content": [
+                "withContext"
+              ]
+            },
+            " exploded, ",
+            {
+              "element": "literal",
+              "content": [
+                "withContext"
+              ]
+            },
+            " itself still properly cleaned up the ",
+            {
+              "element": "literal",
+              "content": [
+                "context"
+              ]
+            },
+            " variable."
+          ]
+        }
+      ],
+      "title": "Cleaning up after exceptions"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When an exception makes it all the way to the bottom of the stack without being caught, it gets handled by the environment. What this means differs between environments. In browsers, a description of the error typically gets written to the JavaScript console (reachable through the browser’s Tools or Developer menu)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For programmer mistakes or problems that the program cannot possibly handle, just letting the error go through is often okay. An unhandled exception is a reasonable way to signal a broken program, and the JavaScript console will, on modern browsers, provide you with some information about which function calls were on the stack when the problem occurred."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For problems that are ",
+            {
+              "element": "em",
+              "content": [
+                "expected"
+              ]
+            },
+            " to happen during routine use, crashing with an unhandled exception is not a very friendly response."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Invalid uses of the language, such as referencing a nonexistent variable, looking up a property on ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            ", or calling something that’s not a function, will also result in exceptions being raised. Such exceptions can be caught just like your own exceptions."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When a ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " body is entered, all we know is that ",
+            {
+              "element": "em",
+              "content": [
+                "something"
+              ]
+            },
+            " in our ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " body caused an exception. But we don’t know ",
+            {
+              "element": "em",
+              "content": [
+                "what"
+              ]
+            },
+            ", or ",
+            {
+              "element": "em",
+              "content": [
+                "which"
+              ]
+            },
+            " exception it caused."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "JavaScript (in a rather glaring omission) doesn’t provide direct support for selectively catching exceptions: either you catch them all or you don’t catch any. This makes it very easy to ",
+            {
+              "element": "em",
+              "content": [
+                "assume"
+              ]
+            },
+            " that the exception you get is the one you were thinking about when you wrote the ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " block."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "But it might not be. Some other assumption might be violated, or you might have introduced a bug somewhere that is causing an exception. Here is an example, which ",
+            {
+              "element": "em",
+              "content": [
+                "attempts"
+              ]
+            },
+            " to keep on calling ",
+            {
+              "element": "literal",
+              "content": [
+                "promptDirection"
+              ]
+            },
+            " until it gets a valid answer:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "for (;;)"
+              ]
+            },
+            " construct is a way to intentionally create a loop that doesn’t terminate on its own. We break out of the loop only when a valid direction is given. ",
+            {
+              "element": "em",
+              "content": [
+                "But"
+              ]
+            },
+            " we misspelled ",
+            {
+              "element": "literal",
+              "content": [
+                "promptDirection"
+              ]
+            },
+            ", which will result in an “undefined variable” error. Because the ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " block completely ignores its exception value (",
+            {
+              "element": "literal",
+              "content": [
+                "e"
+              ]
+            },
+            "), assuming it knows what the problem is, it wrongly treats the variable error as indicating bad input. Not only does this cause an infinite loop, but it also “buries” the useful error message about the misspelled variable."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "As a general rule, don’t blanket-catch exceptions unless it is for the purpose of “routing” them somewhere—for example, over the network to tell another system that our program crashed. And even then, think carefully about how you might be hiding information."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "So we want to catch a ",
+            {
+              "element": "em",
+              "content": [
+                "specific"
+              ]
+            },
+            " kind of exception. We can do this by checking in the ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " block whether the exception we got is the one we are interested in and by rethrowing it otherwise. But how do we recognize an exception?"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Of course, we could match its ",
+            {
+              "element": "literal",
+              "content": [
+                "message"
+              ]
+            },
+            " property against the error message we happen to expect. But that’s a shaky way to write code—we’d be using information that’s intended for human consumption (the message) to make a programmatic decision. As soon as someone changes (or translates) the message, the code will stop working."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Rather, let’s define a new type of error and use ",
+            {
+              "element": "literal",
+              "content": [
+                "instanceof"
+              ]
+            },
+            " to identify it."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The prototype is made to derive from ",
+            {
+              "element": "literal",
+              "content": [
+                "Error.prototype"
+              ]
+            },
+            " so that ",
+            {
+              "element": "literal",
+              "content": [
+                "instanceof Error"
+              ]
+            },
+            " will also return true for ",
+            {
+              "element": "literal",
+              "content": [
+                "InputError"
+              ]
+            },
+            " objects. It’s also given a ",
+            {
+              "element": "literal",
+              "content": [
+                "name"
+              ]
+            },
+            " property since the standard error types (",
+            {
+              "element": "literal",
+              "content": [
+                "Error"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "SyntaxError"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "ReferenceError"
+              ]
+            },
+            ", and so on) also have such a property."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The assignment to the ",
+            {
+              "element": "literal",
+              "content": [
+                "stack"
+              ]
+            },
+            " property tries to give this object a somewhat useful stack trace, on platforms that support it, by creating a regular error object and then using that object’s ",
+            {
+              "element": "literal",
+              "content": [
+                "stack"
+              ]
+            },
+            " property as its own."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Now ",
+            {
+              "element": "literal",
+              "content": [
+                "promptDirection"
+              ]
+            },
+            " can throw such an error."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "And the loop can catch it more carefully."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This will catch only instances of ",
+            {
+              "element": "literal",
+              "content": [
+                "InputError"
+              ]
+            },
+            " and let unrelated exceptions through. If you reintroduce the typo, the undefined variable error will be properly reported."
+          ]
+        }
+      ],
+      "title": "Selective catching"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            {
+              "element": "em",
+              "content": [
+                "Assertions"
+              ]
+            },
+            " are a tool to do basic sanity checking for programmer errors. Consider this helper function, ",
+            {
+              "element": "literal",
+              "content": [
+                "assert"
+              ]
+            },
+            ":"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This provides a compact way to enforce expectations, helpfully blowing up the program if the stated condition does not hold. For instance, the ",
+            {
+              "element": "literal",
+              "content": [
+                "lastElement"
+              ]
+            },
+            " function, which fetches the last element from an array, would return ",
+            {
+              "element": "literal",
+              "content": [
+                "undefined"
+              ]
+            },
+            " on empty arrays if the assertion was omitted. Fetching the last element from an empty array does not make much sense, so it is almost certainly a programmer error to do so."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Assertions are a way to make sure mistakes cause failures at the point of the mistake, rather than silently producing nonsense values that may go on to cause trouble in an unrelated part of the system."
+          ]
+        }
+      ],
+      "title": "Assertions"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Mistakes and bad input are facts of life. Bugs in programs need to be found and fixed. They can become easier to notice by having automated test suites and adding assertions to your programs."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Problems caused by factors outside the program’s control should usually be handled gracefully. Sometimes, when the problem can be handled locally, special return values are a sane way to track them. Otherwise, exceptions are preferable."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Throwing an exception causes the call stack to be unwound until the next enclosing ",
+            {
+              "element": "literal",
+              "content": [
+                "try/catch"
+              ]
+            },
+            " block or until the bottom of the stack. The exception value will be given to the ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " block that catches it, which should verify that it is actually the expected kind of exception and then do something with it. To deal with the unpredictable control flow caused by exceptions, ",
+            {
+              "element": "literal",
+              "content": [
+                "finally"
+              ]
+            },
+            " blocks can be used to ensure a piece of code is ",
+            {
+              "element": "em",
+              "content": [
+                "always"
+              ]
+            },
+            " run when a block finishes."
+          ]
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Say you have a function ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "primitiveMultiply"
+                  ]
+                },
+                " that, in 50 percent of cases, multiplies two numbers, and in the other 50 percent, raises an exception of type ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "MultiplicatorUnitFailure"
+                  ]
+                },
+                ". Write a function that wraps this clunky function and just keeps trying until a call succeeds, after which it returns the result."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Make sure you handle only the exceptions you are trying to handle."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The call to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "primitiveMultiply"
+                  ]
+                },
+                " should obviously happen in a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "try"
+                  ]
+                },
+                " block. The corresponding ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "catch"
+                  ]
+                },
+                " block should rethrow the exception when it is not an instance of ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "MultiplicatorUnitFailure"
+                  ]
+                },
+                " and ensure the call is retried when it is."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "To do the retrying, you can either use a loop that breaks only when a call succeeds—as in the ",
+                {
+                  "element": "reference",
+                  "content": "[object Object] example"
+                },
+                " earlier in this chapter—or use recursion and hope you don’t get a string of failures so long that it overflows the stack (which is a pretty safe bet)."
+              ]
+            }
+          ],
+          "title": "Retry"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Consider the following (rather contrived) object:"
+              ]
+            },
+            {
+              "element": "listing",
+              "numbered": false,
+              "content": []
+            },
+            {
+              "element": "p",
+              "content": [
+                "It is a box with a lock. Inside is an array, but you can get at it only when the box is unlocked. Directly accessing the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "_content"
+                  ]
+                },
+                " property is not allowed."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Write a function called ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "withBoxUnlocked"
+                  ]
+                },
+                " that takes a function value as argument, unlocks the box, runs the function, and then ensures that the box is locked again before returning, regardless of whether the argument function returned normally or threw an exception."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "This exercise calls for a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "finally"
+                  ]
+                },
+                " block, as you probably guessed. Your function should first unlock the box and then call the argument function from inside a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "try"
+                  ]
+                },
+                " body. The ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "finally"
+                  ]
+                },
+                " block after it should lock the box again."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "To make sure we don’t lock the box when it wasn’t already locked, check its lock at the start of the function and unlock and lock it only when it started out locked."
+              ]
+            }
+          ],
+          "title": "The locked box"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Bugs and Error Handling"
+}

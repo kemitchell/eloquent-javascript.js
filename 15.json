@@ -1,0 +1,2139 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Iain Banks The Player of Games",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "All reality is a game."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "My initial fascination with computers, like that of many kids, originated with computer games. I was drawn into the tiny computer-simulated worlds that I could manipulate and in which stories (sort of) unfolded—more, I suppose, because of the way I could project my imagination into them than because of the possibilities they actually offered."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "I wouldn’t wish a career in game programming on anyone. Much like the music industry, the discrepancy between the many eager young people wanting to work in it and the actual demand for such people creates a rather unhealthy environment. But writing games for fun is amusing."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "This chapter will walk through the implementation of a simple platform game. Platform games (or “jump and run” games) are games that expect the player to move a figure through a world, which is often two-dimensional and viewed from the side, and do lots of jumping onto and over things."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Our game will be roughly based on ",
+            {
+              "element": "reference",
+              "content": "Dark Blue"
+            },
+            " by Thomas Palef. I chose this game because it is both entertaining and minimalist, and because it can be built without too much code. It looks like this:"
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/darkblue.png"
+        },
+        {
+          "element": "p",
+          "content": [
+            "The dark box represents the player, whose task is to collect the yellow boxes (coins) while avoiding the red stuff (lava?). A level is completed when all coins have been collected."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The player can walk around with the left and right arrow keys and jump with the up arrow. Jumping is a specialty of this game character. It can reach several times its own height and is able to change direction in midair. This may not be entirely realistic, but it helps give the player the feeling of being in direct control of the onscreen avatar."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The game consists of a fixed background, laid out like a grid, with the moving elements overlaid on that background. Each field on the grid is either empty, solid, or lava. The moving elements are the player, coins, and certain pieces of lava. Unlike the artificial life simulation from ",
+            {
+              "element": "reference",
+              "content": "Chapter 7"
+            },
+            ", the positions of these elements are not constrained to the grid—their coordinates may be fractional, allowing smooth motion."
+          ]
+        }
+      ],
+      "title": "The game"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "We will use the browser DOM to display the game, and we’ll read user input by handling key events."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The screen- and keyboard-related code is only a tiny part of the work we need to do to build this game. Since everything looks like colored boxes, drawing is uncomplicated: we create DOM elements and use styling to give them a background color, size, and position."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can represent the background as a table since it is an unchanging grid of squares. The free-moving elements can be overlaid on top of that, using absolutely positioned elements."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In games and other programs that have to animate graphics and respond to user input without noticeable delay, efficiency is important. Although the DOM was not originally designed for high-performance graphics, it is actually better at this than you would expect. You saw some animations in ",
+            {
+              "element": "reference",
+              "content": "Chapter 13"
+            },
+            ". On a modern machine, a simple game like this performs well, even if we don’t think about optimization much."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In the ",
+            {
+              "element": "reference",
+              "content": "next chapter"
+            },
+            ", we will explore another browser technology, the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "canvas",
+                ">"
+              ]
+            },
+            " tag, which provides a more traditional way to draw graphics, working in terms of shapes and pixels rather than DOM elements."
+          ]
+        }
+      ],
+      "title": "The technology"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In ",
+            {
+              "element": "reference",
+              "content": "Chapter 7"
+            },
+            " we used arrays of strings to describe a two-dimensional grid. We can do the same here. It will allow us to design levels without first building a level editor."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A simple level would look like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Both the fixed grid and the moving elements are included in the plan. The ",
+            {
+              "element": "literal",
+              "content": [
+                "x"
+              ]
+            },
+            " characters stand for walls, the space characters for empty space, and the exclamation marks represent fixed, nonmoving lava tiles."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "@"
+              ]
+            },
+            " defines the place where the player starts. Every ",
+            {
+              "element": "literal",
+              "content": [
+                "o"
+              ]
+            },
+            " is a coin, and the equal sign (",
+            {
+              "element": "literal",
+              "content": [
+                "="
+              ]
+            },
+            ") stands for a block of lava that moves back and forth horizontally. Note that the grid for these positions will be set to contain empty space, and another data structure is used to track the position of such moving elements."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We’ll support two other kinds of moving lava: the pipe character (",
+            {
+              "element": "literal",
+              "content": [
+                "|"
+              ]
+            },
+            ") for vertically moving blobs, and ",
+            {
+              "element": "literal",
+              "content": [
+                "v"
+              ]
+            },
+            " for ",
+            {
+              "element": "em",
+              "content": [
+                "dripping"
+              ]
+            },
+            " lava—vertically moving lava that doesn’t bounce back and forth but only moves down, jumping back to its start position when it hits the floor."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A whole game consists of multiple levels that the player must complete. A level is completed when all coins have been collected. If the player touches lava, the current level is restored to its starting position, and the player may try again."
+          ]
+        }
+      ],
+      "title": "Levels"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The following constructor builds a level object. Its argument should be the array of strings that define the level."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "For brevity, the code does not check for malformed input. It assumes that you’ve given it a proper level plan, complete with a player start position and other essentials."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A level stores its width and height, along with two arrays—one for the grid and one for the ",
+            {
+              "element": "em",
+              "content": [
+                "actors"
+              ]
+            },
+            ", which are the dynamic elements. The grid is represented as an array of arrays, where each of the inner arrays represents a horizontal line and each square contains either null, for empty squares, or a string indicating the type of the square—",
+            {
+              "element": "literal",
+              "content": [
+                "\"wall\""
+              ]
+            },
+            " or ",
+            {
+              "element": "literal",
+              "content": [
+                "\"lava\""
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The actors array holds objects that track the current position and state of the dynamic elements in the level. Each of these is expected to have a ",
+            {
+              "element": "literal",
+              "content": [
+                "pos"
+              ]
+            },
+            " property that gives its position (the coordinates of its top-left corner), a ",
+            {
+              "element": "literal",
+              "content": [
+                "size"
+              ]
+            },
+            " property that gives its size, and a ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " property that holds a string identifying the element (",
+            {
+              "element": "literal",
+              "content": [
+                "\"lava\""
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "\"coin\""
+              ]
+            },
+            ", or ",
+            {
+              "element": "literal",
+              "content": [
+                "\"player\""
+              ]
+            },
+            ")."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "After building the grid, we use the ",
+            {
+              "element": "literal",
+              "content": [
+                "filter"
+              ]
+            },
+            " method to find the player actor object, which we store in a property of the level. The ",
+            {
+              "element": "literal",
+              "content": [
+                "status"
+              ]
+            },
+            " property tracks whether the player has won or lost. When this happens, ",
+            {
+              "element": "literal",
+              "content": [
+                "finishDelay"
+              ]
+            },
+            " is used to keep the level active for a short period of time so that a simple animation can be shown. (Immediately resetting or advancing the level would look cheap.) This method can be used to find out whether a level is finished:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Reading a level"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " To store the position and size of an actor, we will return to our trusty ",
+            {
+              "element": "literal",
+              "content": [
+                "Vector"
+              ]
+            },
+            " type, which groups an x-coordinate and a y-coordinate into an object."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "times"
+              ]
+            },
+            " method scales a vector by a given amount. It will be useful when we need to multiply a speed vector by a time interval to get the distance traveled during that time."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " In the previous section, the ",
+            {
+              "element": "literal",
+              "content": [
+                "actorChars"
+              ]
+            },
+            " object was used by the ",
+            {
+              "element": "literal",
+              "content": [
+                "Level"
+              ]
+            },
+            " constructor to associate characters with constructor functions. The object looks like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Three characters map to ",
+            {
+              "element": "literal",
+              "content": [
+                "Lava"
+              ]
+            },
+            ". The ",
+            {
+              "element": "literal",
+              "content": [
+                "Level"
+              ]
+            },
+            " constructor passes the actor’s source character as the second argument to the constructor, and the ",
+            {
+              "element": "literal",
+              "content": [
+                "Lava"
+              ]
+            },
+            " constructor uses that to adjust its behavior (bouncing horizontally, bouncing vertically, or dripping)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The player type is built with the following constructor. It has a property ",
+            {
+              "element": "literal",
+              "content": [
+                "speed"
+              ]
+            },
+            " that stores its current speed, which will help simulate momentum and gravity."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Because a player is one-and-a-half squares high, its initial position is set to be half a square above the position where the ",
+            {
+              "element": "literal",
+              "content": [
+                "@"
+              ]
+            },
+            " character appeared. This way, its bottom aligns with the bottom of the square it appeared in."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When constructing a dynamic ",
+            {
+              "element": "literal",
+              "content": [
+                "Lava"
+              ]
+            },
+            " object, we need to initialize the object differently depending on the character it is based on. Dynamic lava moves along at its given speed until it hits an obstacle. At that point, if it has a ",
+            {
+              "element": "literal",
+              "content": [
+                "repeatPos"
+              ]
+            },
+            " property, it will jump back to its start position (dripping). If it does not, it will invert its speed and continue in the other direction (bouncing). The constructor only sets up the necessary properties. The method that does the actual moving will be written ",
+            {
+              "element": "reference",
+              "content": "later"
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            {
+              "element": "literal",
+              "content": [
+                "Coin"
+              ]
+            },
+            " actors are simple. They mostly just sit in their place. But to liven up the game a little, they are given a “wobble”, a slight vertical motion back and forth. To track this, a coin object stores a base position as well as a ",
+            {
+              "element": "literal",
+              "content": [
+                "wobble"
+              ]
+            },
+            " property that tracks the phase of the bouncing motion. Together, these determine the coin’s actual position (stored in the ",
+            {
+              "element": "literal",
+              "content": [
+                "pos"
+              ]
+            },
+            " property)."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "In ",
+            {
+              "element": "reference",
+              "content": "Chapter 13"
+            },
+            ", we saw that ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.sin"
+              ]
+            },
+            " gives us the y-coordinate of a point on a circle. That coordinate goes back and forth in a smooth wave form as we move along the circle, which makes the sine function useful for modeling a wavy motion."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To avoid a situation where all coins move up and down synchronously, the starting phase of each coin is randomized. The ",
+            {
+              "element": "em",
+              "content": [
+                "phase"
+              ]
+            },
+            " of ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.sin"
+              ]
+            },
+            "'s wave, the width of a wave it produces, is 2π. We multiply the value returned by ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.random"
+              ]
+            },
+            " by that number to give the coin a random starting position on the wave."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We have now written all the parts needed to represent the state of a level."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The task ahead is to display such levels on the screen and to model time and motion inside them."
+          ]
+        }
+      ],
+      "title": "Actors"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Most of the code in this chapter does not worry about encapsulation for two reasons. First, encapsulation takes extra effort. It makes programs bigger and requires additional concepts and interfaces to be introduced. Since there is only so much code you can throw at a reader before their eyes glaze over, I’ve made an effort to keep the program small."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Second, the various elements in this game are so closely tied together that if the behavior of one of them changed, it is unlikely that any of the others would be able to stay the same. Interfaces between the elements would end up encoding a lot of assumptions about the way the game works. This makes them a lot less effective—whenever you change one part of the system, you still have to worry about the way it impacts the other parts because their interfaces wouldn’t cover the new situation."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Some ",
+            {
+              "element": "em",
+              "content": [
+                "cutting points"
+              ]
+            },
+            " in a system lend themselves well to separation through rigorous interfaces, but others don’t. Trying to encapsulate something that isn’t a suitable boundary is a sure way to waste a lot of energy. When you are making this mistake, you’ll usually notice that your interfaces are getting awkwardly large and detailed and that they need to be modified often, as the program evolves."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There is one thing that we ",
+            {
+              "element": "em",
+              "content": [
+                "will"
+              ]
+            },
+            " encapsulate in this chapter, and that is the drawing subsystem. The reason for this is that we will display the same game in a different way in the ",
+            {
+              "element": "reference",
+              "content": "next\nchapter"
+            },
+            ". By putting the drawing behind an interface, we can simply load the same game program there and plug in a new display module."
+          ]
+        }
+      ],
+      "title": "Encapsulation as a burden"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The encapsulation of the drawing code is done by defining a ",
+            {
+              "element": "em",
+              "content": [
+                "display"
+              ]
+            },
+            " object, which displays a given level. The display type we define in this chapter is called ",
+            {
+              "element": "literal",
+              "content": [
+                "DOMDisplay"
+              ]
+            },
+            " because it uses simple DOM elements to show the level."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We will be using a style sheet to set the actual colors and other fixed properties of the elements that make up the game. It would also be possible to directly assign to the elements’ ",
+            {
+              "element": "literal",
+              "content": [
+                "style"
+              ]
+            },
+            " property when we create them, but that would produce more verbose programs."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following helper function provides a short way to create an element and give it a class:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A display is created by giving it a parent element to which it should append itself and a level object."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We used the fact that ",
+            {
+              "element": "literal",
+              "content": [
+                "appendChild"
+              ]
+            },
+            " returns the appended element to create the wrapper element and store it in the ",
+            {
+              "element": "literal",
+              "content": [
+                "wrap"
+              ]
+            },
+            " property in a single statement."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The level’s background, which never changes, is drawn once. The actors are redrawn every time the display is updated. The ",
+            {
+              "element": "literal",
+              "content": [
+                "actorLayer"
+              ]
+            },
+            " property will be used by ",
+            {
+              "element": "literal",
+              "content": [
+                "drawFrame"
+              ]
+            },
+            " to track the element that holds the actors so that they can be easily removed and replaced."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Our coordinates and sizes are tracked in units relative to the grid size, where a size or distance of 1 means 1 grid unit. When setting pixel sizes, we will have to scale these coordinates up—everything in the game would be ridiculously small at a single pixel per square. The ",
+            {
+              "element": "literal",
+              "content": [
+                "scale"
+              ]
+            },
+            " variable gives the number of pixels that a single unit takes up on the screen."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "As mentioned earlier, the background is drawn as a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "table",
+                ">"
+              ]
+            },
+            " element. This nicely corresponds to the structure of the ",
+            {
+              "element": "literal",
+              "content": [
+                "grid"
+              ]
+            },
+            " property in the level—each row of the grid is turned into a table row (",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "tr",
+                ">"
+              ]
+            },
+            " element). The strings in the grid are used as class names for the table cell (",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "td",
+                ">"
+              ]
+            },
+            ") elements. The following CSS helps the resulting table look like the background we want:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Some of these (",
+            {
+              "element": "literal",
+              "content": [
+                "table-layout"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "border-spacing"
+              ]
+            },
+            ", and ",
+            {
+              "element": "literal",
+              "content": [
+                "padding"
+              ]
+            },
+            ") are simply used to suppress unwanted default behavior. We don’t want the layout of the table to depend upon the contents of its cells, and we don’t want space between the table cells or padding inside them."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "background"
+              ]
+            },
+            " rule sets the background color. CSS allows colors to be specified both as words (",
+            {
+              "element": "literal",
+              "content": [
+                "white"
+              ]
+            },
+            ") and with a format such as ",
+            {
+              "element": "literal",
+              "content": [
+                "rgb(R, G, B)"
+              ]
+            },
+            ", where the red, green, and blue components of the color are separated into three numbers from 0 to 255. So, in ",
+            {
+              "element": "literal",
+              "content": [
+                "rgb(52, 166, 251)"
+              ]
+            },
+            ", the red component is 52, green is 166, and blue is 251. Since the blue component is the largest, the resulting color will be bluish. You can see that in the ",
+            {
+              "element": "literal",
+              "content": [
+                ".lava"
+              ]
+            },
+            " rule, the first number (red) is the largest."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We draw each actor by creating a DOM element for it and setting that element’s position and size based on the actor’s properties. The values have to be multiplied by ",
+            {
+              "element": "literal",
+              "content": [
+                "scale"
+              ]
+            },
+            " to go from game units to pixels."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "To give an element more than one class, we separate the class names by spaces. In the CSS code shown next, the ",
+            {
+              "element": "literal",
+              "content": [
+                "actor"
+              ]
+            },
+            " class gives the actors their absolute position. Their type name is used as an extra class to give them a color. We don’t have to define the ",
+            {
+              "element": "literal",
+              "content": [
+                "lava"
+              ]
+            },
+            " class again because we reuse the class for the lava grid squares which we defined earlier."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "When it updates the display, the ",
+            {
+              "element": "literal",
+              "content": [
+                "drawFrame"
+              ]
+            },
+            " method first removes the old actor graphics, if any, and then redraws them in their new positions. It may be tempting to try to reuse the DOM elements for actors, but to make that work, we would need a lot of additional information flow between the display code and the simulation code. We’d need to associate actors with DOM elements, and the drawing code must remove elements when their actors vanish. Since there will typically be only a handful of actors in the game, redrawing all of them is not expensive."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "By adding the level’s current status as a class name to the wrapper, we can style the player actor slightly differently when the game is won or lost by adding a CSS rule that takes effect only when the player has an ancestor element with a given class."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "After touching lava, the player’s color turns dark red, suggesting scorching. When the last coin has been collected, we use two blurred white box shadows, one to the top left and one to the top right, to create a white halo effect."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can’t assume that levels always fit in the viewport. That is why the ",
+            {
+              "element": "literal",
+              "content": [
+                "scrollPlayerIntoView"
+              ]
+            },
+            " call is needed—it ensures that if the level is protruding outside the viewport, we scroll that viewport to make sure the player is near its center. The following CSS gives the game’s wrapping DOM element a maximum size and ensures that anything that sticks out of the element’s box is not visible. We also give the outer element a relative position so that the actors inside it are positioned relative to the level’s top-left corner."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "In the ",
+            {
+              "element": "literal",
+              "content": [
+                "scrollPlayerIntoView"
+              ]
+            },
+            " method, we find the player’s position and update the wrapping element’s scroll position. We change the scroll position by manipulating that element’s ",
+            {
+              "element": "literal",
+              "content": [
+                "scrollLeft"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "scrollTop"
+              ]
+            },
+            " properties when the player is too close to the edge."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The way the player’s center is found shows how the methods on our ",
+            {
+              "element": "literal",
+              "content": [
+                "Vector"
+              ]
+            },
+            " type allow computations with objects to be written in a readable way. To find the actor’s center, we add its position (its top-left corner) and half its size. That is the center in level coordinates, but we need it in pixel coordinates, so we then multiply the resulting vector by our display scale."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Next, a series of checks verify that the player position isn’t outside of the allowed range. Note that sometimes this will set nonsense scroll coordinates, below zero or beyond the element’s scrollable area. This is okay—the DOM will constrain them to sane values. Setting ",
+            {
+              "element": "literal",
+              "content": [
+                "scrollLeft"
+              ]
+            },
+            " to -10 will cause it to become 0."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It would have been slightly simpler to always try to scroll the player to the center of the viewport. But this creates a rather jarring effect. As you are jumping, the view will constantly shift up and down. It is more pleasant to have a “neutral” area in the middle of the screen where you can move around without causing any scrolling."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Finally, we’ll need a way to clear a displayed level, to be used when the game moves to the next level or resets a level."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " We are now able to display our tiny level."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "link",
+                ">"
+              ]
+            },
+            " tag, when used with ",
+            {
+              "element": "literal",
+              "content": [
+                "rel=\"stylesheet\""
+              ]
+            },
+            ", is a way to load a CSS file into a page. The file ",
+            {
+              "element": "literal",
+              "content": [
+                "game.css"
+              ]
+            },
+            " contains the styles necessary for our game."
+          ]
+        }
+      ],
+      "title": "Drawing"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Now we’re at the point where we can start adding motion—the most interesting aspect of the game. The basic approach, taken by most games like this, is to split time into small steps and, for each step, move the actors by a distance corresponding to their speed (distance moved per second) multiplied by the size of the time step (in seconds)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "That is easy. The difficult part is dealing with the interactions between the elements. When the player hits a wall or floor, they should not simply move through it. The game must notice when a given motion causes an object to hit another object and respond accordingly. For walls, the motion must be stopped. For coins, the coin must be collected, and so on."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Solving this for the general case is a big task. You can find libraries, usually called ",
+            {
+              "element": "em",
+              "content": [
+                "physics engines"
+              ]
+            },
+            ", that simulate interaction between physical objects in two or three dimensions. We’ll take a more modest approach in this chapter, handling only collisions between rectangular objects and handling them in a rather simplistic way."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Before moving the player or a block of lava, we test whether the motion would take it inside of a nonempty part of the background. If it does, we simply cancel the motion altogether. The response to such a collision depends on the type of actor—the player will stop, whereas a lava block will bounce back."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This approach requires our time steps to be rather small since it will cause motion to stop before the objects actually touch. If the time steps (and thus the motion steps) are too big, the player would end up hovering a noticeable distance above the ground. Another approach, arguably better but more complicated, would be to find the exact collision spot and move there. We will take the simple approach and hide its problems by ensuring the animation proceeds in small steps."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This method tells us whether a rectangle (specified by a position and a size) overlaps with any nonempty space on the background grid:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This method computes the set of grid squares that the body overlaps with by using ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.floor"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.ceil"
+              ]
+            },
+            " on the body’s coordinates. Remember that grid squares are 1×1 units in size. By rounding the sides of a box up and down, we get the range of background squares that the box touches."
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/game-grid.svg"
+        },
+        {
+          "element": "p",
+          "content": [
+            "If the body sticks out of the level, we always return ",
+            {
+              "element": "literal",
+              "content": [
+                "\"wall\""
+              ]
+            },
+            " for the sides and top and ",
+            {
+              "element": "literal",
+              "content": [
+                "\"lava\""
+              ]
+            },
+            " for the bottom. This ensures that the player dies when falling out of the world. When the body is fully inside the grid, we loop over the block of grid squares found by rounding the coordinates and return the content of the first nonempty square we find."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Collisions between the player and other dynamic actors (coins, moving lava) are handled ",
+            {
+              "element": "em",
+              "content": [
+                "after"
+              ]
+            },
+            " the player moved. When the motion has taken the player into another actor, the appropriate effect—collecting a coin or dying—is activated."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This method scans the array of actors, looking for an actor that overlaps the one given as an argument:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Motion and collision"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "animate"
+              ]
+            },
+            " method on the ",
+            {
+              "element": "literal",
+              "content": [
+                "Level"
+              ]
+            },
+            " type gives all actors in the level a chance to move. Its ",
+            {
+              "element": "literal",
+              "content": [
+                "step"
+              ]
+            },
+            " argument is the time step in seconds. The ",
+            {
+              "element": "literal",
+              "content": [
+                "keys"
+              ]
+            },
+            " object contains information about the arrow keys the player has pressed."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "When the level’s ",
+            {
+              "element": "literal",
+              "content": [
+                "status"
+              ]
+            },
+            " property has a non-null value (which is the case when the player has won or lost), we must count down the ",
+            {
+              "element": "literal",
+              "content": [
+                "finishDelay"
+              ]
+            },
+            " property, which tracks the time between the point where winning or losing happens and the point where we want to stop showing the level."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "while"
+              ]
+            },
+            " loop cuts the time step we are animating into suitably small pieces. It ensures that no step larger than ",
+            {
+              "element": "literal",
+              "content": [
+                "maxStep"
+              ]
+            },
+            " is taken. For example, a ",
+            {
+              "element": "literal",
+              "content": [
+                "step"
+              ]
+            },
+            " of 0.12 second would be cut into two steps of 0.05 seconds and one step of 0.02."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Actor objects have an ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method, which takes as arguments the time step, the level object, and the ",
+            {
+              "element": "literal",
+              "content": [
+                "keys"
+              ]
+            },
+            " object. Here is one, for the ",
+            {
+              "element": "literal",
+              "content": [
+                "Lava"
+              ]
+            },
+            " actor type, which ignores the ",
+            {
+              "element": "literal",
+              "content": [
+                "keys"
+              ]
+            },
+            " object:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "It computes a new position by adding the product of the time step and its current speed to its old position. If no obstacle blocks that new position, it moves there. If there is an obstacle, the behavior depends on the type of the lava block—dripping lava has a ",
+            {
+              "element": "literal",
+              "content": [
+                "repeatPos"
+              ]
+            },
+            " property, to which it jumps back when it hits something. Bouncing lava simply inverts its speed (multiplies it by -1) in order to start moving in the other direction."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Coins use their ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method to wobble. They ignore collisions since they are simply wobbling around inside of their own square, and collisions with the player will be handled by the ",
+            {
+              "element": "em",
+              "content": [
+                "player"
+              ]
+            },
+            "'s ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "wobble"
+              ]
+            },
+            " property is updated to track time and then used as an argument to ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.sin"
+              ]
+            },
+            " to create a wave, which is used to compute a new position."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "That leaves the player itself. Player motion is handled separately per axis because hitting the floor should not prevent horizontal motion, and hitting a wall should not stop falling or jumping motion. This method implements the horizontal part:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The horizontal motion is computed based on the state of the left and right arrow keys. When a motion causes the player to hit something, the level’s ",
+            {
+              "element": "literal",
+              "content": [
+                "playerTouched"
+              ]
+            },
+            " method, which handles things like dying in lava and collecting coins, is called. Otherwise, the object updates its position."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Vertical motion works in a similar way but has to simulate jumping and gravity."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "At the start of the method, the player is accelerated vertically to account for gravity. The gravity, jumping speed, and pretty much all other constants in this game have been set by trial and error. I tested various values until I found a combination I liked."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Next, we check for obstacles again. If we hit an obstacle, there are two possible outcomes. When the up arrow is pressed ",
+            {
+              "element": "em",
+              "content": [
+                "and"
+              ]
+            },
+            " we are moving down (meaning the thing we hit is below us), the speed is set to a relatively large, negative value. This causes the player to jump. If that is not the case, we simply bumped into something, and the speed is reset to zero."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The actual ",
+            {
+              "element": "literal",
+              "content": [
+                "act"
+              ]
+            },
+            " method looks like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "After moving, the method checks for other actors that the player is colliding with and again calls ",
+            {
+              "element": "literal",
+              "content": [
+                "playerTouched"
+              ]
+            },
+            " when it finds one. This time, it passes the actor object as the second argument because if the other actor is a coin, ",
+            {
+              "element": "literal",
+              "content": [
+                "playerTouched"
+              ]
+            },
+            " needs to know ",
+            {
+              "element": "em",
+              "content": [
+                "which"
+              ]
+            },
+            " coin is being collected."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Finally, when the player dies (touches lava), we set up a little animation that causes them to “shrink” or “sink” down by reducing the height of the player object."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "And here is the method that handles collisions between the player and other objects:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "When lava is touched, the game’s status is set to ",
+            {
+              "element": "literal",
+              "content": [
+                "\"lost\""
+              ]
+            },
+            ". When a coin is touched, that coin is removed from the array of actors, and if it was the last one, the game’s status is set to ",
+            {
+              "element": "literal",
+              "content": [
+                "\"won\""
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This gives us a level that can actually be animated. All that is missing now is the code that ",
+            {
+              "element": "em",
+              "content": [
+                "drives"
+              ]
+            },
+            " the animation."
+          ]
+        }
+      ],
+      "title": "Actors and actions"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "For a game like this, we do not want keys to take effect once per keypress. Rather, we want their effect (moving the player figure) to continue happening as long as they are pressed."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We need to set up a key handler that stores the current state of the left, right, and up arrow keys. We will also want to call ",
+            {
+              "element": "literal",
+              "content": [
+                "preventDefault"
+              ]
+            },
+            " for those keys so that they don’t end up scrolling the page."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following function, when given an object with key codes as property names and key names as values, will return an object that tracks the current position of those keys. It registers event handlers for ",
+            {
+              "element": "literal",
+              "content": [
+                "\"keydown\""
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "\"keyup\""
+              ]
+            },
+            " events and, when the key code in the event is present in the set of codes that it is tracking, updates the object."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Note how the same handler function is used for both event types. It looks at the event object’s ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " property to determine whether the key state should be updated to true (",
+            {
+              "element": "literal",
+              "content": [
+                "\"keydown\""
+              ]
+            },
+            ") or false (",
+            {
+              "element": "literal",
+              "content": [
+                "\"keyup\""
+              ]
+            },
+            ")."
+          ]
+        }
+      ],
+      "title": "Tracking keys"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "requestAnimationFrame"
+              ]
+            },
+            " function, which we saw in ",
+            {
+              "element": "reference",
+              "content": "Chapter 13"
+            },
+            ", provides a good way to animate a game. But its interface is quite primitive—using it requires us to track the time at which our function was called the last time around and call ",
+            {
+              "element": "literal",
+              "content": [
+                "requestAnimationFrame"
+              ]
+            },
+            " again after every frame."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "  Let’s define a helper function that wraps those boring parts in a convenient interface and allows us to simply call ",
+            {
+              "element": "literal",
+              "content": [
+                "runAnimation"
+              ]
+            },
+            ", giving it a function that expects a time difference as an argument and draws a single frame. When the frame function returns the value ",
+            {
+              "element": "literal",
+              "content": [
+                "false"
+              ]
+            },
+            ", the animation stops."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "I have set a maximum frame step of 100 milliseconds (one-tenth of a second). When the browser tab or window with our page is hidden, ",
+            {
+              "element": "literal",
+              "content": [
+                "requestAnimationFrame"
+              ]
+            },
+            " calls will be suspended until the tab or window is shown again. In this case, the difference between ",
+            {
+              "element": "literal",
+              "content": [
+                "lastTime"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "time"
+              ]
+            },
+            " will be the entire time in which the page was hidden. Advancing the game by that much in a single step will look silly and might be a lot of work (remember the time-splitting in the ",
+            {
+              "element": "reference",
+              "content": "[object Object] method"
+            },
+            ")."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The function also converts the time steps to seconds, which are an easier quantity to think about than milliseconds."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "runLevel"
+              ]
+            },
+            " function takes a ",
+            {
+              "element": "literal",
+              "content": [
+                "Level"
+              ]
+            },
+            " object, a constructor for a display, and, optionally, a function. It displays the level (in ",
+            {
+              "element": "literal",
+              "content": [
+                "document.body"
+              ]
+            },
+            ") and lets the user play through it. When the level is finished (lost or won), ",
+            {
+              "element": "literal",
+              "content": [
+                "runLevel"
+              ]
+            },
+            " clears the display, stops the animation, and, if an ",
+            {
+              "element": "literal",
+              "content": [
+                "andThen"
+              ]
+            },
+            " function was given, calls that function with the level’s status."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A game is a sequence of levels. Whenever the player dies, the current level is restarted. When a level is completed, we move on to the next level. This can be expressed by the following function, which takes an array of level plans (arrays of strings) and a display constructor:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "  These functions show a peculiar style of programming. Both ",
+            {
+              "element": "literal",
+              "content": [
+                "runAnimation"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "runLevel"
+              ]
+            },
+            " are higher-order functions but are not in the style we saw in ",
+            {
+              "element": "reference",
+              "content": "Chapter 5"
+            },
+            ". The function argument is used to arrange things to happen at some time in the future, and neither of the functions returns anything useful. Their task is, in a way, to schedule actions. Wrapping these actions in functions gives us a way to store them as a value so that they can be called at the right moment."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This programming style is usually called ",
+            {
+              "element": "em",
+              "content": [
+                "asynchronous"
+              ]
+            },
+            " programming. Event handling is also an instance of this style, and we will see much more of it when working with tasks that can take an arbitrary amount of time, such as network requests in ",
+            {
+              "element": "reference",
+              "content": "Chapter 17"
+            },
+            " and input and output in general in ",
+            {
+              "element": "reference",
+              "content": "Chapter 20"
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There is a set of level plans available in the ",
+            {
+              "element": "literal",
+              "content": [
+                "GAME_LEVELS"
+              ]
+            },
+            " variable . This page feeds them to ",
+            {
+              "element": "literal",
+              "content": [
+                "runGame"
+              ]
+            },
+            ", starting an actual game:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Running the game"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "It’s traditional for platform games to have the player start with a limited number of ",
+                {
+                  "element": "em",
+                  "content": [
+                    "lives"
+                  ]
+                },
+                " and subtract one life each time they die. When the player is out of lives, the game restarts from the beginning."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Adjust ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runGame"
+                  ]
+                },
+                " to implement lives. Have the player start with three."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The most obvious solution would be to make ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "lives"
+                  ]
+                },
+                " a variable that lives in ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runGame"
+                  ]
+                },
+                " and is thus visible to the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "startLevel"
+                  ]
+                },
+                " closure."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Another approach, which fits nicely with the spirit of the rest of the function, would be to add a second parameter to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "startLevel"
+                  ]
+                },
+                " that gives the number of lives. When the whole state of a system is stored in the arguments to a function, calling that function provides an elegant way to transition to a new state."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "In any case, when a level is lost, there should now be two possible state transitions. If that was the last life, we go back to level zero with the starting amount of lives. If not, we repeat the current level with one less life remaining."
+              ]
+            }
+          ],
+          "title": "Game over"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Make it possible to pause (suspend) and unpause the game by pressing the Esc key."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "This can be done by changing the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runLevel"
+                  ]
+                },
+                " function to use another keyboard event handler and interrupting or resuming the animation whenever the Esc key is hit."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runAnimation"
+                  ]
+                },
+                " interface may not look like it is suitable for this at first glance, but it is, if you rearrange the way ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runLevel"
+                  ]
+                },
+                " calls it."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " When you have that working, there is something else you could try. The way we have been registering keyboard event handlers is somewhat problematic. The ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "arrows"
+                  ]
+                },
+                " object is currently a global variable, and its event handlers are kept around even when no game is running. You could say they ",
+                {
+                  "element": "em",
+                  "content": [
+                    "leak"
+                  ]
+                },
+                " out of our system. Extend ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "trackKeys"
+                  ]
+                },
+                " to provide a way to unregister its handlers, and then change ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runLevel"
+                  ]
+                },
+                " to register its handlers when it starts and unregister them again when it is finished."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "An animation can be interrupted by returning ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "false"
+                  ]
+                },
+                " from the function given to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runAnimation"
+                  ]
+                },
+                ". It can be continued by calling ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runAnimation"
+                  ]
+                },
+                " again."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "To communicate that the animation should be interrupted to the function passed to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "runAnimation"
+                  ]
+                },
+                " so that it can return ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "false"
+                  ]
+                },
+                ", you can use a variable that both the event handler and that function have access to."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " When finding a way to unregister the handlers registered by ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "trackKeys"
+                  ]
+                },
+                ", remember that the ",
+                {
+                  "element": "em",
+                  "content": [
+                    "exact"
+                  ]
+                },
+                " same function value that was passed to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "addEventListener"
+                  ]
+                },
+                " must be passed to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "removeEventListener"
+                  ]
+                },
+                " to successfully remove a handler. Thus, the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "handler"
+                  ]
+                },
+                " function value created in ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "trackKeys"
+                  ]
+                },
+                " must be available to the code that unregisters the handlers."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You can add a property to the object returned by ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "trackKeys"
+                  ]
+                },
+                ", containing either that function value or a method that handles the unregistering directly."
+              ]
+            }
+          ],
+          "title": "Pausing the game"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Project: A Platform Game"
+}

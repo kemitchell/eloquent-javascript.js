@@ -1,0 +1,3042 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Master Yuan-Ma The Book of Programming",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "A student asked ‘The programmers of old used only simple machines and no programming languages, yet they made beautiful programs. Why do we use complicated machines and programming languages?’. Fu-Tzu replied ‘The builders of old used only sticks and clay, yet they made beautiful huts.’"
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "So far, you have learned the JavaScript language and used it within a single environment: the browser. This chapter and the ",
+        {
+          "element": "reference",
+          "content": "next one"
+        },
+        " will briefly introduce you to Node.js, a program that allows you to apply your JavaScript skills outside of the browser. With it, you can build anything from simple command-line tools to dynamic HTTP servers."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "These chapters aim to teach you the important ideas that Node.js builds on and to give you enough information to write some useful programs for it. They do not try to be a complete, or even a thorough, treatment of Node."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "If you want to follow along and run the code in this chapter, start by going to ",
+        {
+          "element": "reference",
+          "content": [
+            {
+              "element": "em",
+              "content": [
+                "nodejs.org"
+              ]
+            }
+          ]
+        },
+        " and following the installation instructions for your operating system. Also refer to that website for further documentation about Node and its built-in modules."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "One of the more difficult problems with writing systems that communicate over the network is managing input and output—that is, the reading and writing of data to and from the network, the hard drive, and other such devices. Moving data around takes time, and scheduling it cleverly can make a big difference in how quickly a system responds to the user or to network requests."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The traditional way to handle input and output is to have a function, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "readFile"
+              ]
+            },
+            ", start reading a file and return only when the file has been fully read. This is called ",
+            {
+              "element": "em",
+              "content": [
+                "synchronous I/O"
+              ]
+            },
+            " (I/O stands for input/output)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Node was initially conceived for the purpose of making ",
+            {
+              "element": "em",
+              "content": [
+                "asynchronous"
+              ]
+            },
+            " I/O easy and convenient. We have seen asynchronous interfaces before, such as a browser’s ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " object, discussed in ",
+            {
+              "element": "reference",
+              "content": "Chapter 17"
+            },
+            ". An asynchronous interface allows the script to continue running while it does its work and calls a callback function when it’s done. This is the way Node does all its I/O."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "JavaScript lends itself well to a system like Node. It is one of the few programming languages that does not have a built-in way to do I/O. Thus, JavaScript could be fit onto Node’s rather eccentric approach to I/O without ending up with two inconsistent interfaces. In 2009, when Node was being designed, people were already doing callback-based I/O in the browser, so the community around the language was used to an asynchronous programming style."
+          ]
+        }
+      ],
+      "title": "Background"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "I’ll try to illustrate synchronous versus asynchronous I/O with a small example, where a program needs to fetch two resources from the Internet and then do some simple processing with the result."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In a synchronous environment, the obvious way to perform this task is to make the requests one after the other. This method has the drawback that the second request will be started only when the first has finished. The total time taken will be at least the sum of the two response times. This is not an effective use of the machine, which will be mostly idle when it is transmitting and receiving data over the network."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The solution to this problem, in a synchronous system, is to start additional threads of control. (Refer to ",
+            {
+              "element": "reference",
+              "content": "Chapter 14"
+            },
+            " for a previous discussion of threads.) A second thread could start the second request, and then both threads wait for their results to come back, after which they resynchronize to combine their results."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In the following diagram, the thick lines represent time the program spends running normally, and the thin lines represent time spent waiting for I/O. In the synchronous model, the time taken by I/O is ",
+            {
+              "element": "em",
+              "content": [
+                "part"
+              ]
+            },
+            " of the timeline for a given thread of control. In the asynchronous model, starting an I/O action conceptually causes a ",
+            {
+              "element": "em",
+              "content": [
+                "split"
+              ]
+            },
+            " in the timeline. The thread that initiated the I/O continues running, and the I/O itself is done alongside it, finally calling a callback function when it is finished."
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/control-io.svg"
+        },
+        {
+          "element": "p",
+          "content": [
+            "Another way to express this difference is that waiting for I/O to finish is ",
+            {
+              "element": "em",
+              "content": [
+                "implicit"
+              ]
+            },
+            " in the synchronous model, while it is ",
+            {
+              "element": "em",
+              "content": [
+                "explicit"
+              ]
+            },
+            ", directly under our control, in the asynchronous one. But asynchronicity cuts both ways. It makes expressing programs that do not fit the straight-line model of control easier, but it also makes expressing programs that do follow a straight line more awkward."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In ",
+            {
+              "element": "reference",
+              "content": "Chapter 17"
+            },
+            ", I already touched on the fact that all those callbacks add quite a lot of noise and indirection to a program. Whether this style of asynchronicity is a good idea in general can be debated. In any case, it takes some getting used to."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "But for a JavaScript-based system, I would argue that callback-style asynchronicity is a sensible choice. One of the strengths of JavaScript is its simplicity, and trying to add multiple threads of control to it would add a lot of complexity. Though callbacks don’t tend to lead to simple ",
+            {
+              "element": "em",
+              "content": [
+                "code"
+              ]
+            },
+            ", as a ",
+            {
+              "element": "em",
+              "content": [
+                "concept"
+              ]
+            },
+            ", they’re pleasantly simple yet powerful enough to write high-performance web servers."
+          ]
+        }
+      ],
+      "title": "Asynchronicity"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When Node.js is installed on a system, it provides a program called ",
+            {
+              "element": "literal",
+              "content": [
+                "node"
+              ]
+            },
+            ", which is used to run JavaScript files. Say you have a file ",
+            {
+              "element": "literal",
+              "content": [
+                "hello.js"
+              ]
+            },
+            ", containing this code:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "You can then run ",
+            {
+              "element": "literal",
+              "content": [
+                "node"
+              ]
+            },
+            " from the command line like this to execute the program:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "$ node hello.js\nHello world"
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " method in Node does something similar to what it does in the browser. It prints out a piece of text. But in Node, the text will go to the process’ standard output stream, rather than to a browser’s JavaScript console."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If you run ",
+            {
+              "element": "literal",
+              "content": [
+                "node"
+              ]
+            },
+            " without giving it a file, it provides you with a prompt at which you can type JavaScript code and immediately see the result."
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "$ node\n> 1 + 1\n2\n> [-1, -2, -3].map(Math.abs)\n[1, 2, 3]\n> process.exit(0)\n$"
+        },
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "process"
+              ]
+            },
+            " variable, just like the ",
+            {
+              "element": "literal",
+              "content": [
+                "console"
+              ]
+            },
+            " variable, is available globally in Node. It provides various ways to inspect and manipulate the current program. The ",
+            {
+              "element": "literal",
+              "content": [
+                "exit"
+              ]
+            },
+            " method ends the process and can be given an exit status code, which tells the program that started ",
+            {
+              "element": "literal",
+              "content": [
+                "node"
+              ]
+            },
+            " (in this case, the command-line shell) whether the program completed successfully (code zero) or encountered an error (any other code)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To find the command-line arguments given to your script, you can read ",
+            {
+              "element": "literal",
+              "content": [
+                "process.argv"
+              ]
+            },
+            ", which is an array of strings. Note that it also includes the name of the ",
+            {
+              "element": "literal",
+              "content": [
+                "node"
+              ]
+            },
+            " command and your script name, so the actual arguments start at index 2. If ",
+            {
+              "element": "literal",
+              "content": [
+                "showargv.js"
+              ]
+            },
+            " simply contains the statement ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log(process.argv)"
+              ]
+            },
+            ", you could run it like this:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "$ node showargv.js one --and two\n[\"node\", \"/home/marijn/showargv.js\", \"one\", \"--and\", \"two\"]"
+        },
+        {
+          "element": "p",
+          "content": [
+            " All the standard JavaScript global variables, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "Array"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "Math"
+              ]
+            },
+            ", and ",
+            {
+              "element": "literal",
+              "content": [
+                "JSON"
+              ]
+            },
+            ", are also present in Node’s environment. Browser-related functionality, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "document"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "alert"
+              ]
+            },
+            ", is absent."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The global scope object, which is called ",
+            {
+              "element": "literal",
+              "content": [
+                "window"
+              ]
+            },
+            " in the browser, has the more sensible name ",
+            {
+              "element": "literal",
+              "content": [
+                "global"
+              ]
+            },
+            " in Node."
+          ]
+        }
+      ],
+      "title": "The node command"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Beyond the few variables I mentioned, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "console"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "process"
+              ]
+            },
+            ", Node puts little functionality in the global scope. If you want to access other built-in functionality, you have to ask the module system for it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The CommonJS module system, based on the ",
+            {
+              "element": "literal",
+              "content": [
+                "require"
+              ]
+            },
+            " function, was described in ",
+            {
+              "element": "reference",
+              "content": "Chapter 10"
+            },
+            ". This system is built into Node and is used to load anything from built-in modules to downloaded libraries to files that are part of your own program."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " When ",
+            {
+              "element": "literal",
+              "content": [
+                "require"
+              ]
+            },
+            " is called, Node has to resolve the given string to an actual file to load. Pathnames that start with ",
+            {
+              "element": "literal",
+              "content": [
+                "\"/\""
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "\"./\""
+              ]
+            },
+            ", or ",
+            {
+              "element": "literal",
+              "content": [
+                "\"../\""
+              ]
+            },
+            " are resolved relative to the current module’s path, where ",
+            {
+              "element": "literal",
+              "content": [
+                "\"./\""
+              ]
+            },
+            " stands for the current directory, ",
+            {
+              "element": "literal",
+              "content": [
+                "\"../\""
+              ]
+            },
+            " for one directory up, and ",
+            {
+              "element": "literal",
+              "content": [
+                "\"/\""
+              ]
+            },
+            " for the root of the file system. So if you ask for ",
+            {
+              "element": "literal",
+              "content": [
+                "\"./world/world\""
+              ]
+            },
+            " from the file ",
+            {
+              "element": "literal",
+              "content": [
+                "/home/marijn/elife/run.js"
+              ]
+            },
+            ", Node will try to load the file ",
+            {
+              "element": "literal",
+              "content": [
+                "/home/marijn/elife/world/world.js"
+              ]
+            },
+            ". The ",
+            {
+              "element": "literal",
+              "content": [
+                ".js"
+              ]
+            },
+            " extension may be omitted."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When a string that does not look like a relative or absolute path is given to ",
+            {
+              "element": "literal",
+              "content": [
+                "require"
+              ]
+            },
+            ", it is assumed to refer to either a built-in module or a module installed in a ",
+            {
+              "element": "literal",
+              "content": [
+                "node_modules"
+              ]
+            },
+            " directory. For example, ",
+            {
+              "element": "literal",
+              "content": [
+                "require(\"fs\")"
+              ]
+            },
+            " will give you Node’s built-in file system module, and ",
+            {
+              "element": "literal",
+              "content": [
+                "require(\"elife\")"
+              ]
+            },
+            " will try to load the library found in ",
+            {
+              "element": "literal",
+              "content": [
+                "node_modules/elife/"
+              ]
+            },
+            ". A common way to install such libraries is by using NPM, which I will discuss in a moment."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To illustrate the use of ",
+            {
+              "element": "literal",
+              "content": [
+                "require"
+              ]
+            },
+            ", let’s set up a simple project consisting of two files. The first one is called ",
+            {
+              "element": "literal",
+              "content": [
+                "main.js"
+              ]
+            },
+            ", which defines a script that can be called from the command line to garble a string."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The file ",
+            {
+              "element": "literal",
+              "content": [
+                "garble.js"
+              ]
+            },
+            " defines a library for garbling strings, which can be used both by the command-line tool defined earlier and by other scripts that need direct access to a garbling function."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Remember that replacing ",
+            {
+              "element": "literal",
+              "content": [
+                "module.exports"
+              ]
+            },
+            ", rather than adding properties to it, allows us to export a specific value from a module. In this case, we make the result of requiring our ",
+            {
+              "element": "literal",
+              "content": [
+                "garble"
+              ]
+            },
+            " file the garbling function itself."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The function splits the string it is given into single characters by splitting on the empty string and then replaces each character with the character whose code is five points higher. Finally, it joins the result back into a string."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can now call our tool like this:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "$ node main.js JavaScript\nOf{fXhwnuy"
+        }
+      ],
+      "title": "Modules"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "NPM, which was briefly discussed in ",
+            {
+              "element": "reference",
+              "content": "Chapter 10"
+            },
+            ", is an online repository of JavaScript modules, many of which are specifically written for Node. When you install Node on your computer, you also get a program called ",
+            {
+              "element": "literal",
+              "content": [
+                "npm"
+              ]
+            },
+            ", which provides a convenient interface to this repository."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For example, one module you will find on NPM is ",
+            {
+              "element": "literal",
+              "content": [
+                "figlet"
+              ]
+            },
+            ", which can convert text into ",
+            {
+              "element": "em",
+              "content": [
+                "ASCII art"
+              ]
+            },
+            "—drawings made out of text characters. The following transcript shows how to install and use it:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "$ npm install figlet\nnpm GET https://registry.npmjs.org/figlet\nnpm 200 https://registry.npmjs.org/figlet\nnpm GET https://registry.npmjs.org/figlet/-/figlet-1.0.9.tgz\nnpm 200 https://registry.npmjs.org/figlet/-/figlet-1.0.9.tgz\nfiglet@1.0.9 node_modules/figlet\n$ node\n> var figlet = require(\"figlet\");\n> figlet.text(\"Hello world!\", function(error, data) {\n    if (error)\n      console.error(error);\n    else\n      console.log(data);\n  });\n  _   _      _ _                            _     _ _\n | | | | ___| | | ___   __      _____  _ __| | __| | |\n | |_| |/ _ \\ | |/ _ \\  \\ \\ /\\ / / _ \\| '__| |/ _` | |\n |  _  |  __/ | | (_) |  \\ V  V / (_) | |  | | (_| |_|\n |_| |_|\\___|_|_|\\___/    \\_/\\_/ \\___/|_|  |_|\\__,_(_)"
+        },
+        {
+          "element": "p",
+          "content": [
+            "After running ",
+            {
+              "element": "literal",
+              "content": [
+                "npm install"
+              ]
+            },
+            ", NPM will have created a directory called ",
+            {
+              "element": "literal",
+              "content": [
+                "node_modules"
+              ]
+            },
+            ". Inside that directory will be a ",
+            {
+              "element": "literal",
+              "content": [
+                "figlet"
+              ]
+            },
+            " directory, which contains the library. When we run ",
+            {
+              "element": "literal",
+              "content": [
+                "node"
+              ]
+            },
+            " and call ",
+            {
+              "element": "literal",
+              "content": [
+                "require(\"figlet\")"
+              ]
+            },
+            ", this library is loaded, and we can call its ",
+            {
+              "element": "literal",
+              "content": [
+                "text"
+              ]
+            },
+            " method to draw some big letters."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Somewhat unexpectedly perhaps, instead of simply returning the string that makes up the big letters, ",
+            {
+              "element": "literal",
+              "content": [
+                "figlet.text"
+              ]
+            },
+            " takes a callback function that it passes its result to. It also passes the callback another argument, ",
+            {
+              "element": "literal",
+              "content": [
+                "error"
+              ]
+            },
+            ", which will hold an error object when something goes wrong or null when everything is all right."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is a common pattern in Node code. Rendering something with ",
+            {
+              "element": "literal",
+              "content": [
+                "figlet"
+              ]
+            },
+            " requires the library to read a file that contains the letter shapes. Reading that file from disk is an asynchronous operation in Node, so ",
+            {
+              "element": "literal",
+              "content": [
+                "figlet.text"
+              ]
+            },
+            " can’t immediately return its result. Asynchronicity is infectious, in a way—every function that calls an asynchronous function must itself become asynchronous."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There is much more to NPM than ",
+            {
+              "element": "literal",
+              "content": [
+                "npm install"
+              ]
+            },
+            ". It reads ",
+            {
+              "element": "literal",
+              "content": [
+                "package.json"
+              ]
+            },
+            " files, which contain JSON-encoded information about a program or library, such as which other libraries it depends on. Doing ",
+            {
+              "element": "literal",
+              "content": [
+                "npm install"
+              ]
+            },
+            " in a directory that contains such a file will automatically install all dependencies, as well as ",
+            {
+              "element": "em",
+              "content": [
+                "their"
+              ]
+            },
+            " dependencies. The ",
+            {
+              "element": "literal",
+              "content": [
+                "npm"
+              ]
+            },
+            " tool is also used to publish libraries to NPM’s online repository of packages so that other people can find, download, and use them."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This book won’t delve further into the details of NPM usage. Refer to ",
+            {
+              "element": "reference",
+              "content": [
+                {
+                  "element": "em",
+                  "content": [
+                    "npmjs.org"
+                  ]
+                }
+              ]
+            },
+            " for further documentation and for an easy way to search for libraries."
+          ]
+        }
+      ],
+      "title": "Installing with NPM"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "One of the most commonly used built-in modules that comes with Node is the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"fs\""
+              ]
+            },
+            " module, which stands for ",
+            {
+              "element": "em",
+              "content": [
+                "file system"
+              ]
+            },
+            ". This module provides functions for working with files and directories."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For example, there is a function called ",
+            {
+              "element": "literal",
+              "content": [
+                "readFile"
+              ]
+            },
+            ", which reads a file and then calls a callback with the file’s contents."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The second argument to ",
+            {
+              "element": "literal",
+              "content": [
+                "readFile"
+              ]
+            },
+            " indicates the ",
+            {
+              "element": "em",
+              "content": [
+                "character encoding"
+              ]
+            },
+            " used to decode the file into a string. There are several ways in which text can be encoded to binary data, but most modern systems use UTF-8 to encode text, so unless you have reasons to believe another encoding is used, passing ",
+            {
+              "element": "literal",
+              "content": [
+                "\"utf8\""
+              ]
+            },
+            " when reading a text file is a safe bet. If you do not pass an encoding, Node will assume you are interested in the binary data and will give you a ",
+            {
+              "element": "literal",
+              "content": [
+                "Buffer"
+              ]
+            },
+            " object instead of a string. This is an array-like object that contains numbers representing the bytes in the files."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A similar function, ",
+            {
+              "element": "literal",
+              "content": [
+                "writeFile"
+              ]
+            },
+            ", is used to write a file to disk."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Here, it was not necessary to specify the encoding since ",
+            {
+              "element": "literal",
+              "content": [
+                "writeFile"
+              ]
+            },
+            " will assume that if it is given a string to write, rather than a ",
+            {
+              "element": "literal",
+              "content": [
+                "Buffer"
+              ]
+            },
+            " object, it should write it out as text using its default character encoding, which is UTF-8."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "\"fs\""
+              ]
+            },
+            " module contains many other useful functions: ",
+            {
+              "element": "literal",
+              "content": [
+                "readdir"
+              ]
+            },
+            " will return the files in a directory as an array of strings, ",
+            {
+              "element": "literal",
+              "content": [
+                "stat"
+              ]
+            },
+            " will retrieve information about a file, ",
+            {
+              "element": "literal",
+              "content": [
+                "rename"
+              ]
+            },
+            " will rename a file, ",
+            {
+              "element": "literal",
+              "content": [
+                "unlink"
+              ]
+            },
+            " will remove one, and so on. See the documentation at ",
+            {
+              "element": "reference",
+              "content": [
+                {
+                  "element": "em",
+                  "content": [
+                    "nodejs.org"
+                  ]
+                }
+              ]
+            },
+            " for specifics."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Many of the functions in ",
+            {
+              "element": "literal",
+              "content": [
+                "\"fs\""
+              ]
+            },
+            " come in both synchronous and asynchronous variants. For example, there is a synchronous version of ",
+            {
+              "element": "literal",
+              "content": [
+                "readFile"
+              ]
+            },
+            " called ",
+            {
+              "element": "literal",
+              "content": [
+                "readFileSync"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Synchronous functions require less ceremony to use and can be useful in simple scripts, where the extra speed provided by asynchronous I/O is irrelevant. But note that while such a synchronous operation is being performed, your program will be stopped entirely. If it should be responding to the user or to other machines on the network, being stuck on synchronous I/O might produce annoying delays."
+          ]
+        }
+      ],
+      "title": "The file system module"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Another central module is called ",
+            {
+              "element": "literal",
+              "content": [
+                "\"http\""
+              ]
+            },
+            ". It provides functionality for running HTTP servers and making HTTP requests."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is all it takes to start a simple HTTP server:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "If you run this script on your own machine, you can point your web browser at ",
+            {
+              "element": "reference",
+              "content": [
+                {
+                  "element": "em",
+                  "content": [
+                    "http://localhost:8000/hello"
+                  ]
+                }
+              ]
+            },
+            " to make a request to your server. It will respond with a small HTML page."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The function passed as an argument to ",
+            {
+              "element": "literal",
+              "content": [
+                "createServer"
+              ]
+            },
+            " is called every time a client tries to connect to the server. The ",
+            {
+              "element": "literal",
+              "content": [
+                "request"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "response"
+              ]
+            },
+            " variables are objects representing the incoming and outgoing data. The first contains information about the request, such as its ",
+            {
+              "element": "literal",
+              "content": [
+                "url"
+              ]
+            },
+            " property, which tells us to what URL the request was made."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To send something back, you call methods on the ",
+            {
+              "element": "literal",
+              "content": [
+                "response"
+              ]
+            },
+            " object. The first, ",
+            {
+              "element": "literal",
+              "content": [
+                "writeHead"
+              ]
+            },
+            ", will write out the response headers (see ",
+            {
+              "element": "reference",
+              "content": "Chapter 17"
+            },
+            "). You give it the status code (200 for “OK” in this case) and an object that contains header values. Here we tell the client that we will be sending back an HTML document."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Next, the actual response body (the document itself) is sent with ",
+            {
+              "element": "literal",
+              "content": [
+                "response.write"
+              ]
+            },
+            ". You are allowed to call this method multiple times if you want to send the response piece by piece, possibly streaming data to the client as it becomes available. Finally, ",
+            {
+              "element": "literal",
+              "content": [
+                "response.end"
+              ]
+            },
+            " signals the end of the response."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The call to ",
+            {
+              "element": "literal",
+              "content": [
+                "server.listen"
+              ]
+            },
+            " causes the server to start waiting for connections on port 8000. This is the reason you have to connect to ",
+            {
+              "element": "em",
+              "content": [
+                "localhost:8000"
+              ]
+            },
+            ", rather than just ",
+            {
+              "element": "em",
+              "content": [
+                "localhost"
+              ]
+            },
+            " (which would use the default port, 80), to speak to this server."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To stop running a Node script like this, which doesn’t finish automatically because it is waiting for further events (in this case, network connections), press Ctrl-C."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A real web server usually does more than the one in the previous example—it looks at the request’s method (the ",
+            {
+              "element": "literal",
+              "content": [
+                "method"
+              ]
+            },
+            " property) to see what action the client is trying to perform and at the request’s URL to find out which resource this action is being performed on. You’ll see a more advanced server ",
+            {
+              "element": "reference",
+              "content": "later in this chapter"
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To act as an HTTP ",
+            {
+              "element": "em",
+              "content": [
+                "client"
+              ]
+            },
+            ", we can use the ",
+            {
+              "element": "literal",
+              "content": [
+                "request"
+              ]
+            },
+            " function in the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"http\""
+              ]
+            },
+            " module."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The first argument to ",
+            {
+              "element": "literal",
+              "content": [
+                "request"
+              ]
+            },
+            " configures the request, telling Node what server to talk to, what path to request from that server, which method to use, and so on. The second argument is the function that should be called when a response comes in. It is given an object that allows us to inspect the response, for example to find out its status code."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Just like the ",
+            {
+              "element": "literal",
+              "content": [
+                "response"
+              ]
+            },
+            " object we saw in the server, the object returned by ",
+            {
+              "element": "literal",
+              "content": [
+                "request"
+              ]
+            },
+            " allows us to stream data into the request with the ",
+            {
+              "element": "literal",
+              "content": [
+                "write"
+              ]
+            },
+            " method and finish the request with the ",
+            {
+              "element": "literal",
+              "content": [
+                "end"
+              ]
+            },
+            " method. The example does not use ",
+            {
+              "element": "literal",
+              "content": [
+                "write"
+              ]
+            },
+            " because ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " requests should not contain data in their request body."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To make requests to secure HTTP (HTTPS) URLs, Node provides a package called ",
+            {
+              "element": "literal",
+              "content": [
+                "https"
+              ]
+            },
+            ", which contains its own ",
+            {
+              "element": "literal",
+              "content": [
+                "request"
+              ]
+            },
+            " function, similar to ",
+            {
+              "element": "literal",
+              "content": [
+                "http.request"
+              ]
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "The HTTP module"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "We have seen two examples of writable streams in the HTTP examples—namely, the response object that the server could write to and the request object that was returned from ",
+            {
+              "element": "literal",
+              "content": [
+                "http.request"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " Writable streams are a widely used concept in Node interfaces. All writable streams have a ",
+            {
+              "element": "literal",
+              "content": [
+                "write"
+              ]
+            },
+            " method, which can be passed a string or a ",
+            {
+              "element": "literal",
+              "content": [
+                "Buffer"
+              ]
+            },
+            " object. Their ",
+            {
+              "element": "literal",
+              "content": [
+                "end"
+              ]
+            },
+            " method closes the stream and, if given an argument, will also write out a piece of data before it does so. Both of these methods can also be given a callback as an additional argument, which they will call when the writing to or closing of the stream has finished."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is possible to create a writable stream that points at a file with the ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.createWriteStream"
+              ]
+            },
+            " function. Then you can use the ",
+            {
+              "element": "literal",
+              "content": [
+                "write"
+              ]
+            },
+            " method on the resulting object to write the file one piece at a time, rather than in one shot as with ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.writeFile"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Readable streams are a little more involved. Both the ",
+            {
+              "element": "literal",
+              "content": [
+                "request"
+              ]
+            },
+            " variable that was passed to the HTTP server’s callback function and the ",
+            {
+              "element": "literal",
+              "content": [
+                "response"
+              ]
+            },
+            " variable passed to the HTTP client are readable streams. (A server reads requests and then writes responses, whereas a client first writes a request and then reads a response.) Reading from a stream is done using event handlers, rather than methods."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Objects that emit events in Node have a method called ",
+            {
+              "element": "literal",
+              "content": [
+                "on"
+              ]
+            },
+            " that is similar to the ",
+            {
+              "element": "literal",
+              "content": [
+                "addEventListener"
+              ]
+            },
+            " method in the browser. You give it an event name and then a function, and it will register that function to be called whenever the given event occurs."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Readable streams have ",
+            {
+              "element": "literal",
+              "content": [
+                "\"data\""
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "\"end\""
+              ]
+            },
+            " events. The first is fired every time some data comes in, and the second is called whenever the stream is at its end. This model is most suited for “streaming” data, which can be immediately processed, even when the whole document isn’t available yet. A file can be read as a readable stream by using the ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.createReadStream"
+              ]
+            },
+            " function."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following code creates a server that reads request bodies and streams them back to the client as all-uppercase text:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "chunk"
+              ]
+            },
+            " variable passed to the data handler will be a binary ",
+            {
+              "element": "literal",
+              "content": [
+                "Buffer"
+              ]
+            },
+            ", which we can convert to a string by calling ",
+            {
+              "element": "literal",
+              "content": [
+                "toString"
+              ]
+            },
+            " on it, which will decode it using the default encoding (UTF-8)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following piece of code, if run while the uppercasing server is running, will send a request to that server and write out the response it gets:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The example writes to ",
+            {
+              "element": "literal",
+              "content": [
+                "process.stdout"
+              ]
+            },
+            " (the process’ standard output, as a writable stream) instead of using ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            ". We can’t use ",
+            {
+              "element": "literal",
+              "content": [
+                "console.log"
+              ]
+            },
+            " because it adds an extra newline character after each piece of text that it writes, which isn’t appropriate here."
+          ]
+        }
+      ],
+      "title": "Streams"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Let’s combine our newfound knowledge about HTTP servers and talking to the file system and create a bridge between them: an HTTP server that allows remote access to a file system. Such a server has many uses. It allows web applications to store and share data or give a group of people shared access to a bunch of files."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "  When we treat files as HTTP resources, the HTTP methods ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "PUT"
+              ]
+            },
+            ", and ",
+            {
+              "element": "literal",
+              "content": [
+                "DELETE"
+              ]
+            },
+            " can be used to read, write, and delete the files, respectively. We will interpret the path in the request as the path of the file that the request refers to."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " We probably don’t want to share our whole file system, so we’ll interpret these paths as starting in the server’s working directory, which is the directory in which it was started. If I ran the server from ",
+            {
+              "element": "literal",
+              "content": [
+                "/home/marijn/public/"
+              ]
+            },
+            " (or ",
+            {
+              "element": "literal",
+              "content": [
+                "C:\\Users\\marijn\\public\\"
+              ]
+            },
+            " on Windows), then a request for ",
+            {
+              "element": "literal",
+              "content": [
+                "/file.txt"
+              ]
+            },
+            " should refer to ",
+            {
+              "element": "literal",
+              "content": [
+                "/home/marijn/public/file.txt"
+              ]
+            },
+            " (or ",
+            {
+              "element": "literal",
+              "content": [
+                "C:\\Users\\marijn\\public\\file.txt"
+              ]
+            },
+            ")."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We’ll build the program piece by piece, using an object called ",
+            {
+              "element": "literal",
+              "content": [
+                "methods"
+              ]
+            },
+            " to store the functions that handle the various HTTP methods."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This starts a server that just returns 405 error responses, which is the code used to indicate that a given method isn’t handled by the server."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "respond"
+              ]
+            },
+            " function is passed to the functions that handle the various methods and acts as a callback to finish the request. It takes an HTTP status code, a body, and optionally a content type as arguments. If the value passed as the body is a readable stream, it will have a ",
+            {
+              "element": "literal",
+              "content": [
+                "pipe"
+              ]
+            },
+            " method, which is used to forward a readable stream to a writable stream. If not, it is assumed to be either ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " (no body) or a string and is passed directly to the response’s ",
+            {
+              "element": "literal",
+              "content": [
+                "end"
+              ]
+            },
+            " method."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "  To get a path from the URL in the request, the ",
+            {
+              "element": "literal",
+              "content": [
+                "urlToPath"
+              ]
+            },
+            " function uses Node’s built-in ",
+            {
+              "element": "literal",
+              "content": [
+                "\"url\""
+              ]
+            },
+            " module to parse the URL. It takes its pathname, which will be something like ",
+            {
+              "element": "literal",
+              "content": [
+                "/file.txt"
+              ]
+            },
+            ", decodes that to get rid of the ",
+            {
+              "element": "literal",
+              "content": [
+                "%20"
+              ]
+            },
+            "-style escape codes, and prefixes a single dot to produce a path relative to the current directory."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " If you are worried about the security of the ",
+            {
+              "element": "literal",
+              "content": [
+                "urlToPath"
+              ]
+            },
+            " function, you are right. We will return to that in the exercises."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We will set up the ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " method to return a list of files when reading a directory and to return the file’s content when reading a regular file."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "One tricky question is what kind of ",
+            {
+              "element": "literal",
+              "content": [
+                "Content-Type"
+              ]
+            },
+            " header we should add when returning a file’s content. Since these files could be anything, our server can’t simply return the same type for all of them. But NPM can help with that. The ",
+            {
+              "element": "literal",
+              "content": [
+                "mime"
+              ]
+            },
+            " package (content type indicators like ",
+            {
+              "element": "literal",
+              "content": [
+                "text/plain"
+              ]
+            },
+            " are also called ",
+            {
+              "element": "em",
+              "content": [
+                "MIME types"
+              ]
+            },
+            ") knows the correct type for a huge number of file extensions."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If you run the following ",
+            {
+              "element": "literal",
+              "content": [
+                "npm"
+              ]
+            },
+            " command in the directory where the server script lives, you’ll be able to use ",
+            {
+              "element": "literal",
+              "content": [
+                "require(\"mime\")"
+              ]
+            },
+            " to get access to the library:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "$ npm install mime\nnpm http GET https://registry.npmjs.org/mime\nnpm http 304 https://registry.npmjs.org/mime\nmime@1.2.11 node_modules/mime"
+        },
+        {
+          "element": "p",
+          "content": [
+            "When a requested file does not exist, the correct HTTP error code to return is 404. We will use ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.stat"
+              ]
+            },
+            ", which looks up information on a file, to find out both whether the file exists and whether it is a directory."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Because it has to touch the disk and thus might take a while, ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.stat"
+              ]
+            },
+            " is asynchronous. When the file does not exist, ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.stat"
+              ]
+            },
+            " will pass an error object with a ",
+            {
+              "element": "literal",
+              "content": [
+                "code"
+              ]
+            },
+            " property of ",
+            {
+              "element": "literal",
+              "content": [
+                "\"ENOENT\""
+              ]
+            },
+            " to its callback. It would be nice if Node defined different subtypes of ",
+            {
+              "element": "literal",
+              "content": [
+                "Error"
+              ]
+            },
+            " for different types of error, but it doesn’t. Instead, it just puts obscure, Unix-inspired codes in there."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We are going to report any errors we didn’t expect with status code 500, which indicates that the problem exists in the server, as opposed to codes starting with 4 (such as 404), which refer to bad requests. There are some situations in which this is not entirely accurate, but for a small example program like this, it will have to be good enough."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "stats"
+              ]
+            },
+            " object returned by ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.stat"
+              ]
+            },
+            " tells us a number of things about a file, such as its size (",
+            {
+              "element": "literal",
+              "content": [
+                "size"
+              ]
+            },
+            " property) and its modification date (",
+            {
+              "element": "literal",
+              "content": [
+                "mtime"
+              ]
+            },
+            " property). Here we are interested in the question of whether it is a directory or a regular file, which the ",
+            {
+              "element": "literal",
+              "content": [
+                "isDirectory"
+              ]
+            },
+            " method tells us."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We use ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.readdir"
+              ]
+            },
+            " to read the list of files in a directory and, in yet another callback, return it to the user. For normal files, we create a readable stream with ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.createReadStream"
+              ]
+            },
+            " and pass it to ",
+            {
+              "element": "literal",
+              "content": [
+                "respond"
+              ]
+            },
+            ", along with the content type that the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"mime\""
+              ]
+            },
+            " module gives us for the file’s name."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The code to handle ",
+            {
+              "element": "literal",
+              "content": [
+                "DELETE"
+              ]
+            },
+            " requests is slightly simpler."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "You may be wondering why trying to delete a nonexistent file returns a 204 status, rather than an error. When the file that is being deleted is not there, you could say that the request’s objective is already fulfilled. The HTTP standard encourages people to make requests ",
+            {
+              "element": "em",
+              "content": [
+                "idempotent"
+              ]
+            },
+            ", which means that applying them multiple times does not produce a different result."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "When an HTTP response does not contain any data, the status code 204 (“no content”) can be used to indicate this. Since we need to provide callbacks that either report an error or return a 204 response in a few different situations, I wrote a ",
+            {
+              "element": "literal",
+              "content": [
+                "respondErrorOrNothing"
+              ]
+            },
+            " function that creates such a callback."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is the handler for ",
+            {
+              "element": "literal",
+              "content": [
+                "PUT"
+              ]
+            },
+            " requests:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Here, we don’t need to check whether the file exists—if it does, we’ll just overwrite it. We again use ",
+            {
+              "element": "literal",
+              "content": [
+                "pipe"
+              ]
+            },
+            " to move data from a readable stream to a writable one, in this case from the request to the file. If creating the stream fails, an ",
+            {
+              "element": "literal",
+              "content": [
+                "\"error\""
+              ]
+            },
+            " event is raised for it, which we report in our response. When the data is transferred successfully, ",
+            {
+              "element": "literal",
+              "content": [
+                "pipe"
+              ]
+            },
+            " will close both streams, which will cause a ",
+            {
+              "element": "literal",
+              "content": [
+                "\"finish\""
+              ]
+            },
+            " event to fire on the writable stream. When that happens, we can report success to the client with a 204 response."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The full script for the server is available at ",
+            {
+              "element": "reference",
+              "content": [
+                {
+                  "element": "em",
+                  "content": [
+                    "eloquentjavascript.net/code/file_server.js"
+                  ]
+                }
+              ]
+            },
+            ". You can download that and run it with Node to start your own file server. And of course, you can modify and extend it to solve this chapter’s exercises or to experiment."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The command-line tool ",
+            {
+              "element": "literal",
+              "content": [
+                "curl"
+              ]
+            },
+            ", widely available on Unix-like systems, can be used to make HTTP requests. The following session briefly tests our server. Note that ",
+            {
+              "element": "literal",
+              "content": [
+                "-X"
+              ]
+            },
+            " is used to set the request’s method and ",
+            {
+              "element": "literal",
+              "content": [
+                "-d"
+              ]
+            },
+            " is used to include a request body."
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "$ curl http://localhost:8000/file.txt\nFile not found\n$ curl -X PUT -d hello http://localhost:8000/file.txt\n$ curl http://localhost:8000/file.txt\nhello\n$ curl -X DELETE http://localhost:8000/file.txt\n$ curl http://localhost:8000/file.txt\nFile not found"
+        },
+        {
+          "element": "p",
+          "content": [
+            "The first request for ",
+            {
+              "element": "literal",
+              "content": [
+                "file.txt"
+              ]
+            },
+            " fails since the file does not exist yet. The ",
+            {
+              "element": "literal",
+              "content": [
+                "PUT"
+              ]
+            },
+            " request creates the file, and behold, the next request successfully retrieves it. After deleting it with a ",
+            {
+              "element": "literal",
+              "content": [
+                "DELETE"
+              ]
+            },
+            " request, the file is again missing."
+          ]
+        }
+      ],
+      "title": "A simple file server"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In the code for the file server, there are ",
+            {
+              "element": "em",
+              "content": [
+                "six"
+              ]
+            },
+            " places where we are explicitly routing exceptions that we don’t know how to handle into error responses. Because exceptions aren’t automatically propagated to callbacks but rather passed to them as arguments, they have to be handled explicitly every time. This completely defeats the advantage of exception handling, namely, the ability to centralize the handling of failure conditions."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "What happens when something actually ",
+            {
+              "element": "em",
+              "content": [
+                "throws"
+              ]
+            },
+            " an exception in this system? Since we are not using any ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " blocks, the exception will propagate to the top of the call stack. In Node, that aborts the program and writes information about the exception (including a stack trace) to the program’s standard error stream."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This means that our server will crash whenever a problem is encountered in the server’s code itself, as opposed to asynchronous problems, which will be passed as arguments to the callbacks. If we wanted to handle all exceptions raised during the handling of a request, to make sure we send a response, we would have to add ",
+            {
+              "element": "literal",
+              "content": [
+                "try/catch"
+              ]
+            },
+            " blocks to ",
+            {
+              "element": "em",
+              "content": [
+                "every"
+              ]
+            },
+            " callback."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is not workable. Many Node programs are written to make as little use of exceptions as possible, with the assumption that if an exception is raised, it is not something the program can handle, and crashing is the right response."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Another approach is to use promises, which were introduced in ",
+            {
+              "element": "reference",
+              "content": "Chapter 17"
+            },
+            ". Those catch exceptions raised by callback functions and propagate them as failures. It is possible to load a promise library in Node and use that to manage your asynchronous control. Few Node libraries integrate promises, but it is often trivial to wrap them. The excellent ",
+            {
+              "element": "literal",
+              "content": [
+                "\"promise\""
+              ]
+            },
+            " module from NPM contains a function called ",
+            {
+              "element": "literal",
+              "content": [
+                "denodeify"
+              ]
+            },
+            ", which takes an asynchronous function like ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.readFile"
+              ]
+            },
+            " and converts it to a promise-returning function."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "For comparison, I’ve written another version of the file server based on promises, which you can find at ",
+            {
+              "element": "reference",
+              "content": [
+                {
+                  "element": "em",
+                  "content": [
+                    "eloquentjavascript.net/code/file_server_promises.js"
+                  ]
+                }
+              ]
+            },
+            ". It is slightly cleaner because functions can now ",
+            {
+              "element": "em",
+              "content": [
+                "return"
+              ]
+            },
+            " their results, rather than having to call callbacks, and the routing of exceptions is implicit, rather than explicit."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "I’ll list a few lines from the promise-based file server to illustrate the difference in the style of programming."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "fsp"
+              ]
+            },
+            " object that is used by this code contains promise-style variants of a number of ",
+            {
+              "element": "literal",
+              "content": [
+                "fs"
+              ]
+            },
+            " functions, wrapped by ",
+            {
+              "element": "literal",
+              "content": [
+                "Promise.denodeify"
+              ]
+            },
+            ". The object returned from the method handler, with ",
+            {
+              "element": "literal",
+              "content": [
+                "code"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "body"
+              ]
+            },
+            " properties, will become the final result of the chain of promises, and it will be used to determine what kind of response to send to the client."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "inspectPath"
+              ]
+            },
+            " function is a simple wrapper around ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.stat"
+              ]
+            },
+            ", which handles the case where the file is not found. In that case, we replace the failure with a success that yields ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            ". All other errors are allowed to propagate. When the promise that is returned from these handlers fails, the HTTP server responds with a 500 status code."
+          ]
+        }
+      ],
+      "title": "Error handling"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Node is a nice, straightforward system that lets us run JavaScript in a nonbrowser context. It was originally designed for network tasks to play the role of a ",
+            {
+              "element": "em",
+              "content": [
+                "node"
+              ]
+            },
+            " in a network. But it lends itself to all kinds of scripting tasks, and if writing JavaScript is something you enjoy, automating everyday tasks with Node works wonderfully."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "NPM provides libraries for everything you can think of (and quite a few things you’d probably never think of), and it allows you to fetch and install those libraries by running a simple command. Node also comes with a number of built-in modules, including the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"fs\""
+              ]
+            },
+            " module, for working with the file system, and the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"http\""
+              ]
+            },
+            " module, for running HTTP servers and making HTTP requests."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "All input and output in Node is done asynchronously, unless you explicitly use a synchronous variant of a function, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "fs.readFileSync"
+              ]
+            },
+            ". You provide callback functions, and Node will call them at the appropriate time, when the I/O you asked for has finished."
+          ]
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "In ",
+                {
+                  "element": "reference",
+                  "content": "Chapter 17"
+                },
+                ", the first exercise was to make several requests to ",
+                {
+                  "element": "reference",
+                  "content": [
+                    {
+                      "element": "em",
+                      "content": [
+                        "eloquentjavascript.net/author"
+                      ]
+                    }
+                  ]
+                },
+                ", asking for different types of content by passing different ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Accept"
+                  ]
+                },
+                " headers."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Do this again, using Node’s ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "http.request"
+                  ]
+                },
+                " function. Ask for at least the media types ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "text/plain"
+                  ]
+                },
+                ", ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "text/html"
+                  ]
+                },
+                ", and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "application/json"
+                  ]
+                },
+                ". Remember that headers to a request can be given as an object, in the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "headers"
+                  ]
+                },
+                " property of ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "http.request"
+                  ]
+                },
+                "’s first argument."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Write out the content of the responses to each request."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Don’t forget to call the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "end"
+                  ]
+                },
+                " method on the object returned by ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "http.request"
+                  ]
+                },
+                " in order to actually fire off the request."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The response object passed to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "http.request"
+                  ]
+                },
+                "’s callback is a readable stream. This means that it is not entirely trivial to get the whole response body from it. The following utility function reads a whole stream and calls a callback function with the result, using the usual pattern of passing any errors it encounters as the first argument to the callback:"
+              ]
+            },
+            {
+              "element": "listing",
+              "numbered": false,
+              "content": []
+            }
+          ],
+          "title": "Content negotiation, again"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "For easy remote access to some files, I might get into the habit of having the ",
+                {
+                  "element": "reference",
+                  "content": "file server"
+                },
+                " defined in this chapter running on my machine, in the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "/home/marijn/public"
+                  ]
+                },
+                " directory. Then, one day, I find that someone has gained access to all the passwords I stored in my browser."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "What happened?"
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "If it isn’t clear to you yet, think back to the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "urlToPath"
+                  ]
+                },
+                " function, defined like this:"
+              ]
+            },
+            {
+              "element": "listing",
+              "numbered": false,
+              "content": []
+            },
+            {
+              "element": "p",
+              "content": [
+                "Now consider the fact that paths passed to the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"fs\""
+                  ]
+                },
+                " functions can be relative—they may contain ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"../\""
+                  ]
+                },
+                " to go up a directory. What happens when a client sends requests to URLs like the ones shown here?"
+              ]
+            },
+            {
+              "element": "pre",
+              "content": "http://myhostname:8000/../.config/config/google-chrome/Default/Web%20Data\nhttp://myhostname:8000/../.ssh/id_dsa\nhttp://myhostname:8000/../../../etc/passwd"
+            },
+            {
+              "element": "p",
+              "content": [
+                "Change ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "urlToPath"
+                  ]
+                },
+                " to fix this problem. Take into account the fact that Node on Windows allows both forward slashes and backslashes to separate directories."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Also, meditate on the fact that as soon as you expose some half-baked system on the Internet, the bugs in that system might be used to do bad things to your machine."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "It is enough to strip out all occurrences of two dots that have a slash, a backslash, or the end of the string on both sides. Using the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "replace"
+                  ]
+                },
+                " method with a regular expression is the easiest way to do this. Do not forget the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "g"
+                  ]
+                },
+                " flag on the expression, or ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "replace"
+                  ]
+                },
+                " will replace only a single instance, and people could still get around this safety measure by including additional double dots in their paths! Also make sure you do the replace ",
+                {
+                  "element": "em",
+                  "content": [
+                    "after"
+                  ]
+                },
+                " decoding the string, or it would be possible to foil the check by encoding a dot or a slash."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " Another potentially worrying case is when paths start with a slash, which are interpreted as absolute paths. But because ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "urlToPath"
+                  ]
+                },
+                " puts a dot character in front of the path, it is impossible to create requests that result in such a path. Multiple slashes in a row, inside the path, are odd but will be treated as a single slash by the file system."
+              ]
+            }
+          ],
+          "title": "Fixing a leak"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Though the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "DELETE"
+                  ]
+                },
+                " method is wired up to delete directories (using ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "fs.rmdir"
+                  ]
+                },
+                "), the file server currently does not provide any way to ",
+                {
+                  "element": "em",
+                  "content": [
+                    "create"
+                  ]
+                },
+                " a directory."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Add support for a method ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "MKCOL"
+                  ]
+                },
+                ", which should create a directory by calling ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "fs.mkdir"
+                  ]
+                },
+                ". ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "MKCOL"
+                  ]
+                },
+                " is not one of the basic HTTP methods, but it does exist, for this same purpose, in the ",
+                {
+                  "element": "em",
+                  "content": [
+                    "WebDAV"
+                  ]
+                },
+                " standard, which specifies a set of extensions to HTTP, making it suitable for writing resources, not just reading them."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You can use the function that implements the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "DELETE"
+                  ]
+                },
+                " method as a blueprint for the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "MKCOL"
+                  ]
+                },
+                " method. When no file is found, try to create a directory with ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "fs.mkdir"
+                  ]
+                },
+                ". When a directory exists at that path, you can return a 204 response so that directory creation requests are idempotent. If a nondirectory file exists here, return an error code. The code 400 (“bad request”) would be appropriate here."
+              ]
+            }
+          ],
+          "title": "Creating directories"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Since the file server serves up any kind of file and even includes the right ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Content-Type"
+                  ]
+                },
+                " header, you can use it to serve a website. Since it allows everybody to delete and replace files, it would be an interesting kind of website: one that can be modified, vandalized, and destroyed by everybody who takes the time to create the right HTTP request. Still, it would be a website."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Write a basic HTML page that includes a simple JavaScript file. Put the files in a directory served by the file server and open them in your browser."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Next, as an advanced exercise or even a weekend project, combine all the knowledge you gained from this book to build a more user-friendly interface for modifying the website from ",
+                {
+                  "element": "em",
+                  "content": [
+                    "inside"
+                  ]
+                },
+                " the website."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Use an HTML form (",
+                {
+                  "element": "reference",
+                  "content": "Chapter 18"
+                },
+                ") to edit the content of the files that make up the website, allowing the user to update them on the server by using HTTP requests as described in ",
+                {
+                  "element": "reference",
+                  "content": "Chapter 17"
+                },
+                "."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Start by making only a single file editable. Then make it so that the user can select which file to edit. Use the fact that our file server returns lists of files when reading a directory."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Don’t work directly in the code on the file server, since if you make a mistake you are likely to damage the files there. Instead, keep your work outside of the publicly accessible directory and copy it there when testing."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "If your computer is directly connected to the Internet, without a firewall, router, or other interfering device in between, you might be able to invite a friend to use your website. To check, go to ",
+                {
+                  "element": "reference",
+                  "content": [
+                    {
+                      "element": "em",
+                      "content": [
+                        "whatismyip.com"
+                      ]
+                    }
+                  ]
+                },
+                ", copy the IP address it gives you into the address bar of your browser, and add ",
+                {
+                  "element": "literal",
+                  "content": [
+                    ":8000"
+                  ]
+                },
+                " after it to select the right port. If that brings you to your site, it is online for everybody to see."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You can create a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "textarea",
+                    ">"
+                  ]
+                },
+                " element to hold the content of the file that is being edited. A ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "GET"
+                  ]
+                },
+                " request, using ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "XMLHttpRequest"
+                  ]
+                },
+                ", can be used to get the current content of the file. You can use relative URLs like ",
+                {
+                  "element": "em",
+                  "content": [
+                    "index.html"
+                  ]
+                },
+                ", instead of ",
+                {
+                  "element": "reference",
+                  "content": [
+                    {
+                      "element": "em",
+                      "content": [
+                        "http://localhost:8000/index.html"
+                      ]
+                    }
+                  ]
+                },
+                ", to refer to files on the same server as the running script."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Then, when the user clicks a button (you can use a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "form",
+                    ">"
+                  ]
+                },
+                " element and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"submit\""
+                  ]
+                },
+                " event or simply a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"click\""
+                  ]
+                },
+                " handler), make a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "PUT"
+                  ]
+                },
+                " request to the same URL, with the content of the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "textarea",
+                    ">"
+                  ]
+                },
+                " as request body, to save the file."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You can then add a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "select",
+                    ">"
+                  ]
+                },
+                " element that contains all the files in the server’s root directory by adding ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "option",
+                    ">"
+                  ]
+                },
+                " elements containing the lines returned by a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "GET"
+                  ]
+                },
+                " request to the URL ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "/"
+                  ]
+                },
+                ". When the user selects another file (a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"change\""
+                  ]
+                },
+                " event on the field), the script must fetch and display that file. Also make sure that when saving a file, you use the currently selected filename."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Unfortunately, the server is too simplistic to be able to reliably read files from subdirectories since it does not tell us whether the thing we fetched with a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "GET"
+                  ]
+                },
+                " request is a regular file or a directory. Can you think of a way to extend the server to address this?"
+              ]
+            }
+          ],
+          "title": "A public space on the web"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Node.js"
+}

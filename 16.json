@@ -1,0 +1,2535 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "M.C. Escher cited by Bruno Ernst in The Magic Mirror of M.C. Escher",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Drawing is deception."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Browsers give us several ways to display graphics. The simplest way is to use styles to position and color regular DOM elements. This can get you quite far, as the game in the ",
+        {
+          "element": "reference",
+          "content": "previous chapter"
+        },
+        " showed. By adding partially transparent background images to the nodes, we can make them look exactly the way we want. It is even possible to rotate or skew nodes by using the ",
+        {
+          "element": "literal",
+          "content": [
+            "transform"
+          ]
+        },
+        " style."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "But we’d be using the DOM for something that it wasn’t originally designed for. Some tasks, such as drawing a line between arbitrary points, are extremely awkward to do with regular HTML elements."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "There are two alternatives. The first is DOM-based but utilizes ",
+        {
+          "element": "em",
+          "content": [
+            "Scalable Vector Graphics (SVG)"
+          ]
+        },
+        ", rather than HTML elements. Think of SVG as a dialect for describing documents that focuses on shapes rather than text. You can embed an SVG document in an HTML document, or you can include it through an ",
+        {
+          "element": "literal",
+          "content": [
+            "<",
+            "img",
+            ">"
+          ]
+        },
+        " tag."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "The second alternative is called a ",
+        {
+          "element": "em",
+          "content": [
+            "canvas"
+          ]
+        },
+        ". A canvas is a single DOM element that encapsulates a picture. It provides a programming interface for drawing shapes onto the space taken up by the node. The main difference between a canvas and an SVG picture is that in SVG the original description of the shapes is preserved so that they can be moved or resized at any time. A canvas, on the other hand, converts the shapes to pixels (colored dots on a raster) as soon as they are drawn and does not remember what these pixels represent. The only way to move a shape on a canvas is to clear the canvas (or the part of the canvas around the shape) and redraw it with the shape in a new position."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "This book will not go into SVG in detail, but I will briefly  explain how it works. At the ",
+            {
+              "element": "reference",
+              "content": "end of the chapter"
+            },
+            ", I’ll come back to the trade-offs that you must consider when deciding which drawing mechanism is appropriate for a given application."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This is an HTML document with a simple SVG picture in it:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "xmlns"
+              ]
+            },
+            " attribute changes an element (and its children) to a different ",
+            {
+              "element": "em",
+              "content": [
+                "XML namespace"
+              ]
+            },
+            ". This namespace, identified by a URL, specifies the dialect that we are currently speaking. The ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "circle",
+                ">"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "rect",
+                ">"
+              ]
+            },
+            " tags, which do not exist in HTML, do have a meaning in SVG—they draw shapes using the style and position specified by their attributes."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "These tags create DOM elements, just like HTML tags. For example, this changes the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "circle",
+                ">"
+              ]
+            },
+            " element to be colored cyan instead:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "SVG"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " Canvas graphics can be drawn onto a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "canvas",
+                ">"
+              ]
+            },
+            " element. You can give such an element ",
+            {
+              "element": "literal",
+              "content": [
+                "width"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "height"
+              ]
+            },
+            " attributes to determine its size in pixels."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A new canvas is empty, meaning it is entirely transparent and thus shows up simply as empty space in the document."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "canvas",
+                ">"
+              ]
+            },
+            " tag is intended to support different styles of drawing. To get access to an actual drawing interface, we first need to create a ",
+            {
+              "element": "em",
+              "content": [
+                "context"
+              ]
+            },
+            ", which is an object whose methods provide the drawing interface. There are currently two widely supported drawing styles: ",
+            {
+              "element": "literal",
+              "content": [
+                "\"2d\""
+              ]
+            },
+            " for two-dimensional graphics and ",
+            {
+              "element": "literal",
+              "content": [
+                "\"webgl\""
+              ]
+            },
+            " for three-dimensional graphics through the OpenGL interface."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This book won’t discuss WebGL. We stick to two dimensions. But if you are interested in three-dimensional graphics, I do encourage you to look into WebGL. It provides a very direct interface to modern graphics hardware and thus allows you to render even complicated scenes efficiently, using JavaScript."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " A context is created through the ",
+            {
+              "element": "literal",
+              "content": [
+                "getContext"
+              ]
+            },
+            " method on the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "canvas",
+                ">"
+              ]
+            },
+            " element."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "After creating the context object, the example draws a red rectangle 100 pixels wide and 50 pixels high, with its top-left corner at coordinates (10,10)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Just like in HTML (and SVG), the coordinate system that the canvas uses puts (0,0) at the top-left corner, and the positive y-axis goes down from there. So (10,10) is 10 pixels below and to the right of the top-left corner."
+          ]
+        }
+      ],
+      "title": "The canvas element"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In the canvas interface, a shape can be ",
+            {
+              "element": "em",
+              "content": [
+                "filled"
+              ]
+            },
+            ", meaning its area is given a certain color or pattern, or it can be ",
+            {
+              "element": "em",
+              "content": [
+                "stroked"
+              ]
+            },
+            ", which means a line is drawn along its edge. The same terminology is used by SVG."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "fillRect"
+              ]
+            },
+            " method fills a rectangle. It takes first the x- and y-coordinates of the rectangle’s top-left corner, then its width, and then its height. A similar method, ",
+            {
+              "element": "literal",
+              "content": [
+                "strokeRect"
+              ]
+            },
+            ", draws the outline of a rectangle."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Neither method takes any further parameters. The color of the fill, thickness of the stroke, and so on are not determined by an argument to the method (as you might justly expect) but rather by properties of the context object."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Setting ",
+            {
+              "element": "literal",
+              "content": [
+                "fillStyle"
+              ]
+            },
+            " changes the way shapes are filled. It can be set to a string that specifies a color, and any color understood by CSS can also be used here."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "strokeStyle"
+              ]
+            },
+            " property works similarly but determines the color used for a stroked line. The width of that line is determined by the ",
+            {
+              "element": "literal",
+              "content": [
+                "lineWidth"
+              ]
+            },
+            " property, which may contain any positive number."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " When no ",
+            {
+              "element": "literal",
+              "content": [
+                "width"
+              ]
+            },
+            " or ",
+            {
+              "element": "literal",
+              "content": [
+                "height"
+              ]
+            },
+            " attribute is specified, as in the previous example, a canvas element gets a default width of 300 pixels and height of 150 pixels."
+          ]
+        }
+      ],
+      "title": "Filling and stroking"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "   A path is a sequence of lines. The 2D canvas interface takes a peculiar approach to describing such a path. It is done entirely through side effects. Paths are not values that can be stored and passed around. Instead, if you want to do something with a path, you make a sequence of method calls to describe its shape."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This example creates a path with a number of horizontal line segments and then strokes it using the ",
+            {
+              "element": "literal",
+              "content": [
+                "stroke"
+              ]
+            },
+            " method. Each segment created with ",
+            {
+              "element": "literal",
+              "content": [
+                "lineTo"
+              ]
+            },
+            " starts at the path’s ",
+            {
+              "element": "em",
+              "content": [
+                "current"
+              ]
+            },
+            " position. That position is usually the end of the last segment, unless ",
+            {
+              "element": "literal",
+              "content": [
+                "moveTo"
+              ]
+            },
+            " was called. In that case, the next segment would start at the position passed to ",
+            {
+              "element": "literal",
+              "content": [
+                "moveTo"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "  When filling a path (using the ",
+            {
+              "element": "literal",
+              "content": [
+                "fill"
+              ]
+            },
+            " method), each shape is filled separately. A path can contain multiple shapes—each ",
+            {
+              "element": "literal",
+              "content": [
+                "moveTo"
+              ]
+            },
+            " motion starts a new one. But the path needs to be ",
+            {
+              "element": "em",
+              "content": [
+                "closed"
+              ]
+            },
+            " (meaning its start and end are in the same position) before it can be filled. If the path is not already closed, a line is added from its end to its start, and the shape enclosed by the completed path is filled."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This example draws a filled triangle. Note that only two of the triangle’s sides are explicitly drawn. The third, from the bottom-right corner back to the top, is implied and won’t be there when you stroke the path."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " You could also use the ",
+            {
+              "element": "literal",
+              "content": [
+                "closePath"
+              ]
+            },
+            " method to explicitly close a path by adding an actual line segment back to the path’s start. This segment ",
+            {
+              "element": "em",
+              "content": [
+                "is"
+              ]
+            },
+            " drawn when stroking the path."
+          ]
+        }
+      ],
+      "title": "Paths"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            " A path may also contain curved lines. These are, unfortunately, a bit more involved to draw than straight lines."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "quadraticCurveTo"
+              ]
+            },
+            " method draws a curve to a given point. To determine the curvature of the line, the method is given a control point as well as a destination point. Imagine this control point as ",
+            {
+              "element": "em",
+              "content": [
+                "attracting"
+              ]
+            },
+            " the line, giving the line its curve. The line won’t go through the control point. Rather, the direction of the line at its start and end points will be such that it aligns with the line from there to the control point. The following example illustrates this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We draw a quadratic curve from the left to the right, with (60,10) as control point, and then draw two line segments going through that control point and back to the start of the line. The result somewhat resembles a ",
+            {
+              "element": "em",
+              "content": [
+                "Star Trek"
+              ]
+            },
+            " insignia. You can see the effect of the control point: the lines leaving the lower corners start off in the direction of the control point and then curve toward their target."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "bezierCurveTo"
+              ]
+            },
+            " method draws a similar kind of curve. Instead of a single control point, this one has two—one for each of the line's endpoints. Here is a similar sketch to illustrate the behavior of such a curve:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The two control points specify the direction at both ends of the curve. The further they are away from their corresponding point, the more the curve will “bulge” in that direction."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Such curves can be hard to work with—it’s not always clear how to find the control points that provide the shape you are looking for. Sometimes you can compute them, and sometimes you’ll just have to find a suitable value by trial and error."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            {
+              "element": "em",
+              "content": [
+                "Arcs"
+              ]
+            },
+            "—fragments of a circle—are easier to reason about. The ",
+            {
+              "element": "literal",
+              "content": [
+                "arcTo"
+              ]
+            },
+            " method takes no less than five arguments. The first four arguments act somewhat like the arguments to ",
+            {
+              "element": "literal",
+              "content": [
+                "quadraticCurveTo"
+              ]
+            },
+            ". The first pair provides a sort of control point, and the second pair gives the line’s destination. The fifth argument provides the radius of the arc. The method will conceptually project a corner—a line going to the control point and then to the destination point—and round the corner’s point so that it forms part of a circle with the given radius. The ",
+            {
+              "element": "literal",
+              "content": [
+                "arcTo"
+              ]
+            },
+            " method then draws the rounded part, as well as a line from the starting position to the start of the rounded part."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "arcTo"
+              ]
+            },
+            " method won’t draw the line from the end of the rounded part to the goal position, though the word ",
+            {
+              "element": "em",
+              "content": [
+                "to"
+              ]
+            },
+            " in its name would suggest it does. You can follow up with a call to ",
+            {
+              "element": "literal",
+              "content": [
+                "lineTo"
+              ]
+            },
+            " with the same goal coordinates to add that part of the line."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To draw a circle, you could use four calls to ",
+            {
+              "element": "literal",
+              "content": [
+                "arcTo"
+              ]
+            },
+            " (each turning 90 degrees). But the ",
+            {
+              "element": "literal",
+              "content": [
+                "arc"
+              ]
+            },
+            " method provides a simpler way. It takes a pair of coordinates for the arc’s center, a radius, and then a start and end angle."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Those last two parameters make it possible to draw only part of circle. The angles are measured in radians, not degrees. This means a full circle has an angle of 2π, or ",
+            {
+              "element": "literal",
+              "content": [
+                "2 * Math.PI"
+              ]
+            },
+            ", which is about 6.28. The angle starts counting at the point to the right of the circle’s center and goes clockwise from there. You can use a start of 0 and an end bigger than 2π (say, 7) to draw a full circle."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The resulting picture contains a line from the right of the full circle (first call to ",
+            {
+              "element": "literal",
+              "content": [
+                "arc"
+              ]
+            },
+            ") to the right of the quarter-circle (second call). Like other path-drawing methods, a line drawn with ",
+            {
+              "element": "literal",
+              "content": [
+                "arc"
+              ]
+            },
+            " is connected to the previous path segment by default. You’d have to call ",
+            {
+              "element": "literal",
+              "content": [
+                "moveTo"
+              ]
+            },
+            " or start a new path if you want to avoid this."
+          ]
+        }
+      ],
+      "title": "Curves"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Imagine you’ve just taken a job at EconomiCorp, Inc., and your first assignment is to draw a pie chart of their customer satisfaction survey results."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "results"
+              ]
+            },
+            " variable contains an array of objects that represent the survey responses."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "To draw a pie chart, we draw a number of pie slices, each made up of an arc and a pair of lines to the center of that arc. We can compute the angle taken up by each arc by dividing a full circle (2π) by the total number of responses and then multiplying that number (the angle per response) by the number of people who picked a given choice."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "But a chart that doesn’t tell us what it means isn’t very helpful. We need a way to draw text to the canvas."
+          ]
+        }
+      ],
+      "title": "Drawing a pie chart"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "A 2D canvas drawing context provides the methods ",
+            {
+              "element": "literal",
+              "content": [
+                "fillText"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "strokeText"
+              ]
+            },
+            ". The latter can be useful for outlining letters, but usually ",
+            {
+              "element": "literal",
+              "content": [
+                "fillText"
+              ]
+            },
+            " is what you need. It will fill the given text with the current ",
+            {
+              "element": "literal",
+              "content": [
+                "fillColor"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "You can specify the size, style, and font of the text with the ",
+            {
+              "element": "literal",
+              "content": [
+                "font"
+              ]
+            },
+            " property. This example just gives a font size and family name. You can add ",
+            {
+              "element": "literal",
+              "content": [
+                "italic"
+              ]
+            },
+            " or ",
+            {
+              "element": "literal",
+              "content": [
+                "bold"
+              ]
+            },
+            " to the start of the string to select a style."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The last two arguments to ",
+            {
+              "element": "literal",
+              "content": [
+                "fillText"
+              ]
+            },
+            " (and ",
+            {
+              "element": "literal",
+              "content": [
+                "strokeText"
+              ]
+            },
+            ") provide the position at which the font is drawn. By default, they indicate the position of the start of the text’s alphabetic baseline, which is the line that letters “stand” on, not counting hanging parts in letters like ",
+            {
+              "element": "em",
+              "content": [
+                "j"
+              ]
+            },
+            " or ",
+            {
+              "element": "em",
+              "content": [
+                "p"
+              ]
+            },
+            ". You can change the horizontal position by setting the ",
+            {
+              "element": "literal",
+              "content": [
+                "textAlign"
+              ]
+            },
+            " property to ",
+            {
+              "element": "literal",
+              "content": [
+                "\"end\""
+              ]
+            },
+            " or ",
+            {
+              "element": "literal",
+              "content": [
+                "\"center\""
+              ]
+            },
+            " and the vertical position by setting ",
+            {
+              "element": "literal",
+              "content": [
+                "textBaseline"
+              ]
+            },
+            " to ",
+            {
+              "element": "literal",
+              "content": [
+                "\"top\""
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "\"middle\""
+              ]
+            },
+            ", or ",
+            {
+              "element": "literal",
+              "content": [
+                "\"bottom\""
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We will come back to our pie chart, and the problem of labeling the slices, in the ",
+            {
+              "element": "reference",
+              "content": "exercises"
+            },
+            " at the end of the chapter."
+          ]
+        }
+      ],
+      "title": "Text"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In computer graphics, a distinction is often made between ",
+            {
+              "element": "em",
+              "content": [
+                "vector"
+              ]
+            },
+            " graphics and ",
+            {
+              "element": "em",
+              "content": [
+                "bitmap"
+              ]
+            },
+            " graphics. The first is what we have been doing so far in this chapter—specifying a picture by giving a logical description of shapes. Bitmap graphics, on the other hand, don’t specify actual shapes but rather work with pixel data (rasters of colored dots)."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            " method allows us to draw pixel data onto a canvas. This pixel data can originate from an ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "img",
+                ">"
+              ]
+            },
+            " element or from another canvas, and neither has to be visible in the actual document. The following example creates a detached ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "img",
+                ">"
+              ]
+            },
+            " element and loads an image file into it. But it cannot immediately start drawing from this picture because the browser may not have fetched it yet. To deal with this, we register a ",
+            {
+              "element": "literal",
+              "content": [
+                "\"load\""
+              ]
+            },
+            " event handler and do the drawing after the image has loaded."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "By default, ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            " will draw the image at its original size. You can also give it two additional arguments to dictate a different width and height."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            " is given ",
+            {
+              "element": "em",
+              "content": [
+                "nine"
+              ]
+            },
+            " arguments, it can be used to draw only a fragment of an image. The second through fifth arguments indicate the rectangle (x, y, width, and height) in the source image that should be copied, and the sixth to ninth arguments give the rectangle (on the canvas) into which it should be copied."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This can be used to pack multiple ",
+            {
+              "element": "em",
+              "content": [
+                "sprites"
+              ]
+            },
+            " (image elements) into a single image file and then draw only the part you need. For example, we have this picture containing a game character in multiple poses:"
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/player_big.png"
+        },
+        {
+          "element": "p",
+          "content": [
+            "By alternating which pose we draw, we can show an animation that looks like a walking character."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To animate the picture on a canvas, the ",
+            {
+              "element": "literal",
+              "content": [
+                "clearRect"
+              ]
+            },
+            " method is useful. It resembles ",
+            {
+              "element": "literal",
+              "content": [
+                "fillRect"
+              ]
+            },
+            ", but instead of coloring the rectangle, it makes it transparent, removing the previously drawn pixels."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We know that each ",
+            {
+              "element": "em",
+              "content": [
+                "sprite"
+              ]
+            },
+            ", each subpicture, is 24 pixels wide and 30 pixels high. The following code loads the image and then sets up an interval (repeated timer) to draw the next ",
+            {
+              "element": "em",
+              "content": [
+                "frame"
+              ]
+            },
+            ":"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "cycle"
+              ]
+            },
+            " variable tracks our position in the animation. Each frame, it is incremented and then clipped back to the 0 to 7 range by using the remainder operator. This variable is then used to compute the x-coordinate that the sprite for the current pose has in the picture."
+          ]
+        }
+      ],
+      "title": "Images"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "But what if we want our character to walk to the left instead of to the right? We could add another set of sprites, of course. But we can also instruct the canvas to draw the picture the other way round."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Calling the ",
+            {
+              "element": "literal",
+              "content": [
+                "scale"
+              ]
+            },
+            " method will cause anything drawn after it to be scaled. This method takes two parameters, one to set a horizontal scale and one to set a vertical scale."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Scaling will cause everything about the drawn image, including the line width, to be stretched out or squeezed together as specified. Scaling by a negative amount will flip the picture around. The flipping happens around point (0,0), which means it will also flip the direction of the coordinate system. When a horizontal scaling of -1 is applied, a shape drawn at x position 100 will end up at what used to be position -100."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "So to turn a picture around, we can’t simply add ",
+            {
+              "element": "literal",
+              "content": [
+                "cx.scale(-1, 1)"
+              ]
+            },
+            " before the call to ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            " since that would move our picture outside of the canvas, where it won’t be visible. You could adjust the coordinates given to ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            " to compensate for this by drawing the image at x position -50 instead of 0. Another solution, which doesn’t require the code that does the drawing to know about the scale change, is to adjust the axis around which the scaling happens."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There are several other methods besides ",
+            {
+              "element": "literal",
+              "content": [
+                "scale"
+              ]
+            },
+            " that influence the coordinate system for a canvas. You can rotate subsequently drawn shapes with the ",
+            {
+              "element": "literal",
+              "content": [
+                "rotate"
+              ]
+            },
+            " method and move them with the ",
+            {
+              "element": "literal",
+              "content": [
+                "translate"
+              ]
+            },
+            " method. The interesting—and confusing—thing is that these transformations ",
+            {
+              "element": "em",
+              "content": [
+                "stack"
+              ]
+            },
+            ", meaning that each one happens relative to the previous transformations."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "So if we translate by 10 horizontal pixels twice, everything will be drawn 20 pixels to the right. If we first move the center of the coordinate system to (50,50) and then rotate by 20 degrees (0.1π in radians), that rotation will happen ",
+            {
+              "element": "em",
+              "content": [
+                "around"
+              ]
+            },
+            " point (50,50)."
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/transform.svg"
+        },
+        {
+          "element": "p",
+          "content": [
+            "But if we ",
+            {
+              "element": "em",
+              "content": [
+                "first"
+              ]
+            },
+            " rotate by 20 degrees and ",
+            {
+              "element": "em",
+              "content": [
+                "then"
+              ]
+            },
+            " translate by (50,50), the translation will happen in the rotated coordinate system and thus produce a different orientation. The order in which transformations are applied matters."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To flip a picture around the vertical line at a given x position, we can do the following:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We move the y-axis to where we want our mirror to be, apply the mirroring, and finally move the y-axis back to its proper place in the mirrored universe. The following picture explains why this works:"
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/mirror.svg"
+        },
+        {
+          "element": "p",
+          "content": [
+            "This shows the coordinate systems before and after mirroring across the central line. If we draw a triangle at a positive x position, it would, by default, be in the place where triangle 1 is. A call to ",
+            {
+              "element": "literal",
+              "content": [
+                "flipHorizontally"
+              ]
+            },
+            " first does a translation to the right, which gets us to triangle 2. It then scales, flipping the triangle back to position 3. This is not where it should be, if it were mirrored in the given line. The second ",
+            {
+              "element": "literal",
+              "content": [
+                "translate"
+              ]
+            },
+            " call fixes this—it “cancels” the initial translation and makes triangle 4 appear exactly where it should."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can now draw a mirrored character at position (100,0) by flipping the world around the character’s vertical center."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Transformation"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Transformations stick around. Everything else we draw after drawing that mirrored character would also be mirrored. That might be a problem."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is possible to save the current transformation, do some drawing and transforming, and then restore the old transformation. This is usually the proper thing to do for a function that needs to temporarily transform the coordinate system. First, we save whatever transformation the code that called the function was using. Then, the function does its thing (on top of the existing transformation), possibly adding more transformations. And finally, we revert to the transformation that we started with."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "save"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "restore"
+              ]
+            },
+            " methods on the 2D canvas context perform this kind of transformation management. They conceptually keep a stack of transformation states. When you call ",
+            {
+              "element": "literal",
+              "content": [
+                "save"
+              ]
+            },
+            ", the current state is pushed onto the stack, and when you call ",
+            {
+              "element": "literal",
+              "content": [
+                "restore"
+              ]
+            },
+            ", the state on top of the stack is taken off and used as the context’s current transformation."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "branch"
+              ]
+            },
+            " function in the following example illustrates what you can do with a function that changes the transformation and then calls another function (in this case itself), which continues drawing with the given transformation."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This function draws a treelike shape by drawing a line, moving the center of the coordinate system to the end of the line, and calling itself twice—first rotated to the left and then rotated to the right. Every call reduces the length of the branch drawn, and the recursion stops when the length drops below 8."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "If the calls to ",
+            {
+              "element": "literal",
+              "content": [
+                "save"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "restore"
+              ]
+            },
+            " were not there, the second recursive call to ",
+            {
+              "element": "literal",
+              "content": [
+                "branch"
+              ]
+            },
+            " would end up with the position and rotation created by the first call. It wouldn’t be connected to the current branch but rather to the innermost, rightmost branch drawn by the first call. The resulting shape might also be interesting, but it is definitely not a tree."
+          ]
+        }
+      ],
+      "title": "Storing and clearing transformations"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "We now know enough about canvas drawing to start working on a canvas-based display system for the game from the ",
+            {
+              "element": "reference",
+              "content": "previous chapter"
+            },
+            ". The new display will no longer be showing just colored boxes. Instead, we’ll use ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            " to draw pictures that represent the game’s elements."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We will define an object type ",
+            {
+              "element": "literal",
+              "content": [
+                "CanvasDisplay"
+              ]
+            },
+            ", supporting the same interface as ",
+            {
+              "element": "literal",
+              "content": [
+                "DOMDisplay"
+              ]
+            },
+            " from ",
+            {
+              "element": "reference",
+              "content": "Chapter 15"
+            },
+            ", namely, the methods ",
+            {
+              "element": "literal",
+              "content": [
+                "drawFrame"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "clear"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This object keeps a little more information than ",
+            {
+              "element": "literal",
+              "content": [
+                "DOMDisplay"
+              ]
+            },
+            ". Rather than using the scroll position of its DOM element, it tracks its own viewport, which tells us what part of the level we are currently looking at. It also tracks time and uses that to decide which animation frame to use. And finally, it keeps a ",
+            {
+              "element": "literal",
+              "content": [
+                "flipPlayer"
+              ]
+            },
+            " property so that even when the player is standing still, it keeps facing the direction it last moved in."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "animationTime"
+              ]
+            },
+            " counter is the reason we passed the step size to ",
+            {
+              "element": "literal",
+              "content": [
+                "drawFrame"
+              ]
+            },
+            " in ",
+            {
+              "element": "reference",
+              "content": "Chapter 15"
+            },
+            ", even though ",
+            {
+              "element": "literal",
+              "content": [
+                "DOMDisplay"
+              ]
+            },
+            " does not use it. Our new ",
+            {
+              "element": "literal",
+              "content": [
+                "drawFrame"
+              ]
+            },
+            " function uses the counter to track time so that it can switch between animation frames based on the current time."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Other than tracking time, the method updates the viewport for the current player position, fills the whole canvas with a background color, and draws the background and actors onto that. Note that this is different from the approach in ",
+            {
+              "element": "reference",
+              "content": "Chapter 15"
+            },
+            ", where we drew the background once and scrolled the wrapping DOM element to move it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Because shapes on a canvas are just pixels, after we draw them, there is no way to move them (or remove them). The only way to update the canvas display is to clear it and redraw the scene."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "updateViewport"
+              ]
+            },
+            " method is similar to ",
+            {
+              "element": "literal",
+              "content": [
+                "DOMDisplay"
+              ]
+            },
+            "'s ",
+            {
+              "element": "literal",
+              "content": [
+                "scrollPlayerIntoView"
+              ]
+            },
+            " method. It checks whether the player is too close to the edge of the screen and moves the viewport when this is the case."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The calls to ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.max"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.min"
+              ]
+            },
+            " ensure that the viewport does not end up showing space outside of the level. ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.max(x, 0)"
+              ]
+            },
+            " ensures that the resulting number is not less than zero. ",
+            {
+              "element": "literal",
+              "content": [
+                "Math.min"
+              ]
+            },
+            ", similarly, ensures a value stays below a given bound."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When clearing the display, we’ll use a slightly different color depending on whether the game is won (brighter) or lost (darker)."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "To draw the background, we run through the tiles that are visible in the current viewport, using the same trick used in ",
+            {
+              "element": "literal",
+              "content": [
+                "obstacleAt"
+              ]
+            },
+            " in the ",
+            {
+              "element": "reference",
+              "content": "previous chapter"
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Tiles that are not empty (null) are drawn with ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            ". The ",
+            {
+              "element": "literal",
+              "content": [
+                "otherSprites"
+              ]
+            },
+            " image contains the pictures used for elements other than the player. It contains, from left to right, the wall tile, the lava tile, and the sprite for a coin."
+          ]
+        },
+        {
+          "element": "img",
+          "src": "img/sprites_big.png"
+        },
+        {
+          "element": "p",
+          "content": [
+            "Background tiles are 20 by 20 pixels, since we will use the same scale that we used in ",
+            {
+              "element": "literal",
+              "content": [
+                "DOMDisplay"
+              ]
+            },
+            ". Thus, the offset for lava tiles is 20 (the value of the ",
+            {
+              "element": "literal",
+              "content": [
+                "scale"
+              ]
+            },
+            " variable), and the offset for walls is 0."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We don’t bother waiting for the sprite image to load. Calling ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            " with an image that hasn’t been loaded yet will simply do nothing. Thus, we might fail to draw the game properly for the first few frames, while the image is still loading, but that is not a serious problem. Since we keep updating the screen, the correct scene will appear as soon as the loading finishes."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The walking character shown earlier will be used to represent the player. The code that draws it needs to pick the right sprite and direction based on the player’s current motion. The first eight sprites contain a walking animation. When the player is moving along a floor, we cycle through them based on the display’s ",
+            {
+              "element": "literal",
+              "content": [
+                "animationTime"
+              ]
+            },
+            " property. This is measured in seconds, and we want to switch frames 12 times per second, so the time is multiplied by 12 first. When the player is standing still, we draw the ninth sprite. During jumps, which are recognized by the fact that the vertical speed is not zero, we use the tenth, rightmost sprite."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Because the sprites are slightly wider than the player object—24 instead of 16 pixels, to allow some space for feet and arms—the method has to adjust the x-coordinate and width by a given amount (",
+            {
+              "element": "literal",
+              "content": [
+                "playerXOverlap"
+              ]
+            },
+            ")."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "drawPlayer"
+              ]
+            },
+            " method is called by ",
+            {
+              "element": "literal",
+              "content": [
+                "drawActors"
+              ]
+            },
+            ", which is responsible for drawing all the actors in the game."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "When drawing something that is not the player, we look at its type to find the offset of the correct sprite. The lava tile is found at offset 20, and the coin sprite is found at 40 (two times ",
+            {
+              "element": "literal",
+              "content": [
+                "scale"
+              ]
+            },
+            ")."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We have to subtract the viewport’s position when computing the actor’s position since (0,0) on our canvas corresponds to the top left of the viewport, not the top left of the level. We could also have used ",
+            {
+              "element": "literal",
+              "content": [
+                "translate"
+              ]
+            },
+            " for this. Either way works."
+          ]
+        }
+      ],
+      "title": "Back to the game"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Whenever you need to generate graphics in the browser, you can choose between plain HTML, SVG, and canvas. There is no single ",
+            {
+              "element": "em",
+              "content": [
+                "best"
+              ]
+            },
+            " approach that works in all situations. Each option has strengths and weaknesses."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Plain HTML has the advantage of being simple. It also integrates well with text. Both SVG and canvas allow you to draw text, but they won’t help you position that text or wrap it when it takes up more than one line. In an HTML-based picture, it is easy to include blocks of text."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "SVG can be used to produce crisp graphics that look good at any zoom level. It is more difficult to use than plain HTML but also much more powerful."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Both SVG and HTML build up a data structure (the DOM) that represents the picture. This makes it possible to modify elements after they are drawn. If you need to repeatedly change a small part of a big picture in response to what the user is doing or as part of an animation, doing it in a canvas can be needlessly expensive. The DOM also allows us to register mouse event handlers on every element in the picture (even on shapes drawn with SVG). You can’t do that with canvas."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "But canvas’s pixel-oriented approach can be an advantage when drawing a huge amount of tiny elements. The fact that it does not build up a data structure but only repeatedly draws onto the same pixel surface gives canvas a lower cost per shape."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There are also effects, such as rendering a scene one pixel at a time (for example, using a ray tracer) or postprocessing an image with JavaScript (blurring or distorting it), that can only be realistically handled by a pixel-based technique."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "In some cases, you may want to combine several of these techniques. For example, you might draw a graph with SVG or canvas but show textual information by positioning an HTML element on top of the picture."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For nondemanding applications, it really doesn’t matter much which interface you choose. The ",
+            {
+              "element": "reference",
+              "content": "second display"
+            },
+            " we built for our game in this chapter could have been implemented using any of these three graphics technologies since it does not need to draw text, handle mouse interaction, or work with an extraordinarily large amount of elements."
+          ]
+        }
+      ],
+      "title": "Choosing a graphics interface"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In this chapter, we discussed techniques for drawing graphics in the browser, focusing on the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "canvas",
+                ">"
+              ]
+            },
+            " element."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A canvas node represents an area in a document that our program may draw on. This drawing is done through a drawing context object, created with the ",
+            {
+              "element": "literal",
+              "content": [
+                "getContext"
+              ]
+            },
+            " method."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The 2D drawing interface allows us to fill and stroke various shapes. The context’s ",
+            {
+              "element": "literal",
+              "content": [
+                "fillStyle"
+              ]
+            },
+            " property determines how shapes are filled. The ",
+            {
+              "element": "literal",
+              "content": [
+                "strokeStyle"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "lineWidth"
+              ]
+            },
+            " properties control the way lines are drawn."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Rectangles and pieces of text can be drawn with a single method call. The ",
+            {
+              "element": "literal",
+              "content": [
+                "fillRect"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "strokeRect"
+              ]
+            },
+            " methods draw rectangles, and the ",
+            {
+              "element": "literal",
+              "content": [
+                "fillText"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "strokeText"
+              ]
+            },
+            " methods draw text. To create custom shapes, we must first build up a path."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Calling ",
+            {
+              "element": "literal",
+              "content": [
+                "beginPath"
+              ]
+            },
+            " starts a new path. A number of other methods add lines and curves to the current path. For example, ",
+            {
+              "element": "literal",
+              "content": [
+                "lineTo"
+              ]
+            },
+            " can add a straight line. When a path is finished, it can be filled with the ",
+            {
+              "element": "literal",
+              "content": [
+                "fill"
+              ]
+            },
+            " method or stroked with the ",
+            {
+              "element": "literal",
+              "content": [
+                "stroke"
+              ]
+            },
+            " method."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Moving pixels from an image or another canvas onto our canvas is done with the ",
+            {
+              "element": "literal",
+              "content": [
+                "drawImage"
+              ]
+            },
+            " method. By default, this method draws the whole source image, but by giving it more parameters, you can copy a specific area of the image. We used this for our game by copying individual poses of the game character out of an image that contained many such poses."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Transformations allow you to draw a shape in multiple orientations. A 2D drawing context has a current transformation that can be changed with the ",
+            {
+              "element": "literal",
+              "content": [
+                "translate"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "scal",
+                "e"
+              ]
+            },
+            ", and ",
+            {
+              "element": "literal",
+              "content": [
+                "rotate"
+              ]
+            },
+            " methods. These will affect all subsequent drawing operations. A transformation state can be saved with the ",
+            {
+              "element": "literal",
+              "content": [
+                "save"
+              ]
+            },
+            " method and restored with the ",
+            {
+              "element": "literal",
+              "content": [
+                "restore"
+              ]
+            },
+            " method."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When drawing an animation on a canvas, the ",
+            {
+              "element": "literal",
+              "content": [
+                "clearRect"
+              ]
+            },
+            " method can be used to clear part of the canvas before redrawing it."
+          ]
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Write a program that draws the following shapes on a canvas:"
+              ]
+            },
+            {
+              "element": "ol",
+              "content": [
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " A trapezoid (a rectangle that is wider on one side) "
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " A red diamond (a rectangle rotated 45 degrees or ¼π radians) "
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " A zigzagging line "
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " A spiral made up of 100 straight line segments "
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " A yellow star "
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "element": "img",
+              "src": "img/exercise_shapes.png"
+            },
+            {
+              "element": "p",
+              "content": [
+                "When drawing the last two, you may want to refer to the explanation of ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.cos"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.sin"
+                  ]
+                },
+                " in ",
+                {
+                  "element": "reference",
+                  "content": "Chapter 13"
+                },
+                ", which describes how to get coordinates on a circle using these functions."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "I recommend creating a function for each shape. Pass the position, and optionally other properties, such as the size or the number of points, as parameters. The alternative, which is to hard-code numbers all over your code, tends to make the code needlessly hard to read and modify."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                " The trapezoid (1) is easy to draw using a path. Pick suitable center coordinates and add each of the four corners around that."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The diamond (2) can be drawn the easy way, with a path, or the interesting way, with a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "rotate"
+                  ]
+                },
+                " transformation. To use rotation, you will have to apply a trick similar to what we did in the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "flipHorizontally"
+                  ]
+                },
+                " function. Because you want to rotate around the center of your rectangle and not around the point (0,0), you must first ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "translate"
+                  ]
+                },
+                " to there, then rotate, and then translate back."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "For the zigzag (3) it becomes impractical to write a new call to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "lineTo"
+                  ]
+                },
+                " for each line segment. Instead, you should use a loop. You can have each iteration draw either two line segments (right and then left again) or one, in which case you must use the evenness (",
+                {
+                  "element": "literal",
+                  "content": [
+                    "% 2"
+                  ]
+                },
+                ") of the loop index to determine whether to go left or right."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You’ll also need a loop for the spiral (4). If you draw a series of points, with each point moving further along a circle around the spiral’s center, you get a circle. If, during the loop, you vary the radius of the circle on which you are putting the current point and go around more than once, the result is a spiral."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The star (5) depicted is built out of ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "quadraticCurveTo"
+                  ]
+                },
+                " lines. You could also draw one with straight lines. Divide a circle into eight pieces, or a piece for each point you want your star to have. Draw lines between these points, making them curve toward the center of the star. With ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "quadraticCurveTo"
+                  ]
+                },
+                ", you can use the center as the control point."
+              ]
+            }
+          ],
+          "title": "Shapes"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                {
+                  "element": "reference",
+                  "content": "Earlier"
+                },
+                " in the chapter, we saw an example program that drew a pie chart. Modify this program so that the name of each category is shown next to the slice that represents it. Try to find a pleasing-looking way to automatically position this text, which would work for other data sets as well. You may assume that categories are no smaller than 5 percent (that is, there won’t be a bunch of tiny ones next to each other)."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You might again need ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.sin"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.cos"
+                  ]
+                },
+                ", as described in the previous exercise."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You will need to call ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "fillText"
+                  ]
+                },
+                " and set the context’s ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "textAlign"
+                  ]
+                },
+                " and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "textBaseline"
+                  ]
+                },
+                " properties in such a way that the text ends up where you want it."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "A sensible way to position the labels would be to put the text on the line going from the center of the pie through the middle of the slice. You don’t want to put the text directly against the side of the pie but rather move the text out to the side of the pie by a given number of pixels."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The angle of this line is ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "currentAngle + 0.5 * sliceAngle"
+                  ]
+                },
+                ". The following code finds a position on this line, 120 pixels from the center:"
+              ]
+            },
+            {
+              "element": "listing",
+              "numbered": false,
+              "content": []
+            },
+            {
+              "element": "p",
+              "content": [
+                "For ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "textBaseline"
+                  ]
+                },
+                ", the value ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"middle\""
+                  ]
+                },
+                " is probably appropriate when using this approach. What to use for ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "textAlign"
+                  ]
+                },
+                " depends on the side of the circle we are on. On the left, it should be ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"right\""
+                  ]
+                },
+                ", and on the right, it should be ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"left\""
+                  ]
+                },
+                " so that the text is positioned away from the pie."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "If you are not sure how to find out which side of the circle a given angle is on, look to the explanation of ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.cos"
+                  ]
+                },
+                " in the previous exercise. The cosine of an angle tells us which x-coordinate it corresponds to, which in turn tells us exactly which side of the circle we are on."
+              ]
+            }
+          ],
+          "title": "The pie chart"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Use the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "requestAnimationFrame"
+                  ]
+                },
+                " technique that we saw in ",
+                {
+                  "element": "reference",
+                  "content": "Chapter 13"
+                },
+                " and ",
+                {
+                  "element": "reference",
+                  "content": "Chapter 15"
+                },
+                " to draw a box with a bouncing ball in it. The ball moves at a constant speed and bounces off the box’s sides when it hits them."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "A box is easy to draw with ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "strokeRect"
+                  ]
+                },
+                ". Define a variable that holds its size or define two variables if your box’s width and height differ. To create a round ball, start a path, call ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "arc(x, y, radius, 0, 7)"
+                  ]
+                },
+                ", which creates an arc going from zero to more than a whole circle, and fill it."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "To model the ball’s position and speed, you can use the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Vector"
+                  ]
+                },
+                " type from ",
+                {
+                  "element": "reference",
+                  "content": "Chapter 15"
+                },
+                "(which is available on this page). Give it a starting speed, preferably one that is not purely vertical or horizontal, and every frame, multiply that speed with the amount of time that elapsed. When the ball gets too close to a vertical wall, invert the x component in its speed. Likewise, invert the y component when it hits a horizontal wall."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "After finding the ball’s new position and speed, use ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "clearRect"
+                  ]
+                },
+                " to delete the scene and redraw it using the new position."
+              ]
+            }
+          ],
+          "title": "A bouncing ball"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "One unfortunate thing about transformations is that they slow down drawing of bitmaps. For vector graphics, the effect is less serious since only a few points (for example, the center of a circle) need to be transformed, after which drawing can happen as normal. For a bitmap image, the position of each pixel has to be transformed, and though it is possible that browsers will get more clever about this in the future, this currently causes a measurable increase in the time it takes to draw a bitmap."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "In a game like ours, where we are drawing only a single transformed sprite, this is a nonissue. But imagine that we need to draw hundreds of characters or thousands of rotating particles from an explosion."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Think of a way to allow us to draw an inverted character without loading additional image files and without having to make transformed ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "drawImage"
+                  ]
+                },
+                " calls every frame."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The key to the solution is the fact that we can use a canvas element as a source image when using ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "drawImage"
+                  ]
+                },
+                ". It is possible to create an extra ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "canvas",
+                    ">"
+                  ]
+                },
+                " element, without adding it to the document, and draw our inverted sprites to it, once. When drawing an actual frame, we just copy the already inverted sprites to the main canvas."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Some care would be required because images do not load instantly. We do the inverted drawing only once, and if we do it before the image loads, it won’t draw anything. A ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"load\""
+                  ]
+                },
+                " handler on the image can be used to draw the inverted images to the extra canvas. This canvas can be used as a drawing source immediately (it’ll simply be blank until we draw the character onto it)."
+              ]
+            }
+          ],
+          "title": "Precomputed mirroring"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Drawing on Canvas"
+}

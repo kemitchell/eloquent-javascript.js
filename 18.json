@@ -1,0 +1,2183 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Mephistopheles in Goethe's Faust",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "I shall this very day, at Doctor’s feast, My bounden service duly pay thee. But one thing!—For insurance’ sake, I pray thee, Grant me a line or two, at least."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "Forms were introduced briefly in the ",
+        {
+          "element": "reference",
+          "content": "previous chapter"
+        },
+        " as a way to ",
+        {
+          "element": "em",
+          "content": [
+            "submit"
+          ]
+        },
+        " information provided by the user over HTTP. They were designed for a pre-JavaScript Web, assuming that interaction with the server always happens by navigating to a new page."
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "But their elements are part of the DOM like the rest of the page, and the DOM elements that represent form fields support a number of properties and events that are not present on other elements. These make it possible to inspect and control such input fields with JavaScript programs and do things such as adding functionality to a traditional form or using forms and fields as building blocks in a JavaScript application."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "A web form consists of any number of input fields grouped in a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "form",
+                ">"
+              ]
+            },
+            " tag. HTML allows a number of different styles of fields, ranging from simple on/off checkboxes to drop-down menus and fields for text input. This book won’t try to comprehensively discuss all field types, but we will start with a rough overview."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A lot of field types use the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "input",
+                ">"
+              ]
+            },
+            " tag. This tag’s ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " attribute is used to select the field’s style. These are some commonly used ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "input",
+                ">"
+              ]
+            },
+            " types:"
+          ]
+        },
+        {
+          "element": "table",
+          "content": [
+            {
+              "element": "tbody",
+              "content": [
+                {
+                  "element": "tr",
+                  "content": [
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            {
+                              "element": "literal",
+                              "content": [
+                                "text"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "A single-line text field"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "tr",
+                  "content": [
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            {
+                              "element": "literal",
+                              "content": [
+                                "password"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "Same as ",
+                            {
+                              "element": "literal",
+                              "content": [
+                                "text"
+                              ]
+                            },
+                            " but hides the text that is typed"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "tr",
+                  "content": [
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            {
+                              "element": "literal",
+                              "content": [
+                                "checkbox"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "An on/off switch"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "tr",
+                  "content": [
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            {
+                              "element": "literal",
+                              "content": [
+                                "radio"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "(Part of) a multiple-choice field"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "tr",
+                  "content": [
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            {
+                              "element": "literal",
+                              "content": [
+                                "file"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "td",
+                      "align": "left",
+                      "valign": "top",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "Allows the user to choose a file from their computer"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Form fields do not necessarily have to appear in a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "form",
+                ">"
+              ]
+            },
+            " tag. You can put them anywhere in a page. Such fields cannot be submitted (only a form as a whole can), but when responding to input with JavaScript, we often do not want to submit our fields normally anyway."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The JavaScript interface for such elements differs with the type of the element. We’ll go over each of them later in the chapter."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Multiline text fields have their own tag, ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "textarea",
+                ">"
+              ]
+            },
+            ", mostly because using an attribute to specify a multiline starting value would be awkward. The ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "textarea",
+                ">"
+              ]
+            },
+            " requires a matching ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "/textarea",
+                ">"
+              ]
+            },
+            " closing tag and uses the text between those two, instead of using its ",
+            {
+              "element": "literal",
+              "content": [
+                "value"
+              ]
+            },
+            " attribute, as starting text."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Finally, the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " tag is used to create a field that allows the user to select from a number of predefined options."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Whenever the value of a form field changes, it fires a ",
+            {
+              "element": "literal",
+              "content": [
+                "\"change\""
+              ]
+            },
+            " event."
+          ]
+        }
+      ],
+      "title": "Fields"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Unlike most elements in an HTML document, form fields can get ",
+            {
+              "element": "em",
+              "content": [
+                "keyboard ",
+                "focus"
+              ]
+            },
+            ". When clicked—or activated in some other way—they become the currently active element, the main recipient of keyboard input."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If a document has a text field, text typed will end up in there only when the field is focused. Other fields respond differently to keyboard events. For example, a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " menu tries to move to the option that contains the text the user typed and responds to the arrow keys by moving its selection up and down."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can control focus from JavaScript with the ",
+            {
+              "element": "literal",
+              "content": [
+                "focus"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "blur"
+              ]
+            },
+            " methods. The first moves focus to the DOM element it is called on, and the second removes focus. The value in ",
+            {
+              "element": "literal",
+              "content": [
+                "document.activeElement"
+              ]
+            },
+            " corresponds to the currently focused element."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "For some pages, the user is expected to want to interact with a form field immediately. JavaScript can be used to focus this field when the document is loaded, but HTML also provides the ",
+            {
+              "element": "literal",
+              "content": [
+                "autofocus"
+              ]
+            },
+            " attribute, which produces the same effect but lets the browser know what we are trying to achieve. This makes it possible for the browser to disable the behavior when it is not appropriate, such as when the user has focused something else."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Browsers traditionally also allow the user to move the focus through the document by pressing the Tab key. We can influence the order in which elements receive focus with the ",
+            {
+              "element": "literal",
+              "content": [
+                "tabindex"
+              ]
+            },
+            " attribute. The following example document will let focus jump from the text input to the OK button, rather than going through the help link first:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "By default, most types of HTML elements cannot be focused. But you can add a ",
+            {
+              "element": "literal",
+              "content": [
+                "tabindex"
+              ]
+            },
+            " attribute to any element, which will make it focusable."
+          ]
+        }
+      ],
+      "title": "Focus"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "All form fields can be ",
+            {
+              "element": "em",
+              "content": [
+                "disabled"
+              ]
+            },
+            " through their ",
+            {
+              "element": "literal",
+              "content": [
+                "disabled"
+              ]
+            },
+            " attribute, which also exists as a property on the element’s DOM object."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Disabled fields cannot be focused or changed, and unlike active fields, they usually look gray and faded."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When a program is in the process of handling an action caused by some button or other control, which might require communication with the server and thus take a while, it can be a good idea to disable the control until the action finishes. That way, when the user gets impatient and clicks it again, they don’t accidentally repeat their action."
+          ]
+        }
+      ],
+      "title": "Disabled fields"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When a field is contained in a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "form",
+                ">"
+              ]
+            },
+            " element, its DOM element will have a property ",
+            {
+              "element": "literal",
+              "content": [
+                "form"
+              ]
+            },
+            " linking back to the form’s DOM element. The ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "form",
+                ">"
+              ]
+            },
+            " element, in turn, has a property called ",
+            {
+              "element": "literal",
+              "content": [
+                "elements"
+              ]
+            },
+            " that contains an array-like collection of the fields inside it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "name"
+              ]
+            },
+            " attribute of a form field determines the way its value will be identified when the form is submitted. It can also be used as a property name when accessing the form’s ",
+            {
+              "element": "literal",
+              "content": [
+                "elements"
+              ]
+            },
+            " property, which acts both as an array-like object (accessible by number) and a map (accessible by name)."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A button with a ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " attribute of ",
+            {
+              "element": "literal",
+              "content": [
+                "submit"
+              ]
+            },
+            " will, when pressed, cause the form to be submitted. Pressing Enter when a form field is focused has the same effect."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Submitting a form normally means that the browser navigates to the page indicated by the form’s ",
+            {
+              "element": "literal",
+              "content": [
+                "action"
+              ]
+            },
+            " attribute, using either a ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " or a ",
+            {
+              "element": "literal",
+              "content": [
+                "POST"
+              ]
+            },
+            " request. But before that happens, a ",
+            {
+              "element": "literal",
+              "content": [
+                "\"submit\""
+              ]
+            },
+            " event is fired. This event can be handled by JavaScript, and the handler can prevent the default behavior by calling ",
+            {
+              "element": "literal",
+              "content": [
+                "preventDefault"
+              ]
+            },
+            " on the event object."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Intercepting ",
+            {
+              "element": "literal",
+              "content": [
+                "\"submit\""
+              ]
+            },
+            " events in JavaScript has various uses. We can write code to verify that the values the user entered make sense and immediately show an error message instead of submitting the form when they don’t. Or we can disable the regular way of submitting the form entirely, as in the previous example, and have our program handle the input, possibly using ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " to send it over to a server without reloading the page."
+          ]
+        }
+      ],
+      "title": "The form as a whole"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Fields created by ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "input",
+                ">"
+              ]
+            },
+            " tags with a type of ",
+            {
+              "element": "literal",
+              "content": [
+                "text"
+              ]
+            },
+            " or ",
+            {
+              "element": "literal",
+              "content": [
+                "password"
+              ]
+            },
+            ", as well as ",
+            {
+              "element": "literal",
+              "content": [
+                "textarea"
+              ]
+            },
+            " tags, share a common interface. Their DOM elements have a ",
+            {
+              "element": "literal",
+              "content": [
+                "value"
+              ]
+            },
+            " property that holds their current content as a string value. Setting this property to another string changes the field’s content."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "selectionStart"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "selectionEnd"
+              ]
+            },
+            " properties of text fields give us information about the cursor and selection in the text. When nothing is selected, these two properties hold the same number, indicating the position of the cursor. For example, 0 indicates the start of the text, and 10 indicates the cursor is after the 10",
+            {
+              "element": "superscript",
+              "content": [
+                "th"
+              ]
+            },
+            " character. When part of the field is selected, the two properties will differ, giving us the start and end of the selected text. Like ",
+            {
+              "element": "literal",
+              "content": [
+                "value"
+              ]
+            },
+            ", these properties may also be written to."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "As an example, imagine you are writing an article about Khasekhemwy but have some trouble spelling his name. The following code wires up a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "textarea",
+                ">"
+              ]
+            },
+            " tag with an event handler that, when you press F2, inserts the string “Khasekhemwy” for you."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "replaceSelection"
+              ]
+            },
+            " function replaces the currently selected part of a text field’s content with the given word and then moves the cursor after that word so that the user can continue typing."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "\"change\""
+              ]
+            },
+            " event for a text field does not fire every time something is typed. Rather, it fires when the field loses focus after its content was changed. To respond immediately to changes in a text field, you should register a handler for the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"input\""
+              ]
+            },
+            " event instead, which fires for every time the user types a character, deletes text, or otherwise manipulates the field’s content."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following example shows a text field and a counter showing the current length of the text entered:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Text fields"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "A checkbox field is a simple binary toggle. Its value can be extracted or changed through its ",
+            {
+              "element": "literal",
+              "content": [
+                "checked"
+              ]
+            },
+            " property, which holds a Boolean value."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "label",
+                ">"
+              ]
+            },
+            " tag is used to associate a piece of text with an input field. Its ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            " attribute should refer to the ",
+            {
+              "element": "literal",
+              "content": [
+                "id"
+              ]
+            },
+            " of the field. Clicking the label will activate the field, which focuses it and toggles its value when it is a checkbox or radio button."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A radio button is similar to a checkbox, but it’s implicitly linked to other radio buttons with the same ",
+            {
+              "element": "literal",
+              "content": [
+                "name"
+              ]
+            },
+            " attribute so that only one of them can be active at any time."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "document.getElementsByName"
+              ]
+            },
+            " method gives us all elements with a given ",
+            {
+              "element": "literal",
+              "content": [
+                "name"
+              ]
+            },
+            " attribute. The example loops over those (with a regular ",
+            {
+              "element": "literal",
+              "content": [
+                "for"
+              ]
+            },
+            " loop, not ",
+            {
+              "element": "literal",
+              "content": [
+                "forEach"
+              ]
+            },
+            ", because the returned collection is not a real array) and registers an event handler for each element. Remember that event objects have a ",
+            {
+              "element": "literal",
+              "content": [
+                "target"
+              ]
+            },
+            " property referring to the element that triggered the event. This is often useful in event handlers like this one, which will be called on different elements and need some way to access the current target."
+          ]
+        }
+      ],
+      "title": "Checkboxes and radio buttons"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Select fields are conceptually similar to radio buttons—they also allow the user to choose from a set of options. But where a radio button puts the layout of the options under our control, the appearance of a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " tag is determined by the browser."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Select fields also have a variant that is more akin to a list of checkboxes, rather than radio boxes. When given the ",
+            {
+              "element": "literal",
+              "content": [
+                "multiple"
+              ]
+            },
+            " attribute, a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " tag will allow the user to select any number of options, rather than just a single option."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This will, in most browsers, show up differently than a non-",
+            {
+              "element": "literal",
+              "content": [
+                "multiple"
+              ]
+            },
+            " select field, which is commonly drawn as a ",
+            {
+              "element": "em",
+              "content": [
+                "drop-down"
+              ]
+            },
+            " control that shows the options only when you open it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "size"
+              ]
+            },
+            " attribute to the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " tag is used to set the number of options that are visible at the same time, which gives you explicit control over the drop-down’s appearance. For example, setting the ",
+            {
+              "element": "literal",
+              "content": [
+                "size"
+              ]
+            },
+            " attribute to ",
+            {
+              "element": "literal",
+              "content": [
+                "\"3\""
+              ]
+            },
+            " will make the field show three lines, whether it has the ",
+            {
+              "element": "literal",
+              "content": [
+                "multiple"
+              ]
+            },
+            " option enabled or not."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Each ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "option",
+                ">"
+              ]
+            },
+            " tag has a value. This value can be defined with a ",
+            {
+              "element": "literal",
+              "content": [
+                "value"
+              ]
+            },
+            " attribute, but when that is not given, the text inside the option will count as the option’s value. The ",
+            {
+              "element": "literal",
+              "content": [
+                "value"
+              ]
+            },
+            " property of a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " element reflects the currently selected option. For a ",
+            {
+              "element": "literal",
+              "content": [
+                "multiple"
+              ]
+            },
+            " field, though, this property doesn’t mean much since it will give the value of only ",
+            {
+              "element": "em",
+              "content": [
+                "one"
+              ]
+            },
+            " of the currently selected options."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "option",
+                ">"
+              ]
+            },
+            " tags for a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " field can be accessed as an array-like object through the field’s ",
+            {
+              "element": "literal",
+              "content": [
+                "options"
+              ]
+            },
+            " property. Each option has a property called ",
+            {
+              "element": "literal",
+              "content": [
+                "selected"
+              ]
+            },
+            ", which indicates whether that option is currently selected. The property can also be written to select or deselect an option."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following example extracts the selected values from a ",
+            {
+              "element": "literal",
+              "content": [
+                "multiple"
+              ]
+            },
+            " select field and uses them to compose a binary number from individual bits. Hold Ctrl (or Command on a Mac) to select multiple options."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Select fields"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "File fields were originally designed as a way to upload files from the browser’s machine through a form. In modern browsers, they also provide a way to read such files from JavaScript programs. The field acts as a manner of gatekeeper. The script cannot simply start reading private files from the user’s computer, but if the user selects a file in such a field, the browser interprets that action to mean that the script may read the file."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A file field usually looks like a button labeled with something like “choose file” or “browse”, with information about the chosen file next to it."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "files"
+              ]
+            },
+            " property of a file field element is an array-like object (again, not a real array) containing the files chosen in the field. It is initially empty. The reason there isn’t simply a ",
+            {
+              "element": "literal",
+              "content": [
+                "file"
+              ]
+            },
+            " property is that file fields also support a ",
+            {
+              "element": "literal",
+              "content": [
+                "multiple"
+              ]
+            },
+            " attribute, which makes it possible to select multiple files at the same time."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Objects in the ",
+            {
+              "element": "literal",
+              "content": [
+                "files"
+              ]
+            },
+            " property have properties such as ",
+            {
+              "element": "literal",
+              "content": [
+                "name"
+              ]
+            },
+            " (the filename), ",
+            {
+              "element": "literal",
+              "content": [
+                "size"
+              ]
+            },
+            " (the file’s size in bytes), and ",
+            {
+              "element": "literal",
+              "content": [
+                "type"
+              ]
+            },
+            " (the media type of the file, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "text/plain"
+              ]
+            },
+            " or ",
+            {
+              "element": "literal",
+              "content": [
+                "image/jpeg"
+              ]
+            },
+            ")."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "What it does not have is a property that contains the content of the file. Getting at that is a little more involved. Since reading a file from disk can take time, the interface will have to be asynchronous to avoid freezing the document. You can think of the ",
+            {
+              "element": "literal",
+              "content": [
+                "FileReader"
+              ]
+            },
+            " constructor as being similar to ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " but for files."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Reading a file is done by creating a ",
+            {
+              "element": "literal",
+              "content": [
+                "FileReader"
+              ]
+            },
+            " object, registering a ",
+            {
+              "element": "literal",
+              "content": [
+                "\"load\""
+              ]
+            },
+            " event handler for it, and calling its ",
+            {
+              "element": "literal",
+              "content": [
+                "readAsText"
+              ]
+            },
+            " method, giving it the file we want to read. Once loading finishes, the reader’s ",
+            {
+              "element": "literal",
+              "content": [
+                "result"
+              ]
+            },
+            " property contains the file’s content."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The example uses ",
+            {
+              "element": "literal",
+              "content": [
+                "Array.prototype.forEach"
+              ]
+            },
+            " to iterate over the array since in a normal loop it would be awkward to get the correct ",
+            {
+              "element": "literal",
+              "content": [
+                "file"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "reader"
+              ]
+            },
+            " objects from the event handler. The variables would be shared by all iterations of the loop."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            {
+              "element": "literal",
+              "content": [
+                "FileReader"
+              ]
+            },
+            "s also fire an ",
+            {
+              "element": "literal",
+              "content": [
+                "\"error\""
+              ]
+            },
+            " event when reading the file fails for any reason. The error object itself will end up in the reader’s ",
+            {
+              "element": "literal",
+              "content": [
+                "error"
+              ]
+            },
+            " property. If you don’t want to remember the details of yet another inconsistent asynchronous interface, you could wrap it in a ",
+            {
+              "element": "literal",
+              "content": [
+                "Promise"
+              ]
+            },
+            " (see ",
+            {
+              "element": "reference",
+              "content": "Chapter 17"
+            },
+            ") like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is possible to read only part of a file by calling ",
+            {
+              "element": "literal",
+              "content": [
+                "slice"
+              ]
+            },
+            " on it and passing the result (a so-called ",
+            {
+              "element": "em",
+              "content": [
+                "blob"
+              ]
+            },
+            " object) to the file reader."
+          ]
+        }
+      ],
+      "title": "File fields"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Simple HTML pages with a bit of JavaScript can be a great medium for “mini applications”—small helper programs that automate everyday things. By connecting a few form fields with event handlers, you can do anything from converting between degrees Celsius and Fahrenheit to computing passwords from a master password and a website name."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When such an application needs to remember something between sessions, you cannot use JavaScript variables since those are thrown away every time a page is closed. You could set up a server, connect it to the Internet, and have your application store something there. We will see how to do that in ",
+            {
+              "element": "reference",
+              "content": "Chapter 20"
+            },
+            ". But this adds a lot of extra work and complexity. Sometimes it is enough to just keep the data in the browser. But how?"
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "You can store string data in a way that survives page reloads by putting it in the ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            " object. This object allows you to file string values under names (also strings), as in this example:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "A value in ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            " sticks around until it is overwritten, it is removed with ",
+            {
+              "element": "literal",
+              "content": [
+                "removeItem"
+              ]
+            },
+            ", or the user clears their local data."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Sites from different domains get different storage compartments. That means data stored in ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            " by a given website can, in principle, only be read (and overwritten) by scripts on that same site."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Browsers also enforce a limit on the size of the data a site can store in ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            ", typically on the order of a few megabytes. That restriction, along with the fact that filling up people’s hard drives with junk is not really profitable, prevents this feature from eating up too much space."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The following code implements a simple note-taking application. It keeps the user’s notes as an object, associating note titles with content strings. This object is encoded as JSON and stored in ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            ". The user can select a note from a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " field and change that note’s text in a ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "textarea",
+                ">"
+              ]
+            },
+            ". A note can be added by clicking a button."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The script initializes the ",
+            {
+              "element": "literal",
+              "content": [
+                "notes"
+              ]
+            },
+            " variable to the value stored in ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            " or, if that is missing, to a simple object with only an empty ",
+            {
+              "element": "literal",
+              "content": [
+                "\"shopping list\""
+              ]
+            },
+            " note in it. Reading a field that does not exist from ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            " will yield ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            ". Passing ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            " to ",
+            {
+              "element": "literal",
+              "content": [
+                "JSON.parse"
+              ]
+            },
+            " will make it parse the string ",
+            {
+              "element": "literal",
+              "content": [
+                "\"null\""
+              ]
+            },
+            " and return ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            ". Thus, the ",
+            {
+              "element": "literal",
+              "content": [
+                "||"
+              ]
+            },
+            " operator can be used to provide a default value in a situation like this."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Whenever the note data changes (when a new note is added or an existing note changed), the ",
+            {
+              "element": "literal",
+              "content": [
+                "saveToStorage"
+              ]
+            },
+            " function is called to update the storage field. If this application was intended to handle thousands of notes, rather than a handful, this would be too expensive, and we’d have to come up with a more complicated way to store them, such as giving each note its own storage field."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When the user adds a new note, the code must update the text field explicitly, even though the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "select",
+                ">"
+              ]
+            },
+            " field has a ",
+            {
+              "element": "literal",
+              "content": [
+                "\"change\""
+              ]
+            },
+            " handler that does the same thing. This is necessary because ",
+            {
+              "element": "literal",
+              "content": [
+                "\"change\""
+              ]
+            },
+            " events fire only when the ",
+            {
+              "element": "em",
+              "content": [
+                "user"
+              ]
+            },
+            " changes the field’s value, not when a script does it."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There is another object similar to ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            " called ",
+            {
+              "element": "literal",
+              "content": [
+                "sessionStorage"
+              ]
+            },
+            ". The difference between the two is that the content of ",
+            {
+              "element": "literal",
+              "content": [
+                "sessionStorage"
+              ]
+            },
+            " is forgotten at the end of each session, which for most browsers means whenever the browser is closed."
+          ]
+        }
+      ],
+      "title": "Storing data client-side"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "HTML can express various types of form fields, such as text fields, checkboxes, multiple-choice fields, and file pickers."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Such fields can be inspected and manipulated with JavaScript. They fire the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"change\""
+              ]
+            },
+            " event when changed, the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"input\""
+              ]
+            },
+            " event when text is typed, and various keyboard events. These events allow us to notice when the user is interacting with the fields. Properties like ",
+            {
+              "element": "literal",
+              "content": [
+                "value"
+              ]
+            },
+            " (for text and select fields) or ",
+            {
+              "element": "literal",
+              "content": [
+                "checked"
+              ]
+            },
+            " (for checkboxes and radio buttons) are used to read or set the field’s content."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When a form is submitted, its ",
+            {
+              "element": "literal",
+              "content": [
+                "\"submit\""
+              ]
+            },
+            " event fires. A JavaScript handler can call ",
+            {
+              "element": "literal",
+              "content": [
+                "preventDefault"
+              ]
+            },
+            " on that event to prevent the submission from happening. Form field elements do not have to be wrapped in ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "form",
+                ">"
+              ]
+            },
+            " tags."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When the user has selected a file from their local file system in a file picker field, the ",
+            {
+              "element": "literal",
+              "content": [
+                "FileReader"
+              ]
+            },
+            " interface can be used to access the content of this file from a JavaScript program."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "literal",
+              "content": [
+                "localStorage"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "sessionStorage"
+              ]
+            },
+            " objects can be used to save information in a way that survives page reloads. The first saves the data forever (or until the user decides to clear it), and the second saves it until the browser is closed."
+          ]
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Build an interface that allows people to type and run pieces of JavaScript code."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Put a button next to a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "textarea",
+                    ">"
+                  ]
+                },
+                " field, which, when pressed, uses the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Function"
+                  ]
+                },
+                " constructor we saw in ",
+                {
+                  "element": "reference",
+                  "content": "Chapter 10"
+                },
+                " to wrap the text in a function and call it. Convert the return value of the function, or any error it raised, to a string and display it after the text field."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Use ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "document.querySelector"
+                  ]
+                },
+                " or ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "document.getElementById"
+                  ]
+                },
+                " to get access to the elements defined in your HTML. An event handler for ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"click\""
+                  ]
+                },
+                " or ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"mousedown\""
+                  ]
+                },
+                " events on the button can get the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "value"
+                  ]
+                },
+                " property of the text field and call ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "new Function"
+                  ]
+                },
+                " on it."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Make sure you wrap both the call to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "new Function"
+                  ]
+                },
+                " and the call to its result in a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "try"
+                  ]
+                },
+                " block so that you can catch exceptions that it produces. In this case, we really don’t know what type of exception we are looking for, so catch everything."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "textContent"
+                  ]
+                },
+                " property of the output element can be used to fill it with a string message. Or, if you want to keep the old content around, create a new text node using ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "document.createTextNode"
+                  ]
+                },
+                " and append it to the element. Remember to add a newline character to the end so that not all output appears on a single line."
+              ]
+            }
+          ],
+          "title": "A JavaScript workbench"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Extend a text field so that when the user types, a list of suggested values is shown below the field. You have an array of possible values available and should show those that start with the text that was typed. When a suggestion is clicked, replace the text field’s current value with it."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The best event for updating the suggestion list is ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"input\""
+                  ]
+                },
+                " since that will fire immediately when the content of the field is changed."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Then loop over the array of terms and see whether they start with the given string. For example, you could call ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "indexOf"
+                  ]
+                },
+                " and see whether the result is zero. For each matching string, add an element to the suggestions ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "div",
+                    ">"
+                  ]
+                },
+                ". You should probably also empty that each time you start updating the suggestions, for example by setting its ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "textContent"
+                  ]
+                },
+                " to the empty string."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "You could either add a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "\"click\""
+                  ]
+                },
+                " event handler to every suggestion element or add a single one to the outer ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "div",
+                    ">"
+                  ]
+                },
+                " that holds them and look at the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "target"
+                  ]
+                },
+                " property of the event to find out which suggestion was clicked."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "To get the suggestion text out of a DOM node, you could look at its ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "textContent"
+                  ]
+                },
+                " or set an attribute to explicitly store the text when you create the element."
+              ]
+            }
+          ],
+          "title": "Autocompletion"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "Conway’s Game of Life is a simple simulation that creates artificial “life” on a grid, each cell of which is either live or not. Each generation (turn), the following rules are applied:"
+              ]
+            },
+            {
+              "element": "ul",
+              "content": [
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " Any live cell with fewer than two or more than three live  neighbors dies. "
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " Any live cell with two or three live neighbors lives on to the  next generation. "
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "element": "item",
+                  "content": [
+                    {
+                      "element": "p",
+                      "content": [
+                        " Any dead cell with exactly three live neighbors becomes a live  cell. "
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "A neighbor is defined as any adjacent cell, including diagonally adjacent ones."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Note that these rules are applied to the whole grid at once, not one square at a time. That means the counting of neighbors is based on the situation at the start of the generation, and changes happening to neighbor cells during this generation should not influence the new state of a given cell."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Implement this game using whichever data structure you find appropriate. Use ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Math.random"
+                  ]
+                },
+                " to populate the grid with a random pattern initially. Display it as a grid of checkbox fields, with a button next to it to advance to the next generation. When the user checks or unchecks the checkboxes, their changes should be included when computing the next generation."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "To solve the problem of having the changes conceptually happen at the same time, try to see the computation of a generation as a pure function, which takes one grid and produces a new grid that represents the next turn."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Representing the grid can be done in any of the ways shown in Chapters ",
+                {
+                  "element": "reference",
+                  "content": "7"
+                },
+                " and ",
+                {
+                  "element": "reference",
+                  "content": "15"
+                },
+                ". Counting live neighbors can be done with two nested loops, looping over adjacent coordinates. Take care not to count cells outside of the field and to ignore the cell in the center, whose neighbors we are counting."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Making changes to checkboxes take effect on the next generation can be done in two ways. An event handler could notice these changes and update the current grid to reflect them, or you could generate a fresh grid from the values in the checkboxes before computing the next turn."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "If you choose to go with event handlers, you might want to attach attributes that identify the position that each checkbox corresponds to so that it is easy to find out which cell to change."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "To draw the grid of checkboxes, you either can use a ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "table",
+                    ">"
+                  ]
+                },
+                " element (see ",
+                {
+                  "element": "reference",
+                  "content": "Chapter 13"
+                },
+                ") or simply put them all in the same element and put ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "<",
+                    "br",
+                    ">"
+                  ]
+                },
+                " (line break) elements between the rows."
+              ]
+            }
+          ],
+          "title": "s Game of Life"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "Forms and Form Fields"
+}

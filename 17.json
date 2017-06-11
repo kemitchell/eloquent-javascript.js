@@ -1,0 +1,2021 @@
+{
+  "content": [
+    {
+      "element": "blockquote",
+      "attribution": "Tim Berners-Lee The World Wide Web: A very short personal history",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The dream behind the Web is of a common information space in which we communicate by sharing information. Its universality is essential: the fact that a hypertext link can point to anything, be it personal, local or global, be it draft or highly polished."
+          ]
+        }
+      ]
+    },
+    {
+      "element": "p",
+      "content": [
+        "The ",
+        {
+          "element": "em",
+          "content": [
+            "Hypertext Transfer Protocol"
+          ]
+        },
+        ", already mentioned in ",
+        {
+          "element": "reference",
+          "content": "Chapter 12"
+        },
+        ", is the mechanism through which data is requested and provided on the World Wide Web. This chapter describes the protocol in more detail and explains the way browser JavaScript has access to it."
+      ]
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "If you type ",
+            {
+              "element": "em",
+              "content": [
+                "eloquentjavascript.net/17_http.html"
+              ]
+            },
+            " into your browser’s address bar, the browser first looks up the address of the server associated with ",
+            {
+              "element": "em",
+              "content": [
+                "eloquentjavascript.net"
+              ]
+            },
+            " and tries to open a TCP connection to it on port 80, the default port for HTTP traffic. If the server exists and accepts the connection, the browser sends something like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Then the server responds, through that same connection."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The browser then takes the part of the response after the blank line and displays it as an HTML document."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The information sent by the client is called the ",
+            {
+              "element": "em",
+              "content": [
+                "request"
+              ]
+            },
+            ". It starts with this line:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The first word is the ",
+            {
+              "element": "em",
+              "content": [
+                "method"
+              ]
+            },
+            " of the request. ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " means that we want to ",
+            {
+              "element": "em",
+              "content": [
+                "get"
+              ]
+            },
+            " the specified resource. Other common methods are ",
+            {
+              "element": "literal",
+              "content": [
+                "DELETE"
+              ]
+            },
+            " to delete a resource, ",
+            {
+              "element": "literal",
+              "content": [
+                "PUT"
+              ]
+            },
+            " to replace it, and ",
+            {
+              "element": "literal",
+              "content": [
+                "POST"
+              ]
+            },
+            " to send information to it. Note that the server is not obliged to carry out every request it gets. If you walk up to a random website and tell it to ",
+            {
+              "element": "literal",
+              "content": [
+                "DELETE"
+              ]
+            },
+            " its main page, it’ll probably refuse."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The part after the method name is the path of the resource the request applies to. In the simplest case, a resource is simply a file on the server, but the protocol doesn’t require it to be. A resource may be anything that can be transferred ",
+            {
+              "element": "em",
+              "content": [
+                "as if"
+              ]
+            },
+            " it is a file. Many servers generate the responses they produce on the fly. For example, if you open ",
+            {
+              "element": "reference",
+              "content": [
+                {
+                  "element": "em",
+                  "content": [
+                    "twitter.com/marijnjh"
+                  ]
+                }
+              ]
+            },
+            ", the server looks in its database for a user named ",
+            {
+              "element": "em",
+              "content": [
+                "marijnjh"
+              ]
+            },
+            ", and if it finds one, it will generate a profile page for that user."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "After the resource path, the first line of the request mentions ",
+            {
+              "element": "literal",
+              "content": [
+                "HTTP/1.1"
+              ]
+            },
+            " to indicate the version of the HTTP protocol it is using."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The server’s response will start with a version as well, followed by the status of the response, first as a three-digit status code and then as a human-readable string."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Status codes starting with a 2 indicate that the request succeeded. Codes starting with 4 mean there was something wrong with the request. 404 is probably the most famous HTTP status code—it means that the resource that was requested could not be found. Codes that start with 5 mean an error happened on the server and the request is not to blame."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The first line of a request or response may be followed by any number of ",
+            {
+              "element": "em",
+              "content": [
+                "headers"
+              ]
+            },
+            ". These are lines in the form “name: value” that specify extra information about the request or response. These headers were part of the example response:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "Content-Length: 65585\nContent-Type: text/html\nLast-Modified: Wed, 09 Apr 2014 10:48:09 GMT"
+        },
+        {
+          "element": "p",
+          "content": [
+            "This tells us the size and type of the response document. In this case, it is an HTML document of 65,585 bytes. It also tells us when that document was last modified."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For the most part, a client or server decides which headers to include in a request or response, though a few headers are required. For example, the ",
+            {
+              "element": "literal",
+              "content": [
+                "Host"
+              ]
+            },
+            " header, which specifies the hostname, should be included in a request because a server might be serving multiple hostnames on a single IP address, and without that header, the server won’t know which host the client is trying to talk to."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "After the headers, both requests and responses may include a blank line followed by a ",
+            {
+              "element": "em",
+              "content": [
+                "body"
+              ]
+            },
+            ", which contains the data being sent. ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "DELETE"
+              ]
+            },
+            " requests don’t send along any data, but ",
+            {
+              "element": "literal",
+              "content": [
+                "PUT"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "POST"
+              ]
+            },
+            " requests do. Similarly, some response types, such as error responses, do not require a body."
+          ]
+        }
+      ],
+      "title": "The protocol"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "As we saw in the example, a browser will make a request when we enter a URL in its address bar. When the resulting HTML page references other files, such as images and JavaScript files, those are also fetched."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A moderately complicated website can easily include anywhere from 10 to 200 resources. To be able to fetch those quickly, browsers will make several requests simultaneously, rather than waiting for the responses one at a time. Such documents are always fetched using ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " requests."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "HTML pages may include ",
+            {
+              "element": "em",
+              "content": [
+                "forms"
+              ]
+            },
+            ", which allow the user to fill out information and send it to the server. This is an example of a form:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This code describes a form with two fields: a small one asking for a name and a larger one to write a message in. When you click the Send button, the information in those fields will be encoded into a ",
+            {
+              "element": "em",
+              "content": [
+                "query string"
+              ]
+            },
+            ". When the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "form",
+                ">"
+              ]
+            },
+            " element’s ",
+            {
+              "element": "literal",
+              "content": [
+                "method"
+              ]
+            },
+            " attribute is ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " (or is omitted), that query string is tacked onto the ",
+            {
+              "element": "literal",
+              "content": [
+                "action"
+              ]
+            },
+            " URL, and the browser makes a ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " request to that URL."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The start of a query string is indicated by a question mark. After that follow pairs of names and values, corresponding to the ",
+            {
+              "element": "literal",
+              "content": [
+                "name"
+              ]
+            },
+            " attribute on the form field elements and the content of those elements, respectively. An ampersand character (",
+            {
+              "element": "literal",
+              "content": [
+                "&"
+              ]
+            },
+            ") is used to separate the pairs."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The actual message encoded in the previous URL is “Yes?”, even though the question mark is replaced by a strange code. Some characters in query strings must be escaped. The question mark, represented as ",
+            {
+              "element": "literal",
+              "content": [
+                "%3F"
+              ]
+            },
+            ", is one of those. There seems to be an unwritten rule that every format needs its own way of escaping characters. This one, called ",
+            {
+              "element": "em",
+              "content": [
+                "URL",
+                " ",
+                "encoding"
+              ]
+            },
+            ", uses a percent sign followed by two hexadecimal digits that encode the character code. In this case, 3F, which is 63 in decimal notation, is the code of a question mark character. JavaScript provides the ",
+            {
+              "element": "literal",
+              "content": [
+                "encodeURIComponent"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "decodeURIComponent"
+              ]
+            },
+            " functions to encode and decode this format."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "If we change the ",
+            {
+              "element": "literal",
+              "content": [
+                "method"
+              ]
+            },
+            " attribute of the HTML form in the example we saw earlier to ",
+            {
+              "element": "literal",
+              "content": [
+                "POST"
+              ]
+            },
+            ", the HTTP request made to submit the form will use the ",
+            {
+              "element": "literal",
+              "content": [
+                "POST"
+              ]
+            },
+            " method and put the query string in body of the request, rather than adding it to the URL."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "By convention, the ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " method is used for requests that do not have side effects, such as doing a search. Requests that change something on the server, such as creating a new account or posting a message, should be expressed with other methods, such as ",
+            {
+              "element": "literal",
+              "content": [
+                "POST"
+              ]
+            },
+            ". Client-side software, such as a browser, knows that it shouldn’t blindly make ",
+            {
+              "element": "literal",
+              "content": [
+                "POST"
+              ]
+            },
+            " requests but will often implicitly make ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " requests—for example, to prefetch a resource it believes the user will soon need."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The ",
+            {
+              "element": "reference",
+              "content": "next chapter"
+            },
+            " will return to forms and talk about how we can script them with JavaScript."
+          ]
+        }
+      ],
+      "title": "Browsers and HTTP"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "The interface through which browser JavaScript can make HTTP requests is called ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " (note the inconsistent capitalization). It was designed by Microsoft, for its Internet Explorer browser, in the late 1990s. During this time, the XML file format was ",
+            {
+              "element": "em",
+              "content": [
+                "very"
+              ]
+            },
+            " popular in the world of business software—a world where Microsoft has always been at home. In fact, it was so popular that the acronym XML was tacked onto the front of the name of an interface for HTTP, which is in no way tied to XML."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The name isn’t completely nonsensical, though. The interface allows you to parse response documents as XML if you want. Conflating two distinct concepts (making a request and parsing the response) into a single thing is terrible design, of course, but so it goes."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When the ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " interface was added to Internet Explorer, it allowed people to do things with JavaScript that had been very hard before. For example, websites started showing lists of suggestions when the user was typing something into a text field. The script would send the text to the server over HTTP as the user typed. The server, which had some database of possible inputs, would match the database entries against the partial input and send back possible completions to show the user. This was considered spectacular—people were used to waiting for a full page reload for every interaction with a website."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The other significant browser at that time, Mozilla (later Firefox), did not want to be left behind. To allow people to do similarly neat things in ",
+            {
+              "element": "em",
+              "content": [
+                "its"
+              ]
+            },
+            " browser, Mozilla copied the interface, including the bogus name. The next generation of browsers followed this example, and today ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " is a de facto standard interface."
+          ]
+        }
+      ],
+      "title": "XMLHttpRequest"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "To make a simple request, we create a request object with the ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " constructor and call its ",
+            {
+              "element": "literal",
+              "content": [
+                "open"
+              ]
+            },
+            " and ",
+            {
+              "element": "literal",
+              "content": [
+                "send"
+              ]
+            },
+            " methods."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            " The ",
+            {
+              "element": "literal",
+              "content": [
+                "open"
+              ]
+            },
+            " method configures the request. In this case, we choose to make a ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " request for the ",
+            {
+              "element": "em",
+              "content": [
+                "example/data.txt"
+              ]
+            },
+            " file. URLs that don’t start with a protocol name (such as ",
+            {
+              "element": "em",
+              "content": [
+                "http:"
+              ]
+            },
+            ") are relative, which means that they are interpreted relative to the current document. When they start with a slash (/), they replace the current path, which is the part after the server name. When they do not, the part of the current path up to and including its last slash character is put in front of the relative URL."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "After opening the request, we can send it with the ",
+            {
+              "element": "literal",
+              "content": [
+                "send"
+              ]
+            },
+            " method. The argument to send is the request body. For ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " requests, we can pass ",
+            {
+              "element": "literal",
+              "content": [
+                "null"
+              ]
+            },
+            ". If the third argument to ",
+            {
+              "element": "literal",
+              "content": [
+                "open"
+              ]
+            },
+            " was ",
+            {
+              "element": "literal",
+              "content": [
+                "false"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "send"
+              ]
+            },
+            " will return only after the response to our request was received. We can read the request object’s ",
+            {
+              "element": "literal",
+              "content": [
+                "responseText"
+              ]
+            },
+            " property to get the response body."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The other information included in the response can also be extracted from this object. The status code is accessible through the ",
+            {
+              "element": "literal",
+              "content": [
+                "status"
+              ]
+            },
+            " property, and the human-readable status text is accessible through ",
+            {
+              "element": "literal",
+              "content": [
+                "statusText"
+              ]
+            },
+            ". Headers can be read with ",
+            {
+              "element": "literal",
+              "content": [
+                "getResponseHeader"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Header names are case-insensitive. They are usually written with a capital letter at the start of each word, such as “Content-Type”, but “content-type” and “cOnTeNt-TyPe” refer to the same header."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The browser will automatically add some request headers, such as “Host” and those needed for the server to figure out the size of the body. But you can add your own headers with the ",
+            {
+              "element": "literal",
+              "content": [
+                "setRequestHeader"
+              ]
+            },
+            " method. This is needed only for advanced uses and requires the cooperation of the server you are talking to—a server is free to ignore headers it does not know how to handle."
+          ]
+        }
+      ],
+      "title": "Sending a request"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In the examples we saw, the request has finished when the call to ",
+            {
+              "element": "literal",
+              "content": [
+                "send"
+              ]
+            },
+            " returns. This is convenient because it means properties such as ",
+            {
+              "element": "literal",
+              "content": [
+                "responseText"
+              ]
+            },
+            " are available immediately. But it also means that our program is suspended as long as the browser and server are communicating. When the connection is bad, the server is slow, or the file is big, that might take quite a while. Worse, because no event handlers can fire while our program is suspended, the whole document will become unresponsive."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If we pass ",
+            {
+              "element": "literal",
+              "content": [
+                "true"
+              ]
+            },
+            " as the third argument to ",
+            {
+              "element": "literal",
+              "content": [
+                "open"
+              ]
+            },
+            ", the request is ",
+            {
+              "element": "em",
+              "content": [
+                "asynchronous"
+              ]
+            },
+            ". This means that when we call ",
+            {
+              "element": "literal",
+              "content": [
+                "send"
+              ]
+            },
+            ", the only thing that happens right away is that the request is scheduled to be sent. Our program can continue, and the browser will take care of the sending and receiving of data in the background."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "But as long as the request is running, we won’t be able to access the response. We need a mechanism that will notify us when the data is available."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "For this, we must listen for the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"load\""
+              ]
+            },
+            " event on the request object."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Just like the use of ",
+            {
+              "element": "literal",
+              "content": [
+                "requestAnimationFrame"
+              ]
+            },
+            " in ",
+            {
+              "element": "reference",
+              "content": "Chapter 15"
+            },
+            ", this forces us to use an asynchronous style of programming, wrapping the things that have to be done after the request in a function and arranging for that to be called at the appropriate time. We will come back to this ",
+            {
+              "element": "reference",
+              "content": "later"
+            },
+            "."
+          ]
+        }
+      ],
+      "title": "Asynchronous Requests"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When the resource retrieved by an ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " object is an XML document, the object’s ",
+            {
+              "element": "literal",
+              "content": [
+                "responseXML"
+              ]
+            },
+            " property will hold a parsed representation of this document. This representation works much like the DOM discussed in ",
+            {
+              "element": "reference",
+              "content": "Chapter 13"
+            },
+            ", except that it doesn’t have HTML-specific functionality like the ",
+            {
+              "element": "literal",
+              "content": [
+                "style"
+              ]
+            },
+            " property. The object that ",
+            {
+              "element": "literal",
+              "content": [
+                "responseXML"
+              ]
+            },
+            " holds corresponds to the ",
+            {
+              "element": "literal",
+              "content": [
+                "document"
+              ]
+            },
+            " object. Its ",
+            {
+              "element": "literal",
+              "content": [
+                "documentElement"
+              ]
+            },
+            " property refers to the outer tag of the XML document. In the following document (",
+            {
+              "element": "em",
+              "content": [
+                "example/fruit.xml"
+              ]
+            },
+            "), that would be the ",
+            {
+              "element": "literal",
+              "content": [
+                "<",
+                "fruits",
+                ">"
+              ]
+            },
+            " tag:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We can retrieve such a file like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "XML documents can be used to exchange structured information with the server. Their form—tags nested inside other tags—lends itself well to storing most types of data, or at least better than flat text files. The DOM interface is rather clumsy for extracting information, though, and XML documents tend to be verbose. It is often a better idea to communicate using JSON data, which is easier to read and write, both for programs and for humans."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        }
+      ],
+      "title": "Fetching XML Data"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Making HTTP requests in web page scripts once again raises concerns about security. The person who controls the script might not have the same interests as the person on whose computer it is running. More specifically, if I visit ",
+            {
+              "element": "em",
+              "content": [
+                "themafia.org"
+              ]
+            },
+            ", I do not want its scripts to be able to make a request to ",
+            {
+              "element": "em",
+              "content": [
+                "mybank.com"
+              ]
+            },
+            ", using identifying information from my browser, with instructions to transfer all my money to some random mafia account."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is possible for websites to protect themselves against such attacks, but that requires effort, and many websites fail to do it. For this reason, browsers protect us by disallowing scripts to make HTTP requests to other ",
+            {
+              "element": "em",
+              "content": [
+                "domains"
+              ]
+            },
+            " (names such as ",
+            {
+              "element": "em",
+              "content": [
+                "themafia.org"
+              ]
+            },
+            " and ",
+            {
+              "element": "em",
+              "content": [
+                "mybank.com"
+              ]
+            },
+            ")."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This can be an annoying problem when building systems that want to access several domains for legitimate reasons. Fortunately, servers can include a header like this in their response to explicitly indicate to browsers that it is okay for the request to come from other domains:"
+          ]
+        },
+        {
+          "element": "pre",
+          "content": "Access-Control-Allow-Origin: *"
+        }
+      ],
+      "title": "HTTP sandboxing"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In ",
+            {
+              "element": "reference",
+              "content": "Chapter 10"
+            },
+            ", in our implementation of the AMD module system, we used a hypothetical function called ",
+            {
+              "element": "literal",
+              "content": [
+                "backgroundReadFile"
+              ]
+            },
+            ". It took a filename and a function and called that function with the contents of the file when it had finished fetching it. Here’s a simple implementation of that function:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This simple abstraction makes it easier to use ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " for simple ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " requests. If you are writing a program that has to make HTTP requests, it is a good idea to use a helper function so that you don’t end up repeating the ugly ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            " pattern all through your code."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            " The function argument’s name, ",
+            {
+              "element": "literal",
+              "content": [
+                "callback"
+              ]
+            },
+            ", is a term that is often used to describe functions like this. A callback function is given to other code to provide that code with a way to “call us back” later."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "It is not hard to write an HTTP utility function, tailored to what your application is doing. The previous one does only ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " requests and doesn’t give us control over the headers or the request body. You could write another variant for ",
+            {
+              "element": "literal",
+              "content": [
+                "POST"
+              ]
+            },
+            " requests or a more generic one that supports various kinds of requests. Many JavaScript libraries also provide wrappers for ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The main problem with the previous wrapper is its handling of failure. When the request returns a status code that indicates an error (400 and up), it does nothing. This might be okay, in some circumstances, but imagine we put a “loading” indicator on the page to indicate that we are fetching information. If the request fails because the server crashed or the connection is briefly interrupted, the page will just sit there, misleadingly looking like it is doing something. The user will wait for a while, get impatient, and consider the site uselessly flaky."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We should also have an option to be notified when the request fails so that we can take appropriate action. For example, we could remove the “loading” message and inform the user that something went wrong."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Error handling in asynchronous code is even trickier than error handling in synchronous code. Because we often need to defer part of our work, putting it in a callback function, the scope of a ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " block becomes meaningless. In the following code, the exception will ",
+            {
+              "element": "em",
+              "content": [
+                "not"
+              ]
+            },
+            " be caught because the call to ",
+            {
+              "element": "literal",
+              "content": [
+                "backgroundReadFile"
+              ]
+            },
+            " returns immediately. Control then leaves the ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " block, and the function it was given won’t be called until later."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "To handle failing requests, we have to allow an additional function to be passed to our wrapper and call that when a request goes wrong. Alternatively, we can use the convention that if the request fails, an additional argument describing the problem is passed to the regular callback function. Here’s an example:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "We have added a handler for the ",
+            {
+              "element": "literal",
+              "content": [
+                "\"error\""
+              ]
+            },
+            " event, which will be signaled when the request fails entirely. We also call the callback function with an error argument when the request completes with a status code that indicates an error."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Code using ",
+            {
+              "element": "literal",
+              "content": [
+                "getURL"
+              ]
+            },
+            " must then check whether an error was given and, if it finds one, handle it."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "This does not help when it comes to exceptions. When chaining several asynchronous actions together, an exception at any point of the chain will still (unless you wrap each handling function in its own ",
+            {
+              "element": "literal",
+              "content": [
+                "try/catch"
+              ]
+            },
+            " block) land at the top level and abort your chain of actions."
+          ]
+        }
+      ],
+      "title": "Abstracting requests"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "For complicated projects, writing asynchronous code in plain callback style is hard to do correctly. It is easy to forget to check for an error or to allow an unexpected exception to cut the program short in a crude way. Additionally, arranging for correct error handling when the error has to flow through multiple callback functions and ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " blocks is tedious."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "There have been a lot of attempts to solve this with extra abstractions. One of the more successful ones is called ",
+            {
+              "element": "em",
+              "content": [
+                "promises"
+              ]
+            },
+            ". Promises wrap an asynchronous action in an object, which can be passed around and told to do certain things when the action finishes or fails. This interface is set to become part of the next version of the JavaScript language but can already be used as a library."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The interface for promises isn’t entirely intuitive, but it is powerful. This chapter will only roughly describe it. You can find a more thorough treatment at ",
+            {
+              "element": "reference",
+              "content": [
+                {
+                  "element": "em",
+                  "content": [
+                    "www.promisejs.org"
+                  ]
+                }
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "To create a promise object, we call the ",
+            {
+              "element": "literal",
+              "content": [
+                "Promise"
+              ]
+            },
+            " constructor, giving it a function that initializes the asynchronous action. The constructor calls that function, passing it two arguments, which are themselves functions. The first should be called when the action finishes successfully, and the second should be called when it fails."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Once again, here is our wrapper for ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " requests, this time returning a promise. We’ll simply call it ",
+            {
+              "element": "literal",
+              "content": [
+                "get"
+              ]
+            },
+            " this time."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Note that the interface to the function itself is now a lot simpler. You give it a URL, and it returns a promise. That promise acts as a ",
+            {
+              "element": "em",
+              "content": [
+                "handle"
+              ]
+            },
+            " to the request’s outcome. It has a ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            " method that you can call with two functions: one to handle success and one to handle failure."
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "So far, this is just another way to express the same thing we already expressed. It is only when you need to chain actions together that promises make a significant difference."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Calling ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            " produces a new promise, whose result (the value passed to success handlers) depends on the return value of the first function we passed to ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            ". This function may return another promise to indicate that more asynchronous work is being done. In this case, the promise returned by ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            " itself will wait for the promise returned by the handler function, succeeding or failing with the same value when it is resolved. When the handler function returns a nonpromise value, the promise returned by ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            " immediately succeeds with that value as its result."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This means you can use ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            " to transform the result of a promise. For example, this returns a promise whose result is the content of the given URL, parsed as JSON:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "That last call to ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            " did not specify a failure handler. This is allowed. The error will be passed to the promise returned by ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            ", which is exactly what we want—",
+            {
+              "element": "literal",
+              "content": [
+                "getJSON"
+              ]
+            },
+            " does not know what to do when something goes wrong, but hopefully its caller does."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "As an example that shows the use of promises, we will build a program that fetches a number of JSON files from the server and, while it is doing that, shows the word ",
+            {
+              "element": "em",
+              "content": [
+                "loading"
+              ]
+            },
+            ". The JSON files contain information about people, with links to files that represent other people in properties such as ",
+            {
+              "element": "literal",
+              "content": [
+                "father"
+              ]
+            },
+            ", ",
+            {
+              "element": "literal",
+              "content": [
+                "mother"
+              ]
+            },
+            ", or ",
+            {
+              "element": "literal",
+              "content": [
+                "spouse"
+              ]
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "We want to get the name of the mother of the spouse of ",
+            {
+              "element": "em",
+              "content": [
+                "example/bert.json"
+              ]
+            },
+            ". And if something goes wrong, we want to remove the ",
+            {
+              "element": "em",
+              "content": [
+                "loading"
+              ]
+            },
+            " text and show an error message instead. Here is how that might be done with promises:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "The resulting program is relatively compact and readable. The ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " method is similar to ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            ", except that it only expects a failure handler and will pass through the result unmodified in case of success. Much like with the ",
+            {
+              "element": "literal",
+              "content": [
+                "catch"
+              ]
+            },
+            " clause for the ",
+            {
+              "element": "literal",
+              "content": [
+                "try"
+              ]
+            },
+            " statement, control will continue as normal after the failure is caught. That way, the final ",
+            {
+              "element": "literal",
+              "content": [
+                "then"
+              ]
+            },
+            ", which removes the loading message, is always executed, even if something went wrong."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "You can think of the promise interface as implementing its own language for asynchronous control flow. The extra method calls and function expressions needed to achieve this make the code look somewhat awkward but not remotely as awkward as it would look if we took care of all the error handling ourselves."
+          ]
+        }
+      ],
+      "title": "Promises"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "When building a system that requires communication between a JavaScript program running in the browser (client-side) and a program on a server (server-side), there are several different ways to model this communication."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "A commonly used model is that of ",
+            {
+              "element": "em",
+              "content": [
+                "remote procedure calls"
+              ]
+            },
+            ". In this model, communication follows the patterns of normal function calls, except that the function is actually running on another machine. Calling it involves making a request to the server that includes the function’s name and arguments. The response to that request contains the returned value."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "When thinking in terms of remote procedure calls, HTTP is just a vehicle for communication, and you will most likely write an abstraction layer that hides it entirely."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Another approach is to build your communication around the concept of resources and HTTP methods. Instead of a remote procedure called ",
+            {
+              "element": "literal",
+              "content": [
+                "addUser"
+              ]
+            },
+            ", you use a ",
+            {
+              "element": "literal",
+              "content": [
+                "PUT"
+              ]
+            },
+            " request to ",
+            {
+              "element": "literal",
+              "content": [
+                "/users/larry"
+              ]
+            },
+            ". Instead of encoding that user’s properties in function arguments, you define a document format or use an existing format that represents a user. The body of the ",
+            {
+              "element": "literal",
+              "content": [
+                "PUT"
+              ]
+            },
+            " request to create a new resource is then simply such a document. A resource is fetched by making a ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " request to the resource’s URL (for example, ",
+            {
+              "element": "literal",
+              "content": [
+                "/user/larry"
+              ]
+            },
+            "), which returns the document representing the resource."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "This second approach makes it easier to use some of the features that HTTP provides, such as support for caching resources (keeping a copy on the client side). It can also help the coherence of your interface since resources are easier to reason about than a jumble of functions."
+          ]
+        }
+      ],
+      "title": "Appreciating HTTP"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "Data traveling over the Internet tends to follow a long, dangerous road. To get to its destination, it must hop through anything from coffee-shop Wi-Fi networks to networks controlled by various companies and states. At any point along its route it may be inspected or even modified."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "If it is important that something remain secret, such as the password to your email account, or that it arrive at its destination unmodified, such as the account number you transfer money to from your bank’s website, plain HTTP is not good enough."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The secure HTTP protocol, whose URLs start with ",
+            {
+              "element": "em",
+              "content": [
+                "https://"
+              ]
+            },
+            ", wraps HTTP traffic in a way that makes it harder to read and tamper with. First, the client verifies that the server is who it claims to be by requiring that server to prove that it has a cryptographic certificate issued by a certificate authority that the browser recognizes. Next, all data going over the connection is encrypted in a way that should prevent eavesdropping and tampering."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Thus, when it works right, HTTPS prevents both the someone impersonating the website you were trying to talk to and the someone snooping on your communication. It is not perfect, and there have been various incidents where HTTPS failed because of forged or stolen certificates and broken software. Still, plain HTTP is trivial to mess with, whereas breaking HTTPS requires the kind of effort that only states or sophisticated criminal organizations can hope to make."
+          ]
+        }
+      ],
+      "title": "Security and HTTPS"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "p",
+          "content": [
+            "In this chapter, we saw that HTTP is a protocol for accessing resources over the Internet. A ",
+            {
+              "element": "em",
+              "content": [
+                "client"
+              ]
+            },
+            " sends a request, which contains a method (usually ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            ") and a path that identifies a resource. The ",
+            {
+              "element": "em",
+              "content": [
+                "server"
+              ]
+            },
+            " then decides what to do with the request and responds with a status code and a response body. Both requests and responses may contain headers that provide additional information."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "Browsers make ",
+            {
+              "element": "literal",
+              "content": [
+                "GET"
+              ]
+            },
+            " requests to fetch the resources needed to display a web page. A web page may also contain forms, which allow information entered by the user to be sent along in the request made when the form is submitted. You will learn more about that in the ",
+            {
+              "element": "reference",
+              "content": "next\nchapter"
+            },
+            "."
+          ]
+        },
+        {
+          "element": "p",
+          "content": [
+            "The interface through which browser JavaScript can make HTTP requests is called ",
+            {
+              "element": "literal",
+              "content": [
+                "XMLHttpRequest"
+              ]
+            },
+            ". You can usually ignore the “XML” part of that name (but you still have to type it). There are two ways in which it can be used—synchronous, which blocks everything until the request finishes, and asynchronous, which requires an event handler to notice that the response came in. In almost all cases, asynchronous is preferable. Making a request looks like this:"
+          ]
+        },
+        {
+          "element": "listing",
+          "numbered": false,
+          "content": []
+        },
+        {
+          "element": "p",
+          "content": [
+            "Asynchronous programming is tricky. ",
+            {
+              "element": "em",
+              "content": [
+                "Promises"
+              ]
+            },
+            " are an interface that makes it slightly easier by helping route error conditions and exceptions to the right handler and by abstracting away some of the more repetitive and error-prone elements in this style of programming."
+          ]
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "element": "section",
+      "content": [
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "One of the things that HTTP can do, but that we have not discussed in this chapter, is called ",
+                {
+                  "element": "em",
+                  "content": [
+                    "content",
+                    " ",
+                    "negotiation"
+                  ]
+                },
+                ". The ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Accept"
+                  ]
+                },
+                " header for a request can be used to tell the server what type of document the client would like to get. Many servers ignore this header, but when a server knows of various ways to encode a resource, it can look at this header and send the one that the client prefers."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The URL ",
+                {
+                  "element": "reference",
+                  "content": [
+                    {
+                      "element": "em",
+                      "content": [
+                        "eloquentjavascript.net/author"
+                      ]
+                    }
+                  ]
+                },
+                " is configured to respond with either plaintext, HTML, or JSON, depending on what the client asks for. These formats are identified by the standardized ",
+                {
+                  "element": "em",
+                  "content": [
+                    "media types"
+                  ]
+                },
+                " ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "text/plain"
+                  ]
+                },
+                ", ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "text/html"
+                  ]
+                },
+                ", and ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "application/json"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Send requests to fetch all three formats of this resource. Use the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "setRequestHeader"
+                  ]
+                },
+                " method of your ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "XMLHttpRequest"
+                  ]
+                },
+                " object to set the header named ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Accept"
+                  ]
+                },
+                " to one of the media types given earlier. Make sure you set the header ",
+                {
+                  "element": "em",
+                  "content": [
+                    "after"
+                  ]
+                },
+                " calling ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "open"
+                  ]
+                },
+                " but before calling ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "send"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Finally, try asking for the media type ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "application/rainbows+unicorns"
+                  ]
+                },
+                " and see what happens."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "See the various examples of using an ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "XMLHttpRequest"
+                  ]
+                },
+                " in this chapter for an example of the method calls involved in making a request. You can use a synchronous request (by setting the third parameter to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "open"
+                  ]
+                },
+                " to ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "false"
+                  ]
+                },
+                ") if you want."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Asking for a bogus media type will return a response with code 406, “Not acceptable”, which is the code a server should return when it can’t fulfill the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Accept"
+                  ]
+                },
+                " header."
+              ]
+            }
+          ],
+          "title": "Content negotiation"
+        },
+        {
+          "element": "section",
+          "content": [
+            {
+              "element": "p",
+              "content": [
+                "The ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Promise"
+                  ]
+                },
+                " constructor has an ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "all"
+                  ]
+                },
+                " method that, given an array of promises, returns a promise that waits for all of the promises in the array to finish. It then succeeds, yielding an array of result values. If any of the promises in the array fail, the promise returned by ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "all"
+                  ]
+                },
+                " fails too (with the failure value from the failing promise)."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Try to implement something like this yourself as a regular function called ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "all"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Note that after a promise is resolved (has succeeded or failed), it can’t succeed or fail again, and further calls to the functions that resolve it are ignored. This can simplify the way you handle failure of your promise."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The function passed to the ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "Promise"
+                  ]
+                },
+                " constructor will have to call ",
+                {
+                  "element": "literal",
+                  "content": [
+                    "then"
+                  ]
+                },
+                " on each of the promises in the given array. When one of them succeeds, two things need to happen. The resulting value needs to be stored in the correct position of a result array, and we must check whether this was the last pending promise and finish our own promise if it was."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "The latter can be done with a counter, which is initialized to the length of the input array and from which we subtract 1 every time a promise succeeds. When it reaches 0, we are done. Make sure you take the situation where the input array is empty (and thus no promise will ever resolve) into account."
+              ]
+            },
+            {
+              "element": "p",
+              "content": [
+                "Handling failure requires some thought but turns out to be extremely simple. Just pass the failure function of the wrapping promise to each of the promises in the array so that a failure in one of them triggers the failure of the whole wrapper."
+              ]
+            }
+          ],
+          "title": "Waiting for multiple promises"
+        }
+      ],
+      "title": "Exercises"
+    }
+  ],
+  "title": "HTTP"
+}
