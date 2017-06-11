@@ -31,10 +31,12 @@
         {
           "element": "p",
           "content": [
-            "  In ",
+            " In ",
             {
               "element": "reference",
-              "content": "Chapter 1"
+              "content": [
+                "Chapter 1"
+              ]
             },
             ", we made some values and then applied operators to them to get new values. Creating values like this is an essential part of every JavaScript program, but it is only a part."
           ]
@@ -69,7 +71,7 @@
         {
           "element": "p",
           "content": [
-            " This shows part of the beauty of a language-based interface. Expressions can nest in a way very similar to the way subsentences in human languages are nested—a subsentence can contain its own subsentences, and so on. This allows us to combine expressions to express arbitrarily complex computations."
+            "This shows part of the beauty of a language-based interface. Expressions can nest in a way very similar to the way subsentences in human languages are nested—a subsentence can contain its own subsentences, and so on. This allows us to combine expressions to express arbitrarily complex computations."
           ]
         },
         {
@@ -94,7 +96,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "1;\n!false;"
         },
         {
           "element": "p",
@@ -138,7 +140,7 @@
         {
           "element": "p",
           "content": [
-            " How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value has to be immediately used or it will dissipate again. To catch and hold values, JavaScript provides a thing called a ",
+            "How does a program keep an internal state? How does it remember things? We have seen how to produce new values from old values, but this does not change the old values, and the new value has to be immediately used or it will dissipate again. To catch and hold values, JavaScript provides a thing called a ",
             {
               "element": "em",
               "content": [
@@ -151,7 +153,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var caught = 5 * 5;"
         },
         {
           "element": "p",
@@ -202,12 +204,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var ten = 10;\nconsole.log(ten * ten);\n// → 100"
         },
         {
           "element": "p",
           "content": [
-            " Variable names can be any word that isn’t a reserved word (such as ",
+            "Variable names can be any word that isn’t a reserved word (such as ",
             {
               "element": "literal",
               "content": [
@@ -241,7 +243,7 @@
         {
           "element": "p",
           "content": [
-            " When a variable points at a value, that does not mean it is tied to that value forever. The ",
+            "When a variable points at a value, that does not mean it is tied to that value forever. The ",
             {
               "element": "literal",
               "content": [
@@ -254,12 +256,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var mood = \"light\";\nconsole.log(mood);\n// → light\nmood = \"dark\";\nconsole.log(mood);\n// → dark"
         },
         {
           "element": "p",
           "content": [
-            " You should imagine variables as tentacles, rather than boxes. They do not ",
+            "You should imagine variables as tentacles, rather than boxes. They do not ",
             {
               "element": "em",
               "content": [
@@ -289,7 +291,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var luigisDebt = 140;\nluigisDebt = luigisDebt - 35;\nconsole.log(luigisDebt);\n// → 105"
         },
         {
           "element": "p",
@@ -320,7 +322,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var one = 1, two = 2;\nconsole.log(one + two);\n// → 3"
         }
       ],
       "title": "Variables"
@@ -331,7 +333,7 @@
         {
           "element": "p",
           "content": [
-            " Words with a special meaning, such as ",
+            "Words with a special meaning, such as ",
             {
               "element": "literal",
               "content": [
@@ -351,7 +353,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "break case catch class const continue debugger\ndefault delete do else enum export extends false\nfinally for function if implements import in\ninstanceof interface let new null package private\nprotected public return static super switch this\nthrow true try typeof var void while with yield"
         },
         {
           "element": "p",
@@ -387,7 +389,7 @@
         {
           "element": "p",
           "content": [
-            " A lot of the values provided in the default environment have the type ",
+            "A lot of the values provided in the default environment have the type ",
             {
               "element": "em",
               "content": [
@@ -414,7 +416,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "alert(\"Good morning!\");"
         },
         {
           "element": "img",
@@ -423,7 +425,7 @@
         {
           "element": "p",
           "content": [
-            " Executing a function is called ",
+            "Executing a function is called ",
             {
               "element": "em",
               "content": [
@@ -511,7 +513,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var x = 30;\nconsole.log(\"the value of x is\", x);\n// → the value of x is 30"
         },
         {
           "element": "p",
@@ -547,7 +549,9 @@
             " variable. We will find out exactly what this means in ",
             {
               "element": "reference",
-              "content": "Chapter 4"
+              "content": [
+                "Chapter 4"
+              ]
             },
             "."
           ]
@@ -561,7 +565,7 @@
         {
           "element": "p",
           "content": [
-            " Showing a dialog box or writing text to the screen is a ",
+            "Showing a dialog box or writing text to the screen is a ",
             {
               "element": "em",
               "content": [
@@ -581,12 +585,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(Math.max(2, 4));\n// → 4"
         },
         {
           "element": "p",
           "content": [
-            " When a function produces a value, it is said to ",
+            "When a function produces a value, it is said to ",
             {
               "element": "em",
               "content": [
@@ -613,7 +617,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(Math.min(2, 4) + 100);\n// → 102"
         },
         {
           "element": "p",
@@ -621,7 +625,9 @@
             "The ",
             {
               "element": "reference",
-              "content": "next chapter"
+              "content": [
+                "next chapter"
+              ]
             },
             " explains how to write your own functions."
           ]
@@ -669,7 +675,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "confirm(\"Shall we, then?\");"
         },
         {
           "element": "img",
@@ -691,7 +697,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "prompt(\"Tell me everything you know.\", \"...\");"
         },
         {
           "element": "img",
@@ -718,12 +724,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var theNumber = Number(prompt(\"Pick a number\", \"\"));\nalert(\"Your number is the square root of \" +\n      theNumber * theNumber);"
         },
         {
           "element": "p",
           "content": [
-            "  The function ",
+            " The function ",
             {
               "element": "literal",
               "content": [
@@ -803,7 +809,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var theNumber = Number(prompt(\"Pick a number\", \"\"));\nif (!isNaN(theNumber))\n  alert(\"Your number is the square root of \" +\n        theNumber * theNumber);"
         },
         {
           "element": "p",
@@ -895,12 +901,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var theNumber = Number(prompt(\"Pick a number\", \"\"));\nif (!isNaN(theNumber))\n  alert(\"Your number is the square root of \" +\n        theNumber * theNumber);\nelse\n  alert(\"Hey. Why didn't you give me a number?\");"
         },
         {
           "element": "p",
           "content": [
-            " If we have more than two paths to choose from, multiple ",
+            "If we have more than two paths to choose from, multiple ",
             {
               "element": "literal",
               "content": [
@@ -920,7 +926,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var num = Number(prompt(\"Pick a number\", \"0\"));\n\nif (num < 10)\n  alert(\"Small\");\nelse if (num < 100)\n  alert(\"Medium\");\nelse\n  alert(\"Large\");"
         },
         {
           "element": "p",
@@ -957,8 +963,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                " 100"
+                "< 100"
               ]
             },
             ") holds, that means the number is between 10 and 100, and ",
@@ -1003,7 +1008,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(0);\nconsole.log(2);\nconsole.log(4);\nconsole.log(6);\nconsole.log(8);\nconsole.log(10);\nconsole.log(12);"
         },
         {
           "element": "p",
@@ -1038,7 +1043,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var number = 0;\nwhile (number <= 12) {\n  console.log(number);\n  number = number + 2;\n}\n// → 0\n// → 2\n//   … etcetera"
         },
         {
           "element": "p",
@@ -1164,7 +1169,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var result = 1;\nvar counter = 0;\nwhile (counter < 10) {\n  result = result * 2;\n  counter = counter + 1;\n}\nconsole.log(result);\n// → 1024"
         },
         {
           "element": "p",
@@ -1180,14 +1185,15 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "= 10"
+                "<= 10"
               ]
             },
             ", but, for reasons that will become apparent in ",
             {
               "element": "reference",
-              "content": "Chapter 4"
+              "content": [
+                "Chapter 4"
+              ]
             },
             ", it is a good idea to get used to counting from 0."
           ]
@@ -1222,12 +1228,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "do {\n  var yourName = prompt(\"Who are you?\");\n} while (!yourName);\nconsole.log(yourName);"
         },
         {
           "element": "p",
           "content": [
-            " This program will force you to enter a name. It will ask again and again until it gets something that is not an empty string. Applying the ",
+            "This program will force you to enter a name. It will ask again and again until it gets something that is not an empty string. Applying the ",
             {
               "element": "literal",
               "content": [
@@ -1305,7 +1311,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var number = 0; number <= 12; number = number + 2)\n  console.log(number);\n// → 0\n// → 2\n//   … etcetera"
         },
         {
           "element": "p",
@@ -1313,7 +1319,9 @@
             "This program is exactly equivalent to the ",
             {
               "element": "reference",
-              "content": "earlier"
+              "content": [
+                "earlier"
+              ]
             },
             " even-number-printing example. The only change is that all the statements that are related to the “state” of the loop are now grouped together."
           ]
@@ -1389,7 +1397,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var result = 1;\nfor (var counter = 0; counter < 10; counter = counter + 1)\n  result = result * 2;\nconsole.log(result);\n// → 1024"
         },
         {
           "element": "p",
@@ -1413,7 +1421,7 @@
         {
           "element": "p",
           "content": [
-            " Having the loop’s condition produce ",
+            "Having the loop’s condition produce ",
             {
               "element": "literal",
               "content": [
@@ -1446,7 +1454,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var current = 20; ; current++) {\n  if (current % 7 == 0)\n    break;\n}\nconsole.log(current);\n// → 21"
         },
         {
           "element": "p",
@@ -1550,7 +1558,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "counter = counter + 1;"
         },
         {
           "element": "p",
@@ -1561,7 +1569,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "counter += 1;"
         },
         {
           "element": "p",
@@ -1599,7 +1607,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var number = 0; number <= 12; number += 2)\n  console.log(number);"
         },
         {
           "element": "p",
@@ -1615,9 +1623,7 @@
             {
               "element": "literal",
               "content": [
-                "counter -=",
-                " ",
-                "1"
+                "counter -=1"
               ]
             },
             ", there are even shorter equivalents: ",
@@ -1646,13 +1652,13 @@
         {
           "element": "p",
           "content": [
-            " It is common for code to look like this:"
+            "It is common for code to look like this:"
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "if (variable == \"value1\") action1();\nelse if (variable == \"value2\") action2();\nelse if (variable == \"value3\") action3();\nelse defaultAction();"
         },
         {
           "element": "p",
@@ -1677,7 +1683,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "switch (prompt(\"What is the weather like?\")) {\n  case \"rainy\":\n    console.log(\"Remember to bring an umbrella.\");\n    break;\n  case \"sunny\":\n    console.log(\"Dress lightly.\");\n  case \"cloudy\":\n    console.log(\"Go outside.\");\n    break;\n  default:\n    console.log(\"Unknown weather type!\");\n    break;\n}"
         },
         {
           "element": "p",
@@ -1743,7 +1749,7 @@
         {
           "element": "p",
           "content": [
-            " Variable names may not contain spaces, yet it is often helpful to use multiple words to clearly describe what the variable represents. These are pretty much your choices for writing a variable name with several words in it:"
+            "Variable names may not contain spaces, yet it is often helpful to use multiple words to clearly describe what the variable represents. These are pretty much your choices for writing a variable name with several words in it:"
           ]
         },
         {
@@ -1769,7 +1775,9 @@
             " function, the first letter of a variable is also capitalized. This was done to mark this function as a constructor. What a constructor is will become clear in ",
             {
               "element": "reference",
-              "content": "Chapter 6"
+              "content": [
+                "Chapter 6"
+              ]
             },
             ". For now, the important thing is not to be bothered by this apparent lack of consistency."
           ]
@@ -1809,7 +1817,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var accountBalance = calculateBalance(account);\n// It's a green hollow where a river sings\naccountBalance.adjust();\n// Madly catching white tatters in the grass.\nvar report = new Report();\n// Where the sun on the proud mountain rings:\naddToReport(accountBalance, report);\n// It's a little valley, foaming like light in a glass."
         },
         {
           "element": "p",
@@ -1841,7 +1849,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "/*\n I first found this number scrawled on the back of one of\n my notebooks a few years ago. Since then, it has often\n dropped by, showing up in phone numbers and the serial\n numbers of products that I've bought. It obviously likes\n me, so I've decided to keep it.\n*/\nvar myNumber = 11213;"
         }
       ],
       "title": "Comments"
@@ -1934,7 +1942,9 @@
             "If you are unsure how to try your solutions to exercises, refer to the ",
             {
               "element": "reference",
-              "content": "introduction"
+              "content": [
+                "introduction"
+              ]
             },
             "."
           ]
@@ -1993,58 +2003,65 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var abc = \"abc\";\nconsole.log(abc.length);\n// → 3"
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "You can start with a program that simply prints out the numbers 1 to 7, which you can derive by making a few modifications to the ",
                 {
-                  "element": "reference",
-                  "content": "even number printing example"
-                },
-                " given earlier in the chapter, where the ",
-                {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "for"
+                    "You can start with a program that simply prints out the numbers 1 to 7, which you can derive by making a few modifications to the ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        "even number printing example"
+                      ]
+                    },
+                    " given earlier in the chapter, where the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "for"
+                      ]
+                    },
+                    " loop was introduced."
                   ]
                 },
-                " loop was introduced."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Now consider the equivalence between numbers and strings of hash characters. You can go from 1 to 2 by adding 1 (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "+= 1"
+                    "Now consider the equivalence between numbers and strings of hash characters. You can go from 1 to 2 by adding 1 (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "+= 1"
+                      ]
+                    },
+                    "). You can go from ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"#\""
+                      ]
+                    },
+                    " to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"##\""
+                      ]
+                    },
+                    " by adding a character (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "+= \"#\""
+                      ]
+                    },
+                    "). Thus, your solution can closely follow the number-printing program."
                   ]
-                },
-                "). You can go from ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"#\""
-                  ]
-                },
-                " to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"##\""
-                  ]
-                },
-                " by adding a character (",
-                {
-                  "element": "literal",
-                  "content": [
-                    "+= \"#\""
-                  ]
-                },
-                "). Thus, your solution can closely follow the number-printing program."
+                }
               ]
             }
           ],
@@ -2114,56 +2131,61 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Going over the numbers is clearly a looping job, and selecting what to print is a matter of conditional execution. Remember the trick of using the remainder (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "%"
+                    "Going over the numbers is clearly a looping job, and selecting what to print is a matter of conditional execution. Remember the trick of using the remainder (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "%"
+                      ]
+                    },
+                    ") operator for checking whether a number is divisible by another number (has a remainder of zero)."
                   ]
                 },
-                ") operator for checking whether a number is divisible by another number (has a remainder of zero)."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "In the first version, there are three possible outcomes for every number, so you’ll have to create an ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "if"
+                    "In the first version, there are three possible outcomes for every number, so you’ll have to create an ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "if"
+                      ]
+                    },
+                    "/",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "else if"
+                      ]
+                    },
+                    "/",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "else"
+                      ]
+                    },
+                    " chain."
                   ]
                 },
-                "/",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "else if"
+                    "The second version of the program has a straightforward solution and a clever one. The simple way is to add another “branch” to precisely test the given condition. For the clever method, build up a string containing the word or words to output, and print either this word or the number if there is no word, potentially by making elegant use of the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "||"
+                      ]
+                    },
+                    " operator."
                   ]
-                },
-                "/",
-                {
-                  "element": "literal",
-                  "content": [
-                    "else"
-                  ]
-                },
-                " chain."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " The second version of the program has a straightforward solution and a clever one. The simple way is to add another “branch” to precisely test the given condition. For the clever method, build up a string containing the word or words to output, and print either this word or the number if there is no word, potentially by making elegant use of the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "||"
-                  ]
-                },
-                " operator."
+                }
               ]
             }
           ],
@@ -2175,7 +2197,7 @@
             {
               "element": "p",
               "content": [
-                " Write a program that creates a string that represents an 8×8 grid, using newline characters to separate lines. At each position of the grid there is either a space or a “#” character. The characters should form a chess board."
+                "Write a program that creates a string that represents an 8×8 grid, using newline characters to separate lines. At each position of the grid there is either a space or a “#” character. The characters should form a chess board."
               ]
             },
             {
@@ -2216,61 +2238,66 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The string can be built by starting with an empty one (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"\""
+                    "The string can be built by starting with an empty one (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"\""
+                      ]
+                    },
+                    ") and repeatedly adding characters. A newline character is written ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"\\n\""
+                      ]
+                    },
+                    "."
                   ]
                 },
-                ") and repeatedly adding characters. A newline character is written ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"\\n\""
+                    "Use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "console.log"
+                      ]
+                    },
+                    " to inspect the output of your program."
                   ]
                 },
-                "."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Use ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "console.log"
+                    "To work with two dimensions, you will need a loop inside of a loop. Put curly braces around the bodies of both loops to make it easy to see where they start and end. Try to properly indent these bodies. The order of the loops must follow the order in which we build up the string (line by line, left to right, top to bottom). So the outer loop handles the lines and the inner loop handles the characters on a line."
                   ]
                 },
-                " to inspect the output of your program."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " To work with two dimensions, you will need a loop inside of a loop. Put curly braces around the bodies of both loops to make it easy to see where they start and end. Try to properly indent these bodies. The order of the loops must follow the order in which we build up the string (line by line, left to right, top to bottom). So the outer loop handles the lines and the inner loop handles the characters on a line."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "You’ll need two variables to track your progress. To know whether to put a space or a hash sign at a given position, you could test whether the sum of the two counters is even (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "% 2"
+                    "You’ll need two variables to track your progress. To know whether to put a space or a hash sign at a given position, you could test whether the sum of the two counters is even (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "% 2"
+                      ]
+                    },
+                    ")."
                   ]
                 },
-                ")."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Terminating a line by adding a newline character happens after the line has been built up, so do this after the inner loop but inside of the outer loop."
+                {
+                  "element": "p",
+                  "content": [
+                    "Terminating a line by adding a newline character happens after the line has been built up, so do this after the inner loop but inside of the outer loop."
+                  ]
+                }
               ]
             }
           ],

@@ -57,7 +57,7 @@
         {
           "element": "p",
           "content": [
-            " A function definition is just a regular variable definition where the value given to the variable happens to be a function. For example, the following code defines the variable ",
+            "A function definition is just a regular variable definition where the value given to the variable happens to be a function. For example, the following code defines the variable ",
             {
               "element": "literal",
               "content": [
@@ -70,12 +70,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var square = function(x) {\n  return x * x;\n};\n\nconsole.log(square(12));\n// → 144"
         },
         {
           "element": "p",
           "content": [
-            "  A function is created by an expression that starts with the keyword ",
+            " A function is created by an expression that starts with the keyword ",
             {
               "element": "literal",
               "content": [
@@ -129,7 +129,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var makeNoise = function() {\n  console.log(\"Pling!\");\n};\n\nmakeNoise();\n// → Pling!\n\nvar power = function(base, exponent) {\n  var result = 1;\n  for (var count = 0; count < exponent; count++)\n    result *= base;\n  return result;\n};\n\nconsole.log(power(2, 10));\n// → 1024"
         },
         {
           "element": "p",
@@ -188,7 +188,7 @@
         {
           "element": "p",
           "content": [
-            "  The parameters to a function behave like regular variables, but their initial values are given by the ",
+            " The parameters to a function behave like regular variables, but their initial values are given by the ",
             {
               "element": "em",
               "content": [
@@ -201,7 +201,7 @@
         {
           "element": "p",
           "content": [
-            " An important property of functions is that the variables created inside of them, including their parameters, are ",
+            "An important property of functions is that the variables created inside of them, including their parameters, are ",
             {
               "element": "em",
               "content": [
@@ -228,7 +228,7 @@
         {
           "element": "p",
           "content": [
-            " This “localness” of variables applies only to the parameters and to variables declared with the ",
+            "This “localness” of variables applies only to the parameters and to variables declared with the ",
             {
               "element": "literal",
               "content": [
@@ -248,7 +248,7 @@
         {
           "element": "p",
           "content": [
-            " The following code demonstrates this. It defines and calls two functions that both assign a value to the variable ",
+            "The following code demonstrates this. It defines and calls two functions that both assign a value to the variable ",
             {
               "element": "literal",
               "content": [
@@ -282,12 +282,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var x = \"outside\";\n\nvar f1 = function() {\n  var x = \"inside f1\";\n};\nf1();\nconsole.log(x);\n// → outside\n\nvar f2 = function() {\n  x = \"inside f2\";\n};\nf2();\nconsole.log(x);\n// → inside f2"
         },
         {
           "element": "p",
           "content": [
-            "  This behavior helps prevent accidental interference between functions. If all variables were shared by the whole program, it’d take a lot of effort to make sure no name is ever used for two different purposes. And if you ",
+            " This behavior helps prevent accidental interference between functions. If all variables were shared by the whole program, it’d take a lot of effort to make sure no name is ever used for two different purposes. And if you ",
             {
               "element": "em",
               "content": [
@@ -306,7 +306,7 @@
         {
           "element": "p",
           "content": [
-            "  JavaScript distinguishes not just between ",
+            " JavaScript distinguishes not just between ",
             {
               "element": "em",
               "content": [
@@ -332,12 +332,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var landscape = function() {\n  var result = \"\";\n  var flat = function(size) {\n    for (var count = 0; count < size; count++)\n      result += \"_\";\n  };\n  var mountain = function(size) {\n    result += \"/\";\n    for (var count = 0; count < size; count++)\n      result += \"'\";\n    result += \"\\\\\";\n  };\n\n  flat(3);\n  mountain(4);\n  flat(6);\n  mountain(1);\n  flat(1);\n  return result;\n};\n\nconsole.log(landscape());\n// → ___/''''\\______/'\\_"
         },
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -411,7 +411,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var something = 1;\n{\n  var something = 2;\n  // Do stuff with variable something...\n}\n// Outside of the block again..."
         },
         {
           "element": "p",
@@ -476,27 +476,29 @@
         {
           "element": "p",
           "content": [
-            " Function variables usually simply act as names for a specific piece of the program. Such a variable is defined once and never changed. This makes it easy to start confusing the function and its name."
+            "Function variables usually simply act as names for a specific piece of the program. Such a variable is defined once and never changed. This makes it easy to start confusing the function and its name."
           ]
         },
         {
           "element": "p",
           "content": [
-            " But the two are different. A function value can do all the things that other values can do—you can use it in arbitrary expressions, not just call it. It is possible to store a function value in a new place, pass it as an argument to a function, and so on. Similarly, a variable that holds a function is still just a regular variable and can be assigned a new value, like so:"
+            "But the two are different. A function value can do all the things that other values can do—you can use it in arbitrary expressions, not just call it. It is possible to store a function value in a new place, pass it as an argument to a function, and so on. Similarly, a variable that holds a function is still just a regular variable and can be assigned a new value, like so:"
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var launchMissiles = function(value) {\n  missileSystem.launch(\"now\");\n};\nif (safeMode)\n  launchMissiles = function(value) {/* do nothing */};"
         },
         {
           "element": "p",
           "content": [
-            " In ",
+            "In ",
             {
               "element": "reference",
-              "content": "Chapter 5"
+              "content": [
+                "Chapter 5"
+              ]
             },
             ", we will discuss the wonderful things that can be done by passing around function values to other functions."
           ]
@@ -510,7 +512,7 @@
         {
           "element": "p",
           "content": [
-            "  There is a slightly shorter way to say “",
+            " There is a slightly shorter way to say “",
             {
               "element": "literal",
               "content": [
@@ -530,7 +532,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function square(x) {\n  return x * x;\n}"
         },
         {
           "element": "p",
@@ -555,7 +557,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"The future says:\", future());\n\nfunction future() {\n  return \"We STILL have no flying cars.\";\n}"
         },
         {
           "element": "p",
@@ -573,7 +575,7 @@
         {
           "element": "p",
           "content": [
-            " What happens when you put such a function definition inside a conditional (",
+            "What happens when you put such a function definition inside a conditional (",
             {
               "element": "literal",
               "content": [
@@ -586,7 +588,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function example() {\n  function a() {} // Okay\n  if (something) {\n    function b() {} // Danger!\n  }\n}"
         }
       ],
       "title": "Declaration notation"
@@ -597,13 +599,13 @@
         {
           "element": "p",
           "content": [
-            " It will be helpful to take a closer look at the way control flows through functions. Here is a simple program that makes a few function calls:"
+            "It will be helpful to take a closer look at the way control flows through functions. Here is a simple program that makes a few function calls:"
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function greet(who) {\n  console.log(\"Hello \" + who);\n}\ngreet(\"Harry\");\nconsole.log(\"Bye\");"
         },
         {
           "element": "p",
@@ -698,7 +700,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function chicken() {\n  return egg();\n}\nfunction egg() {\n  return chicken();\n}\nconsole.log(chicken() + \" came first.\");\n// → ??"
         }
       ],
       "title": "The call stack"
@@ -709,13 +711,13 @@
         {
           "element": "p",
           "content": [
-            " The following code is allowed and executes without any problem:"
+            "The following code is allowed and executes without any problem:"
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "alert(\"Hello\", \"Good Evening\", \"How do you do?\");"
         },
         {
           "element": "p",
@@ -772,7 +774,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function power(base, exponent) {\n  if (exponent == undefined)\n    exponent = 2;\n  var result = 1;\n  for (var count = 0; count < exponent; count++)\n    result *= base;\n  return result;\n}\n\nconsole.log(power(4));\n// → 16\nconsole.log(power(4, 3));\n// → 64"
         },
         {
           "element": "p",
@@ -780,7 +782,9 @@
             "In the ",
             {
               "element": "reference",
-              "content": "next\nchapter"
+              "content": [
+                "nextchapter"
+              ]
             },
             ", we will see a way in which a function body can get at the exact list of arguments that were passed. This is helpful because it makes it possible for a function to accept any number of arguments. For example, ",
             {
@@ -795,7 +799,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"R\", 2, \"D\", 2);\n// → R 2 D 2"
         }
       ],
       "title": "Optional Arguments"
@@ -806,7 +810,7 @@
         {
           "element": "p",
           "content": [
-            " The ability to treat functions as values, combined with the fact that local variables are “re-created” every time a function is called, brings up an interesting question. What happens to local variables when the function call that created them is no longer active?"
+            "The ability to treat functions as values, combined with the fact that local variables are “re-created” every time a function is called, brings up an interesting question. What happens to local variables when the function call that created them is no longer active?"
           ]
         },
         {
@@ -825,7 +829,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function wrapValue(n) {\n  var localVariable = n;\n  return function() { return localVariable; };\n}\n\nvar wrap1 = wrapValue(1);\nvar wrap2 = wrapValue(2);\nconsole.log(wrap1());\n// → 1\nconsole.log(wrap2());\n// → 2"
         },
         {
           "element": "p",
@@ -862,12 +866,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function multiplier(factor) {\n  return function(number) {\n    return number * factor;\n  };\n}\n\nvar twice = multiplier(2);\nconsole.log(twice(5));\n// → 10"
         },
         {
           "element": "p",
           "content": [
-            " The explicit ",
+            "The explicit ",
             {
               "element": "literal",
               "content": [
@@ -887,7 +891,7 @@
         {
           "element": "p",
           "content": [
-            " Thinking about programs like this takes some practice. A good mental model is to think of the ",
+            "Thinking about programs like this takes some practice. A good mental model is to think of the ",
             {
               "element": "literal",
               "content": [
@@ -961,7 +965,7 @@
         {
           "element": "p",
           "content": [
-            " It is perfectly okay for a function to call itself, as long as it takes care not to overflow the stack. A function that calls itself is called ",
+            "It is perfectly okay for a function to call itself, as long as it takes care not to overflow the stack. A function that calls itself is called ",
             {
               "element": "em",
               "content": [
@@ -981,7 +985,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function power(base, exponent) {\n  if (exponent == 0)\n    return 1;\n  else\n    return base * power(base, exponent - 1);\n}\n\nconsole.log(power(2, 3));\n// → 8"
         },
         {
           "element": "p",
@@ -992,7 +996,7 @@
         {
           "element": "p",
           "content": [
-            " But this implementation has one important problem: in typical JavaScript implementations, it’s about 10 times slower than the looping version. Running through a simple loop is a lot cheaper than calling a function multiple times."
+            "But this implementation has one important problem: in typical JavaScript implementations, it’s about 10 times slower than the looping version. Running through a simple loop is a lot cheaper than calling a function multiple times."
           ]
         },
         {
@@ -1007,7 +1011,9 @@
             "In the case of the ",
             {
               "element": "reference",
-              "content": "earlier"
+              "content": [
+                "earlier"
+              ]
             },
             " ",
             {
@@ -1065,7 +1071,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function findSolution(target) {\n  function find(start, history) {\n    if (start == target)\n      return history;\n    else if (start > target)\n      return null;\n    else\n      return find(start + 5, \"(\" + history + \" + 5)\") ||\n             find(start * 3, \"(\" + history + \" * 3)\");\n  }\n  return find(1, \"1\");\n}\n\nconsole.log(findSolution(24));\n// → (((1 * 3) + 5) * 3)"
         },
         {
           "element": "p",
@@ -1228,7 +1234,7 @@
         {
           "element": "p",
           "content": [
-            " There are two more or less natural ways for functions to be introduced into programs."
+            "There are two more or less natural ways for functions to be introduced into programs."
           ]
         },
         {
@@ -1246,7 +1252,7 @@
         {
           "element": "p",
           "content": [
-            "  How difficult it is to find a good name for a function is a good indication of how clear a concept it is that you’re trying to wrap. Let’s go through an example."
+            " How difficult it is to find a good name for a function is a good indication of how clear a concept it is that you’re trying to wrap. Let’s go through an example."
           ]
         },
         {
@@ -1282,12 +1288,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function printFarmInventory(cows, chickens) {\n  var cowString = String(cows);\n  while (cowString.length < 3)\n    cowString = \"0\" + cowString;\n  console.log(cowString + \" Cows\");\n  var chickenString = String(chickens);\n  while (chickenString.length < 3)\n    chickenString = \"0\" + chickenString;\n  console.log(chickenString + \" Chickens\");\n}\nprintFarmInventory(7, 11);"
         },
         {
           "element": "p",
           "content": [
-            " Adding ",
+            "Adding ",
             {
               "element": "literal",
               "content": [
@@ -1319,12 +1325,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function printZeroPaddedWithLabel(number, label) {\n  var numberString = String(number);\n  while (numberString.length < 3)\n    numberString = \"0\" + numberString;\n  console.log(numberString + \" \" + label);\n}\n\nfunction printFarmInventory(cows, chickens, pigs) {\n  printZeroPaddedWithLabel(cows, \"Cows\");\n  printZeroPaddedWithLabel(chickens, \"Chickens\");\n  printZeroPaddedWithLabel(pigs, \"Pigs\");\n}\n\nprintFarmInventory(7, 11, 3);"
         },
         {
           "element": "p",
           "content": [
-            " It works! But that name, ",
+            "It works! But that name, ",
             {
               "element": "literal",
               "content": [
@@ -1350,7 +1356,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function zeroPad(number, width) {\n  var string = String(number);\n  while (string.length < width)\n    string = \"0\" + string;\n  return string;\n}\n\nfunction printFarmInventory(cows, chickens, pigs) {\n  console.log(zeroPad(cows, 3) + \" Cows\");\n  console.log(zeroPad(chickens, 3) + \" Chickens\");\n  console.log(zeroPad(pigs, 3) + \" Pigs\");\n}\n\nprintFarmInventory(7, 16, 3);"
         },
         {
           "element": "p",
@@ -1368,7 +1374,7 @@
         {
           "element": "p",
           "content": [
-            " How smart and versatile should our function be? We could write anything from a terribly simple function that simply pads a number so that it’s three characters wide to a complicated generalized number-formatting system that handles fractional numbers, negative numbers, alignment of dots, padding with different characters, and so on."
+            "How smart and versatile should our function be? We could write anything from a terribly simple function that simply pads a number so that it’s three characters wide to a complicated generalized number-formatting system that handles fractional numbers, negative numbers, alignment of dots, padding with different characters, and so on."
           ]
         },
         {
@@ -1386,7 +1392,7 @@
         {
           "element": "p",
           "content": [
-            " Functions can be roughly divided into those that are called for their side effects and those that are called for their return value. (Though it is definitely also possible to have both side effects and return a value.)"
+            "Functions can be roughly divided into those that are called for their side effects and those that are called for their return value. (Though it is definitely also possible to have both side effects and return a value.)"
           ]
         },
         {
@@ -1464,7 +1470,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "// Create a function value f\nvar f = function(a) {\n  console.log(a + 2);\n};\n\n// Declare g to be a function\nfunction g(a, b) {\n  return a * b * 3.5;\n}"
         },
         {
           "element": "p",
@@ -1493,7 +1499,9 @@
                 "The ",
                 {
                   "element": "reference",
-                  "content": "previous chapter"
+                  "content": [
+                    "previous chapter"
+                  ]
                 },
                 " introduced the standard function ",
                 {
@@ -1513,22 +1521,27 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "If you have trouble putting braces and parentheses in the right place to get a valid function definition, start by copying one of the examples in this chapter and modifying it."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "A function may contain multiple ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "return"
+                    "If you have trouble putting braces and parentheses in the right place to get a valid function definition, start by copying one of the examples in this chapter and modifying it."
                   ]
                 },
-                " statements."
+                {
+                  "element": "p",
+                  "content": [
+                    "A function may contain multiple ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "return"
+                      ]
+                    },
+                    " statements."
+                  ]
+                }
               ]
             }
           ],
@@ -1566,7 +1579,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " Zero is even. "
+                        "Zero is even. "
                       ]
                     }
                   ]
@@ -1577,7 +1590,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " One is odd. "
+                        "One is odd. "
                       ]
                     }
                   ]
@@ -1588,7 +1601,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " For any other number ",
+                        "For any other number ",
                         {
                           "element": "em",
                           "content": [
@@ -1636,69 +1649,76 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                " Your function will likely look somewhat similar to the inner ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "find"
+                    "Your function will likely look somewhat similar to the inner ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "find"
+                      ]
+                    },
+                    " function in the recursive ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "findSolution"
+                      ]
+                    },
+                    " ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        "example"
+                      ]
+                    },
+                    " in this chapter, with an ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "if"
+                      ]
+                    },
+                    "/",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "else if"
+                      ]
+                    },
+                    "/",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "else"
+                      ]
+                    },
+                    " chain that tests which of the three cases applies. The final ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "else"
+                      ]
+                    },
+                    ", corresponding to the third case, makes the recursive call. Each of the branches should contain a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "return"
+                      ]
+                    },
+                    " statement or in some other way arrange for a specific value to be returned."
                   ]
                 },
-                " function in the recursive ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "findSolution"
+                    "When given a negative number, the function will recurse again and again, passing itself an ever more negative number, thus getting further and further away from returning a result. It will eventually run out of stack space and abort."
                   ]
-                },
-                " ",
-                {
-                  "element": "reference",
-                  "content": "example"
-                },
-                " in this chapter, with an ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "if"
-                  ]
-                },
-                "/",
-                {
-                  "element": "literal",
-                  "content": [
-                    "else if"
-                  ]
-                },
-                "/",
-                {
-                  "element": "literal",
-                  "content": [
-                    "else"
-                  ]
-                },
-                " chain that tests which of the three cases applies. The final ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "else"
-                  ]
-                },
-                ", corresponding to the third case, makes the recursive call. Each of the branches should contain a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "return"
-                  ]
-                },
-                " statement or in some other way arrange for a specific value to be returned."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "When given a negative number, the function will recurse again and again, passing itself an ever more negative number, thus getting further and further away from returning a result. It will eventually run out of stack space and abort."
+                }
               ]
             }
           ],
@@ -1710,7 +1730,7 @@
             {
               "element": "p",
               "content": [
-                " You can get the Nth character, or letter, from a string by writing ",
+                "You can get the Nth character, or letter, from a string by writing ",
                 {
                   "element": "literal",
                   "content": [
@@ -1782,37 +1802,41 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                " A loop in your function will have to look at every character in the string by running an index from zero to one below its length (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<",
-                    " string.length"
+                    "A loop in your function will have to look at every character in the string by running an index from zero to one below its length (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "< string.length"
+                      ]
+                    },
+                    "). If the character at the current position is the same as the one the function is looking for, it adds 1 to a counter variable. Once the loop has finished, the counter can be returned."
                   ]
                 },
-                "). If the character at the current position is the same as the one the function is looking for, it adds 1 to a counter variable. Once the loop has finished, the counter can be returned."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Take care to make all the variables used in the function ",
                 {
-                  "element": "em",
+                  "element": "p",
                   "content": [
-                    "local"
+                    "Take care to make all the variables used in the function ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "local"
+                      ]
+                    },
+                    " to the function by using the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "var"
+                      ]
+                    },
+                    " keyword."
                   ]
-                },
-                " to the function by using the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "var"
-                  ]
-                },
-                " keyword."
+                }
               ]
             }
           ],

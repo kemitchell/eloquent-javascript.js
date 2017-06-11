@@ -62,7 +62,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Click this document to activate the handler.</p>\n<script>\n  addEventListener(\"click\", function() {\n    console.log(\"You clicked!\");\n  });\n</script>"
         },
         {
           "element": "p",
@@ -113,7 +113,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<button>Click me</button>\n<p>No handler here.</p>\n<script>\n  var button = document.querySelector(\"button\");\n  button.addEventListener(\"click\", function() {\n    console.log(\"Button clicked.\");\n  });\n</script>"
         },
         {
           "element": "p",
@@ -171,12 +171,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<button>Act-once button</button>\n<script>\n  var button = document.querySelector(\"button\");\n  function once() {\n    console.log(\"Done.\");\n    button.removeEventListener(\"click\", once);\n  }\n  button.addEventListener(\"click\", once);\n</script>"
         },
         {
           "element": "p",
           "content": [
-            " To be able to unregister a handler function, we give it a name (such as ",
+            "To be able to unregister a handler function, we give it a name (such as ",
             {
               "element": "literal",
               "content": [
@@ -236,7 +236,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<button>Click me any way you want</button>\n<script>\n  var button = document.querySelector(\"button\");\n  button.addEventListener(\"mousedown\", function(event) {\n    if (event.which == 1)\n      console.log(\"Left button\");\n    else if (event.which == 2)\n      console.log(\"Middle button\");\n    else if (event.which == 3)\n      console.log(\"Right button\");\n  });\n</script>"
         },
         {
           "element": "p",
@@ -326,7 +326,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>A paragraph with a <button>button</button>.</p>\n<script>\n  var para = document.querySelector(\"p\");\n  var button = document.querySelector(\"button\");\n  para.addEventListener(\"mousedown\", function() {\n    console.log(\"Handler for paragraph.\");\n  });\n  button.addEventListener(\"mousedown\", function(event) {\n    console.log(\"Handler for button.\");\n    if (event.which == 3)\n      event.stopPropagation();\n  });\n</script>"
         },
         {
           "element": "p",
@@ -364,7 +364,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<button>A</button>\n<button>B</button>\n<button>C</button>\n<script>\n  document.body.addEventListener(\"click\", function(event) {\n    if (event.target.nodeName == \"BUTTON\")\n      console.log(\"Clicked\", event.target.textContent);\n  });\n</script>"
         }
       ],
       "title": "Propagation"
@@ -407,7 +407,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<a href=\"https://developer.mozilla.org/\">MDN</a>\n<script>\n  var link = document.querySelector(\"a\");\n  link.addEventListener(\"click\", function(event) {\n    console.log(\"Nope.\");\n    event.preventDefault();\n  });\n</script>"
         },
         {
           "element": "p",
@@ -450,7 +450,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>This page turns violet when you hold the V key.</p>\n<script>\n  addEventListener(\"keydown\", function(event) {\n    if (event.keyCode == 86)\n      document.body.style.background = \"violet\";\n  });\n  addEventListener(\"keyup\", function(event) {\n    if (event.keyCode == 86)\n      document.body.style.background = \"\";\n  });\n</script>"
         },
         {
           "element": "p",
@@ -501,7 +501,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"Violet\".charCodeAt(0));\n// → 86\nconsole.log(\"1\".charCodeAt(0));\n// → 49"
         },
         {
           "element": "p",
@@ -546,7 +546,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Press Ctrl-Space to continue.</p>\n<script>\n  addEventListener(\"keydown\", function(event) {\n    if (event.keyCode == 32 && event.ctrlKey)\n      console.log(\"Continuing!\");\n  });\n</script>"
         },
         {
           "element": "p",
@@ -606,12 +606,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Focus this page and type something.</p>\n<script>\n  addEventListener(\"keypress\", function(event) {\n    console.log(String.fromCharCode(event.charCode));\n  });\n</script>"
         },
         {
           "element": "p",
           "content": [
-            " The DOM node where a key event originates depends on the element that has focus when the key is pressed. Normal nodes cannot have focus (unless you give them a ",
+            "The DOM node where a key event originates depends on the element that has focus when the key is pressed. Normal nodes cannot have focus (unless you give them a ",
             {
               "element": "literal",
               "content": [
@@ -621,7 +621,9 @@
             " attribute), but things such as links, buttons, and form fields can. We’ll come back to form fields in ",
             {
               "element": "reference",
-              "content": "Chapter 18"
+              "content": [
+                "Chapter 18"
+              ]
             },
             ". When nothing in particular has focus, ",
             {
@@ -739,7 +741,9 @@
             "The following implements a primitive drawing program. Every time you click the document, it adds a dot under your mouse pointer. See ",
             {
               "element": "reference",
-              "content": "Chapter 19"
+              "content": [
+                "Chapter 19"
+              ]
             },
             " for a less primitive drawing program."
           ]
@@ -747,7 +751,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<style>\n  body {\n    height: 200px;\n    background: beige;\n  }\n  .dot {\n    height: 8px; width: 8px;\n    border-radius: 4px; /* rounds corners */\n    background: blue;\n    position: absolute;\n  }\n</style>\n<script>\n  addEventListener(\"click\", function(event) {\n    var dot = document.createElement(\"div\");\n    dot.className = \"dot\";\n    dot.style.left = (event.pageX - 4) + \"px\";\n    dot.style.top = (event.pageY - 4) + \"px\";\n    document.body.appendChild(dot);\n  });\n</script>"
         },
         {
           "element": "p",
@@ -818,7 +822,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Drag the bar to change its width:</p>\n<div style=\"background: orange; width: 60px; height: 20px\">\n</div>\n<script>\n  var lastX; // Tracks the last observed mouse X position\n  var rect = document.querySelector(\"div\");\n  rect.addEventListener(\"mousedown\", function(event) {\n    if (event.which == 1) {\n      lastX = event.pageX;\n      addEventListener(\"mousemove\", moved);\n      event.preventDefault(); // Prevent selection\n    }\n  });\n\n  function buttonPressed(event) {\n    if (event.buttons == null)\n      return event.which != 0;\n    else\n      return event.buttons != 0;\n  }\n  function moved(event) {\n    if (!buttonPressed(event)) {\n      removeEventListener(\"mousemove\", moved);\n    } else {\n      var dist = event.pageX - lastX;\n      var newWidth = Math.max(10, rect.offsetWidth + dist);\n      rect.style.width = newWidth + \"px\";\n      lastX = event.pageX;\n    }\n  }\n</script>"
         },
         {
           "element": "p",
@@ -993,7 +997,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Hover over this <strong>paragraph</strong>.</p>\n<script>\n  var para = document.querySelector(\"p\");\n  function isInside(node, target) {\n    for (; node != null; node = node.parentNode)\n      if (node == target) return true;\n  }\n  para.addEventListener(\"mouseover\", function(event) {\n    if (!isInside(event.relatedTarget, para))\n      para.style.color = \"red\";\n  });\n  para.addEventListener(\"mouseout\", function(event) {\n    if (!isInside(event.relatedTarget, para))\n      para.style.color = \"\";\n  });\n</script>"
         },
         {
           "element": "p",
@@ -1052,7 +1056,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<style>\n  p:hover { color: red }\n</style>\n<p>Hover over this <strong>paragraph</strong>.</p>"
         }
       ],
       "title": "Mouse motion"
@@ -1082,7 +1086,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<style>\n  .progress {\n    border: 1px solid blue;\n    width: 100px;\n    position: fixed;\n    top: 10px; right: 10px;\n  }\n  .progress > div {\n    height: 12px;\n    background: blue;\n    width: 0%;\n  }\n  body {\n    height: 2000px;\n  }\n</style>\n<div class=\"progress\"><div></div></div>\n<p>Scroll me...</p>\n<script>\n  var bar = document.querySelector(\".progress div\");\n  addEventListener(\"scroll\", function() {\n    var max = document.body.scrollHeight - innerHeight;\n    var percent = (pageYOffset / max) * 100;\n    bar.style.width = percent + \"%\";\n  });\n</script>"
         },
         {
           "element": "p",
@@ -1220,7 +1224,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Name: <input type=\"text\" data-help=\"Your full name\"></p>\n<p>Age: <input type=\"text\" data-help=\"Age in years\"></p>\n<p id=\"help\"></p>\n\n<script>\n  var help = document.querySelector(\"#help\");\n  var fields = document.querySelectorAll(\"input\");\n  for (var i = 0; i < fields.length; i++) {\n    fields[i].addEventListener(\"focus\", function(event) {\n      var text = event.target.getAttribute(\"data-help\");\n      help.textContent = text;\n    });\n    fields[i].addEventListener(\"blur\", function(event) {\n      help.textContent = \"\";\n    });\n  }\n</script>"
         },
         {
           "element": "p",
@@ -1262,18 +1266,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "script",
-                ">"
+                "<script>"
               ]
             },
             " tags is run immediately when the tag is encountered. This is often too soon, such as when the script needs to do something with parts of the document that appear after the ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "script",
-                ">"
+                "<script>"
               ]
             },
             " tag."
@@ -1325,15 +1325,15 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "script",
-                ">"
+                "<script>"
               ]
             },
             " tag is one such thing. An event firing is another. ",
             {
               "element": "reference",
-              "content": "Chapter 13"
+              "content": [
+                "Chapter 13"
+              ]
             },
             " discussed the ",
             {
@@ -1400,7 +1400,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "addEventListener(\"message\", function(event) {\n  postMessage(event.data * event.data);\n});"
         },
         {
           "element": "p",
@@ -1411,7 +1411,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var squareWorker = new Worker(\"code/squareworker.js\");\nsquareWorker.addEventListener(\"message\", function(event) {\n  console.log(\"The worker responded:\", event.data);\n});\nsquareWorker.postMessage(10);\nsquareWorker.postMessage(24);"
         },
         {
           "element": "p",
@@ -1476,7 +1476,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<script>\n  document.body.style.background = \"blue\";\n  setTimeout(function() {\n    document.body.style.background = \"yellow\";\n  }, 2000);\n</script>"
         },
         {
           "element": "p",
@@ -1501,7 +1501,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var bombTimer = setTimeout(function() {\n  console.log(\"BOOM!\");\n}, 500);\n\nif (Math.random() < 0.5) { // 50% chance\n  console.log(\"Defused.\");\n  clearTimeout(bombTimer);\n}"
         },
         {
           "element": "p",
@@ -1560,7 +1560,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var ticks = 0;\nvar clock = setInterval(function() {\n  console.log(\"tick\", ticks++);\n  if (ticks == 10) {\n    clearInterval(clock);\n    console.log(\"stop.\");\n  }\n}, 200);"
         }
       ],
       "title": "Setting timers"
@@ -1617,7 +1617,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<textarea>Type something here...</textarea>\n<script>\n  var textarea = document.querySelector(\"textarea\");\n  var timeout;\n  textarea.addEventListener(\"keydown\", function() {\n    clearTimeout(timeout);\n    timeout = setTimeout(function() {\n      console.log(\"You stopped typing.\");\n    }, 500);\n  });\n</script>"
         },
         {
           "element": "p",
@@ -1655,7 +1655,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<script>\n  function displayCoords(event) {\n    document.body.textContent =\n      \"Mouse at \" + event.pageX + \", \" + event.pageY;\n  }\n\n  var scheduled = false, lastEvent;\n  addEventListener(\"mousemove\", function(event) {\n    lastEvent = event;\n    if (!scheduled) {\n      scheduled = true;\n      setTimeout(function() {\n        scheduled = false;\n        displayCoords(lastEvent);\n      }, 250);\n    }\n  });\n</script>"
         }
       ],
       "title": "Debouncing"
@@ -1875,9 +1875,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "input type=\"text\"",
-                    ">"
+                    "<input type=\"text\">"
                   ]
                 },
                 " tag) that these letters cannot be typed into."
@@ -1890,69 +1888,74 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The solution to this exercise involves preventing the default behavior of key events. You can handle either ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"keypress\""
+                    "The solution to this exercise involves preventing the default behavior of key events. You can handle either ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"keypress\""
+                      ]
+                    },
+                    " or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"keydown\""
+                      ]
+                    },
+                    ". If either of them has ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "preventDefault"
+                      ]
+                    },
+                    " called on it, the letter will not appear."
                   ]
                 },
-                " or ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"keydown\""
+                    "Identifying the letter typed requires looking at the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "keyCode"
+                      ]
+                    },
+                    " or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "charCode"
+                      ]
+                    },
+                    " property and comparing that with the codes for the letters you want to filter. In ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"keydown\""
+                      ]
+                    },
+                    ", you do not have to worry about lowercase and uppercase letters, since it identifies only the key pressed. If you decide to handle ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"keypress\""
+                      ]
+                    },
+                    " instead, which identifies the actual character typed, you have to make sure you test for both cases. One way to do that would be this:"
                   ]
                 },
-                ". If either of them has ",
                 {
-                  "element": "literal",
-                  "content": [
-                    "preventDefault"
-                  ]
-                },
-                " called on it, the letter will not appear."
+                  "element": "pre",
+                  "content": "/[qwx]/i.test(String.fromCharCode(event.charCode))"
+                }
               ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Identifying the letter typed requires looking at the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "keyCode"
-                  ]
-                },
-                " or ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "charCode"
-                  ]
-                },
-                " property and comparing that with the codes for the letters you want to filter. In ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"keydown\""
-                  ]
-                },
-                ", you do not have to worry about lowercase and uppercase letters, since it identifies only the key pressed. If you decide to handle ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"keypress\""
-                  ]
-                },
-                " instead, which identifies the actual character typed, you have to make sure you test for both cases. One way to do that would be this:"
-              ]
-            },
-            {
-              "element": "pre",
-              "content": "/[qwx]/i.test(String.fromCharCode(event.charCode))"
             }
           ],
           "title": "Censored keyboard"
@@ -1979,15 +1982,15 @@
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "div",
-                    ">"
+                    "<div>"
                   ]
                 },
                 " elements with a fixed size and background color (refer to the ",
                 {
                   "element": "reference",
-                  "content": "code"
+                  "content": [
+                    "code"
+                  ]
                 },
                 " in the “Mouse Clicks” section for an example). Create a bunch of such elements and, when the mouse moves, display them in the wake of the mouse pointer."
               ]
@@ -2006,49 +2009,54 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Creating the elements is best done in a loop. Append them to the document to make them show up. To be able to access them later to change their position, store the trail elements in an array."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " Cycling through them can be done by keeping a counter variable and adding 1 to it every time the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"mousemove\""
+                    "Creating the elements is best done in a loop. Append them to the document to make them show up. To be able to access them later to change their position, store the trail elements in an array."
                   ]
                 },
-                " event fires. The remainder operator (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "% 10"
+                    "Cycling through them can be done by keeping a counter variable and adding 1 to it every time the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"mousemove\""
+                      ]
+                    },
+                    " event fires. The remainder operator (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "% 10"
+                      ]
+                    },
+                    ") can then be used to get a valid array index to pick the element you want to position during a given event."
                   ]
                 },
-                ") can then be used to get a valid array index to pick the element you want to position during a given event."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Another interesting effect can be achieved by modeling a simple physics system. Use the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"mousemove\""
+                    "Another interesting effect can be achieved by modeling a simple physics system. Use the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"mousemove\""
+                      ]
+                    },
+                    " event only to update a pair of variables that track the mouse position. Then use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "requestAnimationFrame"
+                      ]
+                    },
+                    " to simulate the trailing elements being attracted to the position of the mouse pointer. At every animation step, update their position based on their position relative to the pointer (and, optionally, a speed that is stored for each element). Figuring out a good way to do this is up to you."
                   ]
-                },
-                " event only to update a pair of variables that track the mouse position. Then use ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "requestAnimationFrame"
-                  ]
-                },
-                " to simulate the trailing elements being attracted to the position of the mouse pointer. At every animation step, update their position based on their position relative to the pointer (and, optionally, a speed that is stored for each element). Figuring out a good way to do this is up to you."
+                }
               ]
             }
           ],
@@ -2077,9 +2085,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "button",
-                    ">"
+                    "<button>"
                   ]
                 },
                 " elements at the top of the node, one for each child element, containing text retrieved from the ",
@@ -2113,55 +2119,60 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "One pitfall you’ll probably run into is that you can’t directly use the node’s ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "childNodes"
+                    "One pitfall you’ll probably run into is that you can’t directly use the node’s ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "childNodes"
+                      ]
+                    },
+                    " property as a collection of tab nodes. For one thing, when you add the buttons, they will also become child nodes and end up in this object because it is live. For another, the text nodes created for the whitespace between the nodes are also in there and should not get their own tabs."
                   ]
                 },
-                " property as a collection of tab nodes. For one thing, when you add the buttons, they will also become child nodes and end up in this object because it is live. For another, the text nodes created for the whitespace between the nodes are also in there and should not get their own tabs."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "To work around this, start by building up a real array of all the children in the wrapper that have a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "nodeType"
+                    "To work around this, start by building up a real array of all the children in the wrapper that have a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "nodeType"
+                      ]
+                    },
+                    " of 1."
                   ]
                 },
-                " of 1."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "When registering event handlers on the buttons, the handler functions will need to know which tab element is associated with the button. If they are created in a normal loop, you can access the loop index variable from inside the function, but it won’t give you the correct number because that variable will have been further changed by the loop."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "A simple workaround is to use the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "forEach"
+                    "When registering event handlers on the buttons, the handler functions will need to know which tab element is associated with the button. If they are created in a normal loop, you can access the loop index variable from inside the function, but it won’t give you the correct number because that variable will have been further changed by the loop."
                   ]
                 },
-                " method and create the handler functions from inside the function passed to ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "forEach"
+                    "A simple workaround is to use the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "forEach"
+                      ]
+                    },
+                    " method and create the handler functions from inside the function passed to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "forEach"
+                      ]
+                    },
+                    ". The loop index, which is passed as a second argument to that function, will be a normal local variable there and won’t be overwritten by further iterations."
                   ]
-                },
-                ". The loop index, which is passed as a second argument to that function, will be a normal local variable there and won’t be overwritten by further iterations."
+                }
               ]
             }
           ],

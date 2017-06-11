@@ -34,7 +34,7 @@
     {
       "element": "listing",
       "numbered": false,
-      "content": []
+      "content": "var total = 0, count = 1;\nwhile (count <= 10) {\n  total += count;\n  count += 1;\n}\nconsole.log(total);"
     },
     {
       "element": "p",
@@ -45,7 +45,7 @@
     {
       "element": "listing",
       "numbered": false,
-      "content": []
+      "content": "console.log(sum(range(1, 10)));"
     },
     {
       "element": "p",
@@ -221,7 +221,9 @@
             "In the ",
             {
               "element": "reference",
-              "content": "previous chapter"
+              "content": [
+                "previous chapter"
+              ]
             },
             ", this type of ",
             {
@@ -236,12 +238,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var array = [1, 2, 3];\nfor (var i = 0; i < array.length; i++) {\n  var current = array[i];\n  console.log(current);\n}"
         },
         {
           "element": "p",
           "content": [
-            "  It’s trying to say, “For each element in the array, log it to the console”. But it uses a roundabout way that involves a counter variable ",
+            " It’s trying to say, “For each element in the array, log it to the console”. But it uses a roundabout way that involves a counter variable ",
             {
               "element": "literal",
               "content": [
@@ -308,18 +310,18 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function logEach(array) {\n  for (var i = 0; i < array.length; i++)\n    console.log(array[i]);\n}"
         },
         {
           "element": "p",
           "content": [
-            "   But what if we want to do something other than logging the elements? Since “doing something” can be represented as a function and functions are just values, we can pass our action as a function value."
+            "  But what if we want to do something other than logging the elements? Since “doing something” can be represented as a function and functions are just values, we can pass our action as a function value."
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function forEach(array, action) {\n  for (var i = 0; i < array.length; i++)\n    action(array[i]);\n}\n\nforEach([\"Wampeter\", \"Foma\", \"Granfalloon\"], console.log);\n// → Wampeter\n// → Foma\n// → Granfalloon"
         },
         {
           "element": "p",
@@ -364,7 +366,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var numbers = [1, 2, 3, 4, 5], sum = 0;\nforEach(numbers, function(number) {\n  sum += number;\n});\nconsole.log(sum);\n// → 15"
         },
         {
           "element": "p",
@@ -409,7 +411,7 @@
         {
           "element": "p",
           "content": [
-            "  In fact, we don’t need to write ",
+            " In fact, we don’t need to write ",
             {
               "element": "literal",
               "content": [
@@ -432,7 +434,9 @@
             "To illustrate how helpful this is, let’s look back at a function from ",
             {
               "element": "reference",
-              "content": "the previous chapter"
+              "content": [
+                "the previous chapter"
+              ]
             },
             ". It contains two array-traversing loops."
           ]
@@ -440,7 +444,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function gatherCorrelations(journal) {\n  var phis = {};\n  for (var entry = 0; entry < journal.length; entry++) {\n    var events = journal[entry].events;\n    for (var i = 0; i < events.length; i++) {\n      var event = events[i];\n      if (!(event in phis))\n        phis[event] = phi(tableFor(event, journal));\n    }\n  }\n  return phis;\n}"
         },
         {
           "element": "p",
@@ -458,7 +462,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function gatherCorrelations(journal) {\n  var phis = {};\n  journal.forEach(function(entry) {\n    entry.events.forEach(function(event) {\n      if (!(event in phis))\n        phis[event] = phi(tableFor(event, journal));\n    });\n  });\n  return phis;\n}"
         }
       ],
       "title": "Abstracting array traversal"
@@ -469,7 +473,7 @@
         {
           "element": "p",
           "content": [
-            "  Functions that operate on other functions, either by taking them as arguments or by returning them, are called ",
+            " Functions that operate on other functions, either by taking them as arguments or by returning them, are called ",
             {
               "element": "em",
               "content": [
@@ -495,7 +499,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function greaterThan(n) {\n  return function(m) { return m > n; };\n}\nvar greaterThan10 = greaterThan(10);\nconsole.log(greaterThan10(11));\n// → true"
         },
         {
           "element": "p",
@@ -506,7 +510,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function noisy(f) {\n  return function(arg) {\n    console.log(\"calling with\", arg);\n    var val = f(arg);\n    console.log(\"called with\", arg, \"- got\", val);\n    return val;\n  };\n}\nnoisy(Boolean)(0);\n// → calling with 0\n// → called with 0 - got false"
         },
         {
           "element": "p",
@@ -517,15 +521,17 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function unless(test, then) {\n  if (!test) then();\n}\nfunction repeat(times, body) {\n  for (var i = 0; i < times; i++) body(i);\n}\n\nrepeat(3, function(n) {\n  unless(n % 2, function() {\n    console.log(n, \"is even\");\n  });\n});\n// → 0 is even\n// → 2 is even"
         },
         {
           "element": "p",
           "content": [
-            " The lexical scoping rules that we discussed in ",
+            "The lexical scoping rules that we discussed in ",
             {
               "element": "reference",
-              "content": "Chapter 3"
+              "content": [
+                "Chapter 3"
+              ]
             },
             " work to our advantage when using functions in this way. In the previous example, the ",
             {
@@ -560,7 +566,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -573,7 +579,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function noisy(f) {\n  return function(arg) {\n    console.log(\"calling with\", arg);\n    var val = f(arg);\n    console.log(\"called with\", arg, \"- got\", val);\n    return val;\n  };\n}"
         },
         {
           "element": "p",
@@ -626,7 +632,7 @@
         {
           "element": "p",
           "content": [
-            " For these kinds of situations, JavaScript functions have an ",
+            "For these kinds of situations, JavaScript functions have an ",
             {
               "element": "literal",
               "content": [
@@ -639,7 +645,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function transparentWrapping(f) {\n  return function() {\n    return f.apply(null, arguments);\n  };\n}"
         },
         {
           "element": "p",
@@ -682,7 +688,9 @@
             " here, can be used to simulate a method call. We will come back to that in the ",
             {
               "element": "reference",
-              "content": "next chapter"
+              "content": [
+                "next chapter"
+              ]
             },
             "."
           ]
@@ -696,7 +704,7 @@
         {
           "element": "p",
           "content": [
-            " Higher-order functions that somehow apply a function to the elements of an array are widely used in JavaScript. The ",
+            "Higher-order functions that somehow apply a function to the elements of an array are widely used in JavaScript. The ",
             {
               "element": "literal",
               "content": [
@@ -721,7 +729,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "[\n  {\"name\": \"Emma de Milliano\", \"sex\": \"f\",\n   \"born\": 1876, \"died\": 1956,\n   \"father\": \"Petrus de Milliano\",\n   \"mother\": \"Sophia van Damme\"},\n  {\"name\": \"Carolus Haverbeke\", \"sex\": \"m\",\n   \"born\": 1832, \"died\": 1905,\n   \"father\": \"Carel Haverbeke\",\n   \"mother\": \"Maria van Brussel\"},\n  … and so on\n]"
         },
         {
           "element": "p",
@@ -732,7 +740,7 @@
         {
           "element": "p",
           "content": [
-            " JSON is similar to JavaScript’s way of writing arrays and objects, with a few restrictions. All property names have to be surrounded by double quotes, and only simple data expressions are allowed—no function calls, variables, or anything that involves actual computation. Comments are not allowed in JSON."
+            "JSON is similar to JavaScript’s way of writing arrays and objects, with a few restrictions. All property names have to be surrounded by double quotes, and only simple data expressions are allowed—no function calls, variables, or anything that involves actual computation. Comments are not allowed in JSON."
           ]
         },
         {
@@ -758,7 +766,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var string = JSON.stringify({name: \"X\", born: 1980});\nconsole.log(string);\n// → {\"name\":\"X\",\"born\":1980}\nconsole.log(JSON.parse(string).born);\n// → 1980"
         },
         {
           "element": "p",
@@ -773,7 +781,9 @@
             ", available in the sandbox for this chapter and in ",
             {
               "element": "reference",
-              "content": "a downloadable file"
+              "content": [
+                "a downloadable file"
+              ]
             },
             " on the website, contains the content of my JSON file as a string. Let’s decode it and see how many people it contains."
           ]
@@ -781,7 +791,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var ancestry = JSON.parse(ANCESTRY_FILE);\nconsole.log(ancestry.length);\n// → 39"
         }
       ],
       "title": "JSON"
@@ -792,18 +802,18 @@
         {
           "element": "p",
           "content": [
-            "   To find the people in the ancestry data set who were young in 1924, the following function might be helpful. It filters out the elements in an array that don’t pass a test."
+            "  To find the people in the ancestry data set who were young in 1924, the following function might be helpful. It filters out the elements in an array that don’t pass a test."
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function filter(array, test) {\n  var passed = [];\n  for (var i = 0; i < array.length; i++) {\n    if (test(array[i]))\n      passed.push(array[i]);\n  }\n  return passed;\n}\n\nconsole.log(filter(ancestry, function(person) {\n  return person.born > 1900 && person.born < 1925;\n}));\n// → [{name: \"Philibert Haverbeke\", …}, …]"
         },
         {
           "element": "p",
           "content": [
-            "  This uses the argument named ",
+            " This uses the argument named ",
             {
               "element": "literal",
               "content": [
@@ -869,7 +879,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(ancestry.filter(function(person) {\n  return person.father == \"Carel Haverbeke\";\n}));\n// → [{name: \"Carolus Haverbeke\", …}]"
         }
       ],
       "title": "Filtering an array"
@@ -880,7 +890,7 @@
         {
           "element": "p",
           "content": [
-            " Say we have an array of objects representing people, produced by filtering the ",
+            "Say we have an array of objects representing people, produced by filtering the ",
             {
               "element": "literal",
               "content": [
@@ -893,7 +903,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -906,7 +916,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function map(array, transform) {\n  var mapped = [];\n  for (var i = 0; i < array.length; i++)\n    mapped.push(transform(array[i]));\n  return mapped;\n}\n\nvar overNinety = ancestry.filter(function(person) {\n  return person.died - person.born > 90;\n});\nconsole.log(map(overNinety, function(person) {\n  return person.name;\n}));\n// → [\"Clara Aernoudts\", \"Emile Haverbeke\",\n//    \"Maria Haverbeke\"]"
         },
         {
           "element": "p",
@@ -950,13 +960,13 @@
         {
           "element": "p",
           "content": [
-            " Another common pattern of computation on arrays is computing a single value from them. Our recurring example, summing a collection of numbers, is an instance of this. Another example would be finding the person with the earliest year of birth in the data set."
+            "Another common pattern of computation on arrays is computing a single value from them. Our recurring example, summing a collection of numbers, is an instance of this. Another example would be finding the person with the earliest year of birth in the data set."
           ]
         },
         {
           "element": "p",
           "content": [
-            " The higher-order operation that represents this pattern is called ",
+            "The higher-order operation that represents this pattern is called ",
             {
               "element": "em",
               "content": [
@@ -1003,7 +1013,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function reduce(array, combine, start) {\n  var current = start;\n  for (var i = 0; i < array.length; i++)\n    current = combine(current, array[i]);\n  return current;\n}\n\nconsole.log(reduce([1, 2, 3, 4], function(a, b) {\n  return a + b;\n}, 0));\n// → 10"
         },
         {
           "element": "p",
@@ -1041,7 +1051,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(ancestry.reduce(function(min, cur) {\n  if (cur.born < min.born) return cur;\n  else return min;\n}));\n// → {name: \"Pauwels van Haverbeke\", born: 1535, …}"
         }
       ],
       "title": "Summarizing with reduce"
@@ -1058,7 +1068,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var min = ancestry[0];\nfor (var i = 1; i < ancestry.length; i++) {\n  var cur = ancestry[i];\n  if (cur.born < min.born)\n    min = cur;\n}\nconsole.log(min);\n// → {name: \"Pauwels van Haverbeke\", born: 1535, …}"
         },
         {
           "element": "p",
@@ -1069,7 +1079,7 @@
         {
           "element": "p",
           "content": [
-            " Higher-order functions start to shine when you need to ",
+            "Higher-order functions start to shine when you need to ",
             {
               "element": "em",
               "content": [
@@ -1082,12 +1092,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function average(array) {\n  function plus(a, b) { return a + b; }\n  return array.reduce(plus) / array.length;\n}\nfunction age(p) { return p.died - p.born; }\nfunction male(p) { return p.sex == \"m\"; }\nfunction female(p) { return p.sex == \"f\"; }\n\nconsole.log(average(ancestry.filter(male).map(age)));\n// → 61.67\nconsole.log(average(ancestry.filter(female).map(age)));\n// → 54.56"
         },
         {
           "element": "p",
           "content": [
-            " (It’s a bit silly that we have to define ",
+            "(It’s a bit silly that we have to define ",
             {
               "element": "literal",
               "content": [
@@ -1138,13 +1148,13 @@
         {
           "element": "p",
           "content": [
-            " A program that processes an array is most elegantly expressed as a sequence of cleanly separated steps that each do something with the array and produce a new array. But building up all those intermediate arrays is somewhat expensive."
+            "A program that processes an array is most elegantly expressed as a sequence of cleanly separated steps that each do something with the array and produce a new array. But building up all those intermediate arrays is somewhat expensive."
           ]
         },
         {
           "element": "p",
           "content": [
-            "  Likewise, passing a function to ",
+            " Likewise, passing a function to ",
             {
               "element": "literal",
               "content": [
@@ -1176,7 +1186,7 @@
         {
           "element": "p",
           "content": [
-            " It is helpful to roughly keep track of how often a piece of your program is going to run. If you have a loop inside a loop (either directly or through the outer loop calling a function that ends up performing the inner loop), the code inside the inner loop will end up running ",
+            "It is helpful to roughly keep track of how often a piece of your program is going to run. If you have a loop inside a loop (either directly or through the outer loop calling a function that ends up performing the inner loop), the code inside the inner loop will end up running ",
             {
               "element": "em",
               "content": [
@@ -1250,13 +1260,13 @@
         {
           "element": "p",
           "content": [
-            " To be able to go from a parent’s name to the actual object that represents this person, we first build up an object that associates names with people."
+            "To be able to go from a parent’s name to the actual object that represents this person, we first build up an object that associates names with people."
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var byName = {};\nancestry.forEach(function(person) {\n  byName[person.name] = person;\n});\n\nconsole.log(byName[\"Philibert Haverbeke\"]);\n// → {name: \"Philibert Haverbeke\", …}"
         },
         {
           "element": "p",
@@ -1353,12 +1363,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function reduceAncestors(person, f, defaultValue) {\n  function valueFor(person) {\n    if (person == null)\n      return defaultValue;\n    else\n      return f(person, valueFor(byName[person.mother]),\n                       valueFor(byName[person.father]));\n  }\n  return valueFor(person);\n}"
         },
         {
           "element": "p",
           "content": [
-            " The inner function (",
+            "The inner function (",
             {
               "element": "literal",
               "content": [
@@ -1384,7 +1394,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function sharedDNA(person, fromMother, fromFather) {\n  if (person.name == \"Pauwels van Haverbeke\")\n    return 1;\n  else\n    return (fromMother + fromFather) / 2;\n}\nvar ph = byName[\"Philibert Haverbeke\"];\nconsole.log(reduceAncestors(ph, sharedDNA, 0) / 4);\n// → 0.00049"
         },
         {
           "element": "p",
@@ -1414,7 +1424,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function countAncestors(person, test) {\n  function combine(current, fromMother, fromFather) {\n    var thisOneCounts = current != person && test(current);\n    return fromMother + fromFather + (thisOneCounts ? 1 : 0);\n  }\n  return reduceAncestors(person, combine, 0);\n}\nfunction longLivingPercentage(person) {\n  var all = countAncestors(person, function(person) {\n    return true;\n  });\n  var longLiving = countAncestors(person, function(person) {\n    return (person.died - person.born) >= 70;\n  });\n  return longLiving / all;\n}\nconsole.log(longLivingPercentage(byName[\"Emile Haverbeke\"]));\n// → 0.129"
         },
         {
           "element": "p",
@@ -1438,7 +1448,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -1451,7 +1461,7 @@
         {
           "element": "p",
           "content": [
-            " The following code shows an example of ",
+            "The following code shows an example of ",
             {
               "element": "literal",
               "content": [
@@ -1483,9 +1493,7 @@
             {
               "element": "em",
               "content": [
-                "partially",
-                " ",
-                "apply"
+                "partiallyapply"
               ]
             },
             " the ",
@@ -1501,7 +1509,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var theSet = [\"Carel Haverbeke\", \"Maria van Brussel\",\n              \"Donald Duck\"];\nfunction isInSet(set, person) {\n  return set.indexOf(person.name) > -1;\n}\n\nconsole.log(ancestry.filter(function(person) {\n  return isInSet(theSet, person);\n}));\n// → [{name: \"Maria van Brussel\", …},\n//    {name: \"Carel Haverbeke\", …}]\nconsole.log(ancestry.filter(isInSet.bind(null, theSet)));\n// → … same result"
         },
         {
           "element": "p",
@@ -1550,7 +1558,9 @@
             ". I’ll describe this in more detail in the ",
             {
               "element": "reference",
-              "content": "next chapter"
+              "content": [
+                "next chapter"
+              ]
             },
             "."
           ]
@@ -1669,7 +1679,9 @@
                 " function defined ",
                 {
                   "element": "reference",
-                  "content": "earlier"
+                  "content": [
+                    "earlier"
+                  ]
                 },
                 " in this chapter."
               ]
@@ -1688,72 +1700,77 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Because not all elements in the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "ancestry"
+                    "Because not all elements in the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "ancestry"
+                      ]
+                    },
+                    " array produce useful data (we can’t compute the age difference unless we know the birth date of the mother), we will have to apply ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "filter"
+                      ]
+                    },
+                    " in some manner before calling ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "average"
+                      ]
+                    },
+                    ". You could do it as a first pass, by defining a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "hasKnownMother"
+                      ]
+                    },
+                    " function and filtering on that first. Alternatively, you could start by calling ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "map"
+                      ]
+                    },
+                    " and in your mapping function return either the age difference or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "null"
+                      ]
+                    },
+                    " if no mother is known. Then, you can call ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "filter"
+                      ]
+                    },
+                    " to remove the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "null"
+                      ]
+                    },
+                    " elements before passing the array to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "average"
+                      ]
+                    },
+                    "."
                   ]
-                },
-                " array produce useful data (we can’t compute the age difference unless we know the birth date of the mother), we will have to apply ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "filter"
-                  ]
-                },
-                " in some manner before calling ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "average"
-                  ]
-                },
-                ". You could do it as a first pass, by defining a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "hasKnownMother"
-                  ]
-                },
-                " function and filtering on that first. Alternatively, you could start by calling ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "map"
-                  ]
-                },
-                " and in your mapping function return either the age difference or ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "null"
-                  ]
-                },
-                " if no mother is known. Then, you can call ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "filter"
-                  ]
-                },
-                " to remove the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "null"
-                  ]
-                },
-                " elements before passing the array to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "average"
-                  ]
-                },
-                "."
+                }
               ]
             }
           ],
@@ -1782,41 +1799,46 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The essence of this example lies in grouping the elements of a collection by some aspect of theirs—splitting the array of ancestors into smaller arrays with the ancestors for each century."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " During the grouping process, keep an object that associates century names (numbers) with arrays of either person objects or ages. Since we do not know in advance what categories we will find, we’ll have to create them on the fly. For each person, after computing their century, we test whether that century was already known. If not, add an array for it. Then add the person (or age) to the array for the proper century."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Finally, a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "for"
+                    "The essence of this example lies in grouping the elements of a collection by some aspect of theirs—splitting the array of ancestors into smaller arrays with the ancestors for each century."
                   ]
                 },
-                "/",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "in"
+                    "During the grouping process, keep an object that associates century names (numbers) with arrays of either person objects or ages. Since we do not know in advance what categories we will find, we’ll have to create them on the fly. For each person, after computing their century, we test whether that century was already known. If not, add an array for it. Then add the person (or age) to the array for the proper century."
                   ]
                 },
-                " loop can be used to print the average ages for the individual centuries."
+                {
+                  "element": "p",
+                  "content": [
+                    "Finally, a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "for"
+                      ]
+                    },
+                    "/",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "in"
+                      ]
+                    },
+                    " loop can be used to print the average ages for the individual centuries."
+                  ]
+                }
               ]
             },
             {
               "element": "p",
               "content": [
-                " For bonus points, write a function ",
+                "For bonus points, write a function ",
                 {
                   "element": "literal",
                   "content": [
@@ -1835,7 +1857,7 @@
             {
               "element": "p",
               "content": [
-                " Arrays also come with the standard methods ",
+                "Arrays also come with the standard methods ",
                 {
                   "element": "literal",
                   "content": [
@@ -1853,8 +1875,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "&",
-                    "&"
+                    "&&"
                   ]
                 },
                 " returns a true value only when the expressions on both sides are true, ",
@@ -1916,28 +1937,35 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The functions can follow a similar pattern to the ",
                 {
-                  "element": "reference",
-                  "content": "definition"
-                },
-                " of ",
-                {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "forEach"
+                    "The functions can follow a similar pattern to the ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        "definition"
+                      ]
+                    },
+                    " of ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "forEach"
+                      ]
+                    },
+                    " at the start of the chapter, except that they must return immediately (with the right value) when the predicate function returns false—or true. Don’t forget to put another ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "return"
+                      ]
+                    },
+                    " statement after the loop so that the function also returns the correct value when it reaches the end of the array."
                   ]
-                },
-                " at the start of the chapter, except that they must return immediately (with the right value) when the predicate function returns false—or true. Don’t forget to put another ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "return"
-                  ]
-                },
-                " statement after the loop so that the function also returns the correct value when it reaches the end of the array."
+                }
               ]
             }
           ],

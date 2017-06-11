@@ -15,7 +15,7 @@
     {
       "element": "p",
       "content": [
-        " The next part of this book will talk about web browsers. Without web browsers, there would be no JavaScript. And even if there were, no one would ever have paid any attention to it."
+        "The next part of this book will talk about web browsers. Without web browsers, there would be no JavaScript. And even if there were, no one would ever have paid any attention to it."
       ]
     },
     {
@@ -65,8 +65,7 @@
             {
               "element": "em",
               "content": [
-                "network ",
-                "protocol"
+                "network protocol"
               ]
             },
             " describes a style of communication over a network. There are protocols for sending email, for fetching email, for sharing files, or even for controlling computers that happen to be infected by malicious software."
@@ -182,9 +181,7 @@
             {
               "element": "em",
               "content": [
-                "Uniform Resource",
-                " ",
-                "Locator"
+                "Uniform ResourceLocator"
               ]
             },
             " (URL), which looks something like this:"
@@ -274,7 +271,9 @@
             "We will take a closer look at the HTTP protocol in ",
             {
               "element": "reference",
-              "content": "Chapter 17"
+              "content": [
+                "Chapter 17"
+              ]
             },
             "."
           ]
@@ -314,7 +313,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<!doctype html>\n<html>\n  <head>\n    <title>My home page</title>\n  </head>\n  <body>\n    <h1>My home page</h1>\n    <p>Hello, I am Marijn and this is my home page.</p>\n    <p>I also wrote a book! Read it\n      <a href=\"http://eloquentjavascript.net\">here</a>.</p>\n  </body>\n</html>"
         },
         {
           "element": "p",
@@ -343,9 +342,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "!doctype html",
-                ">"
+                "<!doctype html>"
               ]
             },
             ", which tells the browser to interpret it as ",
@@ -372,36 +369,28 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "h1",
-                ">"
+                "<h1>"
               ]
             },
             ", meaning “heading 1”—",
             {
               "element": "literal",
               "content": [
-                "<",
-                "h2",
-                ">"
+                "<h2>"
               ]
             },
             " to ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "h6",
-                ">"
+                "<h6>"
               ]
             },
             " produce more minor headings) and two paragraphs (",
             {
               "element": "literal",
               "content": [
-                "<",
-                "p",
-                ">"
+                "<p>"
               ]
             },
             ")."
@@ -421,9 +410,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "p",
-                ">"
+                "<p>"
               ]
             },
             " and ended by a ",
@@ -437,18 +424,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "/p",
-                ">"
+                "</p>"
               ]
             },
             ". Some opening tags, such as the one for the link (",
             {
               "element": "literal",
               "content": [
-                "<",
-                "a",
-                ">"
+                "<a>"
               ]
             },
             "), contain extra information in the form of ",
@@ -489,11 +472,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "img",
-                " ",
-                "src=\"http://example.com/image.jpg\"",
-                ">"
+                "<imgsrc=\"http://example.com/image.jpg\">"
               ]
             },
             ", which will display the image found at the given source URL."
@@ -502,20 +481,18 @@
         {
           "element": "p",
           "content": [
-            " To be able to include angle brackets in the text of a document, even though they have a special meaning in HTML, yet another form of special notation has to be introduced. A plain opening angle bracket is written as ",
+            "To be able to include angle brackets in the text of a document, even though they have a special meaning in HTML, yet another form of special notation has to be introduced. A plain opening angle bracket is written as ",
             {
               "element": "literal",
               "content": [
-                "&",
-                "lt;"
+                "&lt;"
               ]
             },
             " (“less than”), and a closing bracket is written as ",
             {
               "element": "literal",
               "content": [
-                "&",
-                "gt;"
+                "&gt;"
               ]
             },
             " (“greater than”). In HTML, an ampersand (",
@@ -549,16 +526,14 @@
             {
               "element": "literal",
               "content": [
-                "&",
-                "amp;"
+                "&amp;"
               ]
             },
             ". Inside an attribute, which is wrapped in double quotes, ",
             {
               "element": "literal",
               "content": [
-                "&",
-                "quot;"
+                "&quot;"
               ]
             },
             " can be used to insert an actual quote character."
@@ -579,7 +554,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<!doctype html>\n\n<title>My home page</title>\n\n<h1>My home page</h1>\n<p>Hello, I am Marijn and this is my home page.\n<p>I also wrote a book! Read it\n  <a href=http://eloquentjavascript.net>here</a>."
         },
         {
           "element": "p",
@@ -588,45 +563,35 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "html",
-                ">"
+                "<html>"
               ]
             },
             ", ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "head",
-                ">"
+                "<head>"
               ]
             },
             ", and ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "body",
-                ">"
+                "<body>"
               ]
             },
             " tags are gone completely. The browser knows that ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "title",
-                ">"
+                "<title>"
               ]
             },
             " belongs in a head, and that ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "h1",
-                ">"
+                "<h1>"
               ]
             },
             " in a body. Furthermore, I am no longer explicitly closing the paragraphs since opening a new paragraph or ending the document will close them implicitly. The quotes around the link target are also gone."
@@ -639,27 +604,21 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "html",
-                ">"
+                "<html>"
               ]
             },
             ", ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "head",
-                ">"
+                "<head>"
               ]
             },
             ", and ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "body",
-                ">"
+                "<body>"
               ]
             },
             " tags from examples to keep them short and free of clutter. But I ",
@@ -687,13 +646,11 @@
         {
           "element": "p",
           "content": [
-            " In the context of this book, the most important HTML tag is ",
+            "In the context of this book, the most important HTML tag is ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "script",
-                ">"
+                "<script>"
               ]
             },
             ". This tag allows us to include a piece of JavaScript in a document."
@@ -702,7 +659,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<h1>Testing alert</h1>\n<script>alert(\"hello!\");</script>"
         },
         {
           "element": "p",
@@ -711,9 +668,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "script",
-                ">"
+                "<script>"
               ]
             },
             " tag is encountered as the browser reads the HTML. The page shown earlier will pop up an ",
@@ -733,9 +688,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "script",
-                ">"
+                "<script>"
               ]
             },
             " tag can be given an ",
@@ -751,7 +704,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<h1>Testing alert</h1>\n<script src=\"code/hello.js\"></script>"
         },
         {
           "element": "p",
@@ -780,9 +733,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "/script",
-                ">"
+                "</script>"
               ]
             },
             ", even if it refers to a script file and doesn’t contain any code. If you forget this, the rest of the page will be interpreted as part of the script."
@@ -795,9 +746,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "button",
-                ">"
+                "<button>"
               ]
             },
             " tag shown next (which shows up as a button) has an ",
@@ -813,12 +762,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<button onclick=\"alert('Boom!');\">DO NOT PRESS</button>"
         },
         {
           "element": "p",
           "content": [
-            " Note that I had to use single quotes for the string in the ",
+            "Note that I had to use single quotes for the string in the ",
             {
               "element": "literal",
               "content": [
@@ -829,8 +778,7 @@
             {
               "element": "literal",
               "content": [
-                "&",
-                "quot;"
+                "&quot;"
               ]
             },
             ", but that’d make the program harder to read."

@@ -25,7 +25,9 @@
         ", already mentioned in ",
         {
           "element": "reference",
-          "content": "Chapter 12"
+          "content": [
+            "Chapter 12"
+          ]
         },
         ", is the mechanism through which data is requested and provided on the World Wide Web. This chapter describes the protocol in more detail and explains the way browser JavaScript has access to it."
       ]
@@ -56,7 +58,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "GET /17_http.html HTTP/1.1\nHost: eloquentjavascript.net\nUser-Agent: Your browser's name"
         },
         {
           "element": "p",
@@ -67,7 +69,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "HTTP/1.1 200 OK\nContent-Length: 65585\nContent-Type: text/html\nLast-Modified: Wed, 09 Apr 2014 10:48:09 GMT\n\n<!doctype html>\n... the rest of the document"
         },
         {
           "element": "p",
@@ -91,7 +93,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "GET /17_http.html HTTP/1.1"
         },
         {
           "element": "p",
@@ -151,7 +153,7 @@
         {
           "element": "p",
           "content": [
-            " The part after the method name is the path of the resource the request applies to. In the simplest case, a resource is simply a file on the server, but the protocol doesn’t require it to be. A resource may be anything that can be transferred ",
+            "The part after the method name is the path of the resource the request applies to. In the simplest case, a resource is simply a file on the server, but the protocol doesn’t require it to be. A resource may be anything that can be transferred ",
             {
               "element": "em",
               "content": [
@@ -202,7 +204,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "HTTP/1.1 200 OK"
         },
         {
           "element": "p",
@@ -328,7 +330,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<form method=\"GET\" action=\"example/message.html\">\n  <p>Name: <input type=\"text\" name=\"name\"></p>\n  <p>Message:<br><textarea name=\"message\"></textarea></p>\n  <p><button type=\"submit\">Send</button></p>\n</form>"
         },
         {
           "element": "p",
@@ -344,9 +346,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "form",
-                ">"
+                "<form>"
               ]
             },
             " element’s ",
@@ -383,7 +383,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "GET /example/message.html?name=Jean&message=Yes%3F HTTP/1.1"
         },
         {
           "element": "p",
@@ -408,7 +408,7 @@
         {
           "element": "p",
           "content": [
-            " The actual message encoded in the previous URL is “Yes?”, even though the question mark is replaced by a strange code. Some characters in query strings must be escaped. The question mark, represented as ",
+            "The actual message encoded in the previous URL is “Yes?”, even though the question mark is replaced by a strange code. Some characters in query strings must be escaped. The question mark, represented as ",
             {
               "element": "literal",
               "content": [
@@ -419,9 +419,7 @@
             {
               "element": "em",
               "content": [
-                "URL",
-                " ",
-                "encoding"
+                "URLencoding"
               ]
             },
             ", uses a percent sign followed by two hexadecimal digits that encode the character code. In this case, 3F, which is 63 in decimal notation, is the code of a question mark character. JavaScript provides the ",
@@ -444,7 +442,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(encodeURIComponent(\"Hello & goodbye\"));\n// → Hello%20%26%20goodbye\nconsole.log(decodeURIComponent(\"Hello%20%26%20goodbye\"));\n// → Hello & goodbye"
         },
         {
           "element": "p",
@@ -476,7 +474,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "POST /example/message.html HTTP/1.1\nContent-length: 24\nContent-type: application/x-www-form-urlencoded\n\nname=Jean&message=Yes%3F"
         },
         {
           "element": "p",
@@ -518,7 +516,9 @@
             "The ",
             {
               "element": "reference",
-              "content": "next chapter"
+              "content": [
+                "next chapter"
+              ]
             },
             " will return to forms and talk about how we can script them with JavaScript."
           ]
@@ -552,7 +552,7 @@
         {
           "element": "p",
           "content": [
-            " The name isn’t completely nonsensical, though. The interface allows you to parse response documents as XML if you want. Conflating two distinct concepts (making a request and parsing the response) into a single thing is terrible design, of course, but so it goes."
+            "The name isn’t completely nonsensical, though. The interface allows you to parse response documents as XML if you want. Conflating two distinct concepts (making a request and parsing the response) into a single thing is terrible design, of course, but so it goes."
           ]
         },
         {
@@ -624,12 +624,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var req = new XMLHttpRequest();\nreq.open(\"GET\", \"example/data.txt\", false);\nreq.send(null);\nconsole.log(req.responseText);\n// → This is the content of data.txt"
         },
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -745,7 +745,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var req = new XMLHttpRequest();\nreq.open(\"GET\", \"example/data.txt\", false);\nreq.send(null);\nconsole.log(req.status, req.statusText);\n// → 200 OK\nconsole.log(req.getResponseHeader(\"content-type\"));\n// → text/plain"
         },
         {
           "element": "p",
@@ -848,7 +848,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var req = new XMLHttpRequest();\nreq.open(\"GET\", \"example/data.txt\", true);\nreq.addEventListener(\"load\", function() {\n  console.log(\"Done:\", req.status);\n});\nreq.send(null);"
         },
         {
           "element": "p",
@@ -863,12 +863,16 @@
             " in ",
             {
               "element": "reference",
-              "content": "Chapter 15"
+              "content": [
+                "Chapter 15"
+              ]
             },
             ", this forces us to use an asynchronous style of programming, wrapping the things that have to be done after the request in a function and arranging for that to be called at the appropriate time. We will come back to this ",
             {
               "element": "reference",
-              "content": "later"
+              "content": [
+                "later"
+              ]
             },
             "."
           ]
@@ -899,7 +903,9 @@
             " property will hold a parsed representation of this document. This representation works much like the DOM discussed in ",
             {
               "element": "reference",
-              "content": "Chapter 13"
+              "content": [
+                "Chapter 13"
+              ]
             },
             ", except that it doesn’t have HTML-specific functionality like the ",
             {
@@ -940,9 +946,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "fruits",
-                ">"
+                "<fruits>"
               ]
             },
             " tag:"
@@ -951,7 +955,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<fruits>\n  <fruit name=\"banana\" color=\"yellow\"/>\n  <fruit name=\"lemon\" color=\"yellow\"/>\n  <fruit name=\"cherry\" color=\"red\"/>\n</fruits>"
         },
         {
           "element": "p",
@@ -962,7 +966,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var req = new XMLHttpRequest();\nreq.open(\"GET\", \"example/fruit.xml\", false);\nreq.send(null);\nconsole.log(req.responseXML.querySelectorAll(\"fruit\").length);\n// → 3"
         },
         {
           "element": "p",
@@ -973,7 +977,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var req = new XMLHttpRequest();\nreq.open(\"GET\", \"example/fruit.json\", false);\nreq.send(null);\nconsole.log(JSON.parse(req.responseText));\n// → {banana: \"yellow\", lemon: \"yellow\", cherry: \"red\"}"
         }
       ],
       "title": "Fetching XML Data"
@@ -1050,7 +1054,9 @@
             "In ",
             {
               "element": "reference",
-              "content": "Chapter 10"
+              "content": [
+                "Chapter 10"
+              ]
             },
             ", in our implementation of the AMD module system, we used a hypothetical function called ",
             {
@@ -1065,7 +1071,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function backgroundReadFile(url, callback) {\n  var req = new XMLHttpRequest();\n  req.open(\"GET\", url, true);\n  req.addEventListener(\"load\", function() {\n    if (req.status < 400)\n      callback(req.responseText);\n  });\n  req.send(null);\n}"
         },
         {
           "element": "p",
@@ -1097,7 +1103,7 @@
         {
           "element": "p",
           "content": [
-            " The function argument’s name, ",
+            "The function argument’s name, ",
             {
               "element": "literal",
               "content": [
@@ -1183,7 +1189,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "try {\n  backgroundReadFile(\"example/data.txt\", function(text) {\n    if (text != \"expected\")\n      throw new Error(\"That was unexpected\");\n  });\n} catch (e) {\n  console.log(\"Hello from the catch block\");\n}"
         },
         {
           "element": "p",
@@ -1194,7 +1200,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function getURL(url, callback) {\n  var req = new XMLHttpRequest();\n  req.open(\"GET\", url, true);\n  req.addEventListener(\"load\", function() {\n    if (req.status < 400)\n      callback(req.responseText);\n    else\n      callback(null, new Error(\"Request failed: \" +\n                               req.statusText));\n  });\n  req.addEventListener(\"error\", function() {\n    callback(null, new Error(\"Network error\"));\n  });\n  req.send(null);\n}"
         },
         {
           "element": "p",
@@ -1225,7 +1231,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "getURL(\"data/nonsense.txt\", function(content, error) {\n  if (error != null)\n    console.log(\"Failed to fetch nonsense.txt: \" + error);\n  else\n    console.log(\"nonsense.txt: \" + content);\n});"
         },
         {
           "element": "p",
@@ -1326,7 +1332,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function get(url) {\n  return new Promise(function(succeed, fail) {\n    var req = new XMLHttpRequest();\n    req.open(\"GET\", url, true);\n    req.addEventListener(\"load\", function() {\n      if (req.status < 400)\n        succeed(req.responseText);\n      else\n        fail(new Error(\"Request failed: \" + req.statusText));\n    });\n    req.addEventListener(\"error\", function() {\n      fail(new Error(\"Network error\"));\n    });\n    req.send(null);\n  });\n}"
         },
         {
           "element": "p",
@@ -1351,7 +1357,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "get(\"example/data.txt\").then(function(text) {\n  console.log(\"data.txt: \" + text);\n}, function(error) {\n  console.log(\"Failed to fetch data.txt: \" + error);\n});"
         },
         {
           "element": "p",
@@ -1409,7 +1415,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function getJSON(url) {\n  return get(url).then(JSON.parse);\n}"
         },
         {
           "element": "p",
@@ -1495,7 +1501,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<script>\n  function showMessage(msg) {\n    var elt = document.createElement(\"div\");\n    elt.textContent = msg;\n    return document.body.appendChild(elt);\n  }\n\n  var loading = showMessage(\"Loading...\");\n  getJSON(\"example/bert.json\").then(function(bert) {\n    return getJSON(bert.spouse);\n  }).then(function(spouse) {\n    return getJSON(spouse.mother);\n  }).then(function(mother) {\n    showMessage(\"The name is \" + mother.name);\n  }).catch(function(error) {\n    showMessage(String(error));\n  }).then(function() {\n    document.body.removeChild(loading);\n  });\n</script>"
         },
         {
           "element": "p",
@@ -1712,7 +1718,9 @@
             " requests to fetch the resources needed to display a web page. A web page may also contain forms, which allow information entered by the user to be sent along in the request made when the form is submitted. You will learn more about that in the ",
             {
               "element": "reference",
-              "content": "next\nchapter"
+              "content": [
+                "nextchapter"
+              ]
             },
             "."
           ]
@@ -1733,7 +1741,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var req = new XMLHttpRequest();\nreq.open(\"GET\", \"example/data.txt\", true);\nreq.addEventListener(\"load\", function() {\n  console.log(req.status);\n});\nreq.send(null);"
         },
         {
           "element": "p",
@@ -1764,9 +1772,7 @@
                 {
                   "element": "em",
                   "content": [
-                    "content",
-                    " ",
-                    "negotiation"
+                    "contentnegotiation"
                   ]
                 },
                 ". The ",
@@ -1887,43 +1893,48 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "See the various examples of using an ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "XMLHttpRequest"
+                    "See the various examples of using an ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "XMLHttpRequest"
+                      ]
+                    },
+                    " in this chapter for an example of the method calls involved in making a request. You can use a synchronous request (by setting the third parameter to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "open"
+                      ]
+                    },
+                    " to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "false"
+                      ]
+                    },
+                    ") if you want."
                   ]
                 },
-                " in this chapter for an example of the method calls involved in making a request. You can use a synchronous request (by setting the third parameter to ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "open"
+                    "Asking for a bogus media type will return a response with code 406, “Not acceptable”, which is the code a server should return when it can’t fulfill the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Accept"
+                      ]
+                    },
+                    " header."
                   ]
-                },
-                " to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "false"
-                  ]
-                },
-                ") if you want."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Asking for a bogus media type will return a response with code 406, “Not acceptable”, which is the code a server should return when it can’t fulfill the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Accept"
-                  ]
-                },
-                " header."
+                }
               ]
             }
           ],
@@ -1979,35 +1990,40 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The function passed to the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "Promise"
+                    "The function passed to the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Promise"
+                      ]
+                    },
+                    " constructor will have to call ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "then"
+                      ]
+                    },
+                    " on each of the promises in the given array. When one of them succeeds, two things need to happen. The resulting value needs to be stored in the correct position of a result array, and we must check whether this was the last pending promise and finish our own promise if it was."
                   ]
                 },
-                " constructor will have to call ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "then"
+                    "The latter can be done with a counter, which is initialized to the length of the input array and from which we subtract 1 every time a promise succeeds. When it reaches 0, we are done. Make sure you take the situation where the input array is empty (and thus no promise will ever resolve) into account."
                   ]
                 },
-                " on each of the promises in the given array. When one of them succeeds, two things need to happen. The resulting value needs to be stored in the correct position of a result array, and we must check whether this was the last pending promise and finish our own promise if it was."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The latter can be done with a counter, which is initialized to the length of the input array and from which we subtract 1 every time a promise succeeds. When it reaches 0, we are done. Make sure you take the situation where the input array is empty (and thus no promise will ever resolve) into account."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Handling failure requires some thought but turns out to be extremely simple. Just pass the failure function of the wrapping promise to each of the promises in the array so that a failure in one of them triggers the failure of the whole wrapper."
+                {
+                  "element": "p",
+                  "content": [
+                    "Handling failure requires some thought but turns out to be extremely simple. Just pass the failure function of the wrapping promise to each of the promises in the array so that a failure in one of them triggers the failure of the whole wrapper."
+                  ]
+                }
               ]
             }
           ],

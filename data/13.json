@@ -6,7 +6,9 @@
         "When you open a web page in your browser, the browser retrieves the page’s HTML text and parses it, much like the way our parser from ",
         {
           "element": "reference",
-          "content": "Chapter 11"
+          "content": [
+            "Chapter 11"
+          ]
         },
         " parsed programs. The browser builds up a model of the document’s structure and then uses this model to draw the page on the screen."
       ]
@@ -34,24 +36,22 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "body",
-                ">"
+                "<body>"
               ]
             },
             " and ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "/body",
-                ">"
+                "</body>"
               ]
             },
             " enclose other tags, which in turn contain other tags or text. Here’s the example document from the ",
             {
               "element": "reference",
-              "content": "previous chapter"
+              "content": [
+                "previous chapter"
+              ]
             },
             ":"
           ]
@@ -59,7 +59,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<!doctype html>\n<html>\n  <head>\n    <title>My home page</title>\n  </head>\n  <body>\n    <h1>My home page</h1>\n    <p>Hello, I am Marijn and this is my home page.</p>\n    <p>I also wrote a book! Read it\n      <a href=\"http://eloquentjavascript.net\">here</a>.</p>\n  </body>\n</html>"
         },
         {
           "element": "p",
@@ -105,9 +105,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "html",
-                ">"
+                "<html>"
               ]
             },
             " tag. It also provides the properties ",
@@ -136,10 +134,12 @@
         {
           "element": "p",
           "content": [
-            " Think back to the syntax trees from ",
+            "Think back to the syntax trees from ",
             {
               "element": "reference",
-              "content": "Chapter 11"
+              "content": [
+                "Chapter 11"
+              ]
             },
             " for a moment. Their structures are strikingly similar to the structure of a browser’s document. Each ",
             {
@@ -190,7 +190,9 @@
             "A typical tree has different kinds of nodes. The syntax tree for ",
             {
               "element": "reference",
-              "content": "the Egg\nlanguage"
+              "content": [
+                "the Egglanguage"
+              ]
             },
             " had variables, values, and application nodes. Application nodes always have children, whereas variables and values are ",
             {
@@ -223,16 +225,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "!--"
+                "<!--"
               ]
             },
             " and ",
             {
               "element": "literal",
               "content": [
-                "--",
-                ">"
+                "-->"
               ]
             },
             " in HTML)."
@@ -297,7 +297,7 @@
         {
           "element": "p",
           "content": [
-            " Using cryptic numeric codes to represent node types is not a very JavaScript-like thing to do. Later in this chapter, we’ll see that other parts of the DOM interface also feel cumbersome and alien. The reason for this is that the DOM wasn’t designed for just JavaScript. Rather, it tries to define a language-neutral interface that can be used in other systems as well—not just HTML but also XML, which is a generic data format with an HTML-like syntax."
+            "Using cryptic numeric codes to represent node types is not a very JavaScript-like thing to do. Later in this chapter, we’ll see that other parts of the DOM interface also feel cumbersome and alien. The reason for this is that the DOM wasn’t designed for just JavaScript. Rather, it tries to define a language-neutral interface that can be used in other systems as well—not just HTML but also XML, which is a generic data format with an HTML-like syntax."
           ]
         },
         {
@@ -350,7 +350,7 @@
         {
           "element": "p",
           "content": [
-            "  Then there are issues that are simply poor design. For example, there is no way to create a new node and immediately add children or attributes to it. Instead, you have to first create it, then add the children one by one, and finally set the attributes one by one, using side effects. Code that interacts heavily with the DOM tends to get long, repetitive, and ugly."
+            " Then there are issues that are simply poor design. For example, there is no way to create a new node and immediately add children or attributes to it. Instead, you have to first create it, then add the children one by one, and finally set the attributes one by one, using side effects. Code that interacts heavily with the DOM tends to get long, repetitive, and ugly."
           ]
         },
         {
@@ -453,7 +453,7 @@
         {
           "element": "p",
           "content": [
-            " When dealing with a nested data structure like this one, recursive functions are often useful. The following recursive function scans a document for text nodes containing a given string and returns ",
+            "When dealing with a nested data structure like this one, recursive functions are often useful. The following recursive function scans a document for text nodes containing a given string and returns ",
             {
               "element": "literal",
               "content": [
@@ -466,7 +466,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function talksAbout(node, string) {\n  if (node.nodeType == document.ELEMENT_NODE) {\n    for (var i = 0; i < node.childNodes.length; i++) {\n      if (talksAbout(node.childNodes[i], string))\n        return true;\n    }\n    return false;\n  } else if (node.nodeType == document.TEXT_NODE) {\n    return node.nodeValue.indexOf(string) > -1;\n  }\n}\n\nconsole.log(talksAbout(document.body, \"book\"));\n// → true"
         },
         {
           "element": "p",
@@ -501,18 +501,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "h1",
-                ">"
+                "<h1>"
               ]
             },
             " and two ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "p",
-                ">"
+                "<p>"
               ]
             },
             " elements) but actually has seven: those three, plus the spaces before, after, and between them."
@@ -534,7 +530,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var link = document.body.getElementsByTagName(\"a\")[0];\nconsole.log(link.href);"
         },
         {
           "element": "p",
@@ -579,7 +575,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>My ostrich Gertrude:</p>\n<p><img id=\"gertrude\" src=\"img/ostrich.png\"></p>\n\n<script>\n  var ostrich = document.getElementById(\"gertrude\");\n  console.log(ostrich.src);\n</script>"
         },
         {
           "element": "p",
@@ -617,7 +613,7 @@
         {
           "element": "p",
           "content": [
-            " Almost everything about the DOM data structure can be changed. Element nodes have a number of methods that can be used to change their content. The ",
+            "Almost everything about the DOM data structure can be changed. Element nodes have a number of methods that can be used to change their content. The ",
             {
               "element": "literal",
               "content": [
@@ -644,7 +640,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>One</p>\n<p>Two</p>\n<p>Three</p>\n\n<script>\n  var paragraphs = document.body.getElementsByTagName(\"p\");\n  document.body.insertBefore(paragraphs[2], paragraphs[0]);\n</script>"
         },
         {
           "element": "p",
@@ -699,9 +695,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "img",
-                ">"
+                "<img>"
               ]
             },
             " tags) in the document with the text held in their ",
@@ -730,7 +724,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>The <img src=\"img/cat.png\" alt=\"Cat\"> in the\n  <img src=\"img/hat.png\" alt=\"Hat\">.</p>\n\n<p><button onclick=\"replaceImages()\">Replace</button></p>\n\n<script>\n  function replaceImages() {\n    var images = document.body.getElementsByTagName(\"img\");\n    for (var i = images.length - 1; i >= 0; i--) {\n      var image = images[i];\n      if (image.alt) {\n        var text = document.createTextNode(image.alt);\n        image.parentNode.replaceChild(text, image);\n      }\n    }\n  }\n</script>"
         },
         {
           "element": "p",
@@ -802,7 +796,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var arrayish = {0: \"one\", 1: \"two\", length: 2};\nvar real = Array.prototype.slice.call(arrayish, 0);\nreal.forEach(function(elt) { console.log(elt); });\n// → one\n//   two"
         },
         {
           "element": "p",
@@ -820,7 +814,7 @@
         {
           "element": "p",
           "content": [
-            " The following example defines a utility ",
+            "The following example defines a utility ",
             {
               "element": "literal",
               "content": [
@@ -833,7 +827,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<blockquote id=\"quote\">\n  No book can ever be finished. While working on it we learn\n  just enough to find it immature the moment we turn away\n  from it.\n</blockquote>\n\n<script>\n  function elt(type) {\n    var node = document.createElement(type);\n    for (var i = 1; i < arguments.length; i++) {\n      var child = arguments[i];\n      if (typeof child == \"string\")\n        child = document.createTextNode(child);\n      node.appendChild(child);\n    }\n    return node;\n  }\n\n  document.getElementById(\"quote\").appendChild(\n    elt(\"footer\", \"—\",\n        elt(\"strong\", \"Karl Popper\"),\n        \", preface to the second editon of \",\n        elt(\"em\", \"The Open Society and Its Enemies\"),\n        \", 1950\"));\n</script>"
         }
       ],
       "title": "Creating nodes"
@@ -877,7 +871,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p data-classified=\"secret\">The launch code is 00000000.</p>\n<p data-classified=\"unclassified\">I have two feet.</p>\n\n<script>\n  var paras = document.body.getElementsByTagName(\"p\");\n  Array.prototype.forEach.call(paras, function(para) {\n    if (para.getAttribute(\"data-classified\") == \"secret\")\n      para.parentNode.removeChild(para);\n  });\n</script>"
         },
         {
           "element": "p",
@@ -899,9 +893,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "pre",
-                ">"
+                "<pre>"
               ]
             },
             " tags (“preformatted”, used for code and similar plaintext) with a ",
@@ -917,7 +909,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function highlightCode(node, keywords) {\n  var text = node.textContent;\n  node.textContent = \"\"; // Clear the node\n\n  var match, pos = 0;\n  while (match = keywords.exec(text)) {\n    var before = text.slice(pos, match.index);\n    node.appendChild(document.createTextNode(before));\n    var strong = document.createElement(\"strong\");\n    strong.appendChild(document.createTextNode(match[0]));\n    node.appendChild(strong);\n    pos = keywords.lastIndex;\n  }\n  var after = text.slice(pos);\n  node.appendChild(document.createTextNode(after));\n}"
         },
         {
           "element": "p",
@@ -933,9 +925,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "pre",
-                ">"
+                "<pre>"
               ]
             },
             " node and a regular expression (with the “global” option turned on) that matches the keywords of the programming language that the element contains."
@@ -962,9 +952,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "strong",
-                ">"
+                "<strong>"
               ]
             },
             " (bold) elements."
@@ -977,9 +965,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "pre",
-                ">"
+                "<pre>"
               ]
             },
             " elements that have a ",
@@ -1002,7 +988,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var languages = {\n  javascript: /\\b(function|return|var)\\b/g /* … etc */\n};\n\nfunction highlightAllCode() {\n  var pres = document.body.getElementsByTagName(\"pre\");\n  for (var i = 0; i < pres.length; i++) {\n    var pre = pres[i];\n    var lang = pre.getAttribute(\"data-language\");\n    if (languages.hasOwnProperty(lang))\n      highlightCode(pre, languages[lang]);\n  }\n}"
         },
         {
           "element": "p",
@@ -1013,7 +999,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Here it is, the identity function:</p>\n<pre data-language=\"javascript\">\nfunction id(x) { return x; }\n</pre>\n\n<script>highlightAllCode();</script>"
         },
         {
           "element": "p",
@@ -1069,18 +1055,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "p",
-                ">"
+                "<p>"
               ]
             },
             ") or headings (",
             {
               "element": "literal",
               "content": [
-                "<",
-                "h1",
-                ">"
+                "<h1>"
               ]
             },
             "), take up the whole width of the document and are rendered on separate lines. These are called ",
@@ -1094,18 +1076,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "a",
-                ">"
+                "<a>"
               ]
             },
             ") or the ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "strong",
-                ">"
+                "<strong>"
               ]
             },
             " element used in the previous example, are rendered on the same line with their surrounding text. Such elements are called ",
@@ -1175,7 +1153,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p style=\"border: 3px solid red\">\n  I'm boxed in\n</p>\n\n<script>\n  var para = document.body.getElementsByTagName(\"p\")[0];\n  console.log(\"clientHeight:\", para.clientHeight);\n  console.log(\"offsetHeight:\", para.offsetHeight);\n</script>"
         },
         {
           "element": "p",
@@ -1275,7 +1253,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p><span id=\"one\"></span></p>\n<p><span id=\"two\"></span></p>\n\n<script>\n  function time(name, action) {\n    var start = Date.now(); // Current time in milliseconds\n    action();\n    console.log(name, \"took\", Date.now() - start, \"ms\");\n  }\n\n  time(\"naive\", function() {\n    var target = document.getElementById(\"one\");\n    while (target.offsetWidth < 2000)\n      target.appendChild(document.createTextNode(\"X\"));\n  });\n  // → naive took 32 ms\n\n  time(\"clever\", function() {\n    var target = document.getElementById(\"two\");\n    target.appendChild(document.createTextNode(\"XXXXX\"));\n    var total = Math.ceil(2000 / (target.offsetWidth / 5));\n    for (var i = 5; i < total; i++)\n      target.appendChild(document.createTextNode(\"X\"));\n  });\n  // → clever took 1 ms\n</script>"
         }
       ],
       "title": "Layout"
@@ -1290,18 +1268,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "strong",
-                ">"
+                "<strong>"
               ]
             },
             " making its content bold and ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "a",
-                ">"
+                "<a>"
               ]
             },
             " making it blue and underlining it."
@@ -1314,18 +1288,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "img",
-                ">"
+                "<img>"
               ]
             },
             " tag shows an image or an ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "a",
-                ">"
+                "<a>"
               ]
             },
             " tag causes a link to be followed when it is clicked is strongly tied to the element type. But the default styling associated with an element, such as the text color or underline, can be changed by us. Here is an example using the ",
@@ -1341,7 +1311,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p><a href=\".\">Normal link</a></p>\n<p><a href=\".\" style=\"color: green\">Green link</a></p>"
         },
         {
           "element": "p",
@@ -1393,7 +1363,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "This text is displayed <strong>inline</strong>,\n<strong style=\"display: block\">as a block</strong>, and\n<strong style=\"display: none\">not at all</strong>."
         },
         {
           "element": "p",
@@ -1431,7 +1401,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p id=\"para\" style=\"color: purple\">\n  Pretty text\n</p>\n\n<script>\n  var para = document.getElementById(\"para\");\n  console.log(para.style.color);\n  para.style.color = \"magenta\";\n</script>"
         },
         {
           "element": "p",
@@ -1494,9 +1464,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "style",
-                ">"
+                "<style>"
               ]
             },
             " tag."
@@ -1505,7 +1473,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<style>\n  strong {\n    font-style: italic;\n    color: gray;\n  }\n</style>\n<p>Now <strong>strong text</strong> is italic and gray.</p>"
         },
         {
           "element": "p",
@@ -1521,27 +1489,21 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "strong",
-                ">"
+                "<strong>"
               ]
             },
             " tags, which gives them ",
             {
               "element": "literal",
               "content": [
-                "font-weight:",
-                " ",
-                "bold"
+                "font-weight:bold"
               ]
             },
             ", is overlaid by the rule in the ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "style",
-                ">"
+                "<style>"
               ]
             },
             " tag, which adds ",
@@ -1568,9 +1530,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "style",
-                ">"
+                "<style>"
               ]
             },
             " tag included ",
@@ -1648,7 +1608,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": ".subtle {\n  color: gray;\n  font-size: 80%;\n}\n#header {\n  background: blue;\n  color: white;\n}\n/* p elements, with classes a and b, and id main */\np.a.b#main {\n  margin-bottom: 20px;\n}"
         },
         {
           "element": "p",
@@ -1691,27 +1651,21 @@
             {
               "element": "literal",
               "content": [
-                "p ",
-                ">",
-                " a {…}"
+                "p > a {…}"
               ]
             },
             " applies the given styles to all ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "a",
-                ">"
+                "<a>"
               ]
             },
             " tags that are direct children of ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "p",
-                ">"
+                "<p>"
               ]
             },
             " tags. Similarly, ",
@@ -1725,18 +1679,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "a",
-                ">"
+                "<a>"
               ]
             },
             " tags inside ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "p",
-                ">"
+                "<p>"
               ]
             },
             " tags, whether they are direct or indirect children."
@@ -1790,7 +1740,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>And if you go chasing\n  <span class=\"animal\">rabbits</span></p>\n<p>And you know you're going to fall</p>\n<p>Tell 'em a <span class=\"character\">hookah smoking\n  <span class=\"animal\">caterpillar</span></span></p>\n<p>Has given you the call</p>\n\n<script>\n  function count(selector) {\n    return document.querySelectorAll(selector).length;\n  }\n  console.log(count(\"p\"));           // All <p> elements\n  // → 4\n  console.log(count(\".animal\"));     // Class animal\n  // → 2\n  console.log(count(\"p .animal\"));   // Animal inside of <p>\n  // → 2\n  console.log(count(\"p > .animal\")); // Direct child of <p>\n  // → 1\n</script>"
         },
         {
           "element": "p",
@@ -1937,7 +1887,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p style=\"text-align: center\">\n  <img src=\"img/cat.png\" style=\"position: relative\">\n</p>\n<script>\n  var cat = document.querySelector(\"img\");\n  var angle = 0, lastTime = null;\n  function animate(time) {\n    if (lastTime != null)\n      angle += (time - lastTime) * 0.001;\n    lastTime = time;\n    cat.style.top = (Math.sin(angle) * 20) + \"px\";\n    cat.style.left = (Math.cos(angle) * 200) + \"px\";\n    requestAnimationFrame(animate);\n  }\n  requestAnimationFrame(animate);\n</script>"
         },
         {
           "element": "p",
@@ -2253,7 +2203,9 @@
                 "We built plaintext tables in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 6"
+                  "content": [
+                    "Chapter 6"
+                  ]
                 },
                 ". HTML makes laying out tables quite a bit easier. An HTML table is built with the following tag structure:"
               ]
@@ -2261,7 +2213,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "<table>\n  <tr>\n    <th>name</th>\n    <th>height</th>\n    <th>country</th>\n  </tr>\n  <tr>\n    <td>Kilimanjaro</td>\n    <td>5895</td>\n    <td>Tanzania</td>\n  </tr>\n</table>"
             },
             {
               "element": "p",
@@ -2277,45 +2229,35 @@
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "table",
-                    ">"
+                    "<table>"
                   ]
                 },
                 " tag contains a ",
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "tr",
-                    ">"
+                    "<tr>"
                   ]
                 },
                 " tag. Inside of these ",
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "tr",
-                    ">"
+                    "<tr>"
                   ]
                 },
                 " tags, we can put cell elements: either heading cells (",
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "th",
-                    ">"
+                    "<th>"
                   ]
                 },
                 ") or regular cells (",
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "td",
-                    ">"
+                    "<td>"
                   ]
                 },
                 ")."
@@ -2327,7 +2269,9 @@
                 "The same source data that was used in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 6"
+                  "content": [
+                    "Chapter 6"
+                  ]
                 },
                 " is again available in the ",
                 {
@@ -2339,7 +2283,9 @@
                 " variable in the sandbox. It can also be ",
                 {
                   "element": "reference",
-                  "content": "downloaded"
+                  "content": [
+                    "downloaded"
+                  ]
                 },
                 " from the website."
               ]
@@ -2358,18 +2304,14 @@
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "th",
-                    ">"
+                    "<th>"
                   ]
                 },
                 " elements and should have one subsequent row per object in the array, with its property values in ",
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "td",
-                    ">"
+                    "<td>"
                   ]
                 },
                 " elements."
@@ -2409,51 +2351,54 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Use ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "document.createElement"
+                    "Use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "document.createElement"
+                      ]
+                    },
+                    " to create new element nodes, ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "document.createTextNode"
+                      ]
+                    },
+                    " to create text nodes, and the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "appendChild"
+                      ]
+                    },
+                    " method to put nodes into other nodes."
                   ]
                 },
-                " to create new element nodes, ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "document.createTextNode"
+                    "You should loop over the key names once to fill in the top row and then again for each object in the array to construct the data rows."
                   ]
                 },
-                " to create text nodes, and the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "appendChild"
+                    "Don’t forget to return the enclosing ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<table>"
+                      ]
+                    },
+                    " element at the end of the function."
                   ]
-                },
-                " method to put nodes into other nodes."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "You should loop over the key names once to fill in the top row and then again for each object in the array to construct the data rows."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Don’t forget to return the enclosing ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "<",
-                    "table",
-                    ">"
-                  ]
-                },
-                " element at the end of the function."
+                }
               ]
             }
           ],
@@ -2503,40 +2448,53 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The solution is most easily expressed with a recursive function, similar to the ",
                 {
-                  "element": "reference",
-                  "content": "[object Object] function"
-                },
-                " defined earlier in this chapter."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "You could call ",
-                {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "byTagname"
+                    "The solution is most easily expressed with a recursive function, similar to the ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        {
+                          "element": "literal",
+                          "content": [
+                            "talksAbout"
+                          ]
+                        },
+                        " function"
+                      ]
+                    },
+                    " defined earlier in this chapter."
                   ]
                 },
-                " itself recursively, concatenating the resulting arrays to produce the output. For a more efficient approach, define an inner function that calls itself recursively and that has access to an array variable defined in the outer function to which it can add the matching elements it finds. Don’t forget to call the inner function once from the outer function."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The recursive function must check the node type. Here we are interested only in node type 1 (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "document.ELEMENT_NODE"
+                    "You could call ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "byTagname"
+                      ]
+                    },
+                    " itself recursively, concatenating the resulting arrays to produce the output. For a more efficient approach, define an inner function that calls itself recursively and that has access to an array variable defined in the outer function to which it can add the matching elements it finds. Don’t forget to call the inner function once from the outer function."
                   ]
                 },
-                "). For such nodes, we must loop over their children and, for each child, see whether the child matches the query while also doing a recursive call on it to inspect its own children."
+                {
+                  "element": "p",
+                  "content": [
+                    "The recursive function must check the node type. Here we are interested only in node type 1 (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "document.ELEMENT_NODE"
+                      ]
+                    },
+                    "). For such nodes, we must loop over their children and, for each child, see whether the child matches the query while also doing a recursive call on it to inspect its own children."
+                  ]
+                }
               ]
             }
           ],
@@ -2551,15 +2509,15 @@
                 "Extend the cat animation defined ",
                 {
                   "element": "reference",
-                  "content": "earlier"
+                  "content": [
+                    "earlier"
+                  ]
                 },
                 " so that both the cat and his hat (",
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "img src=\"img/hat.png\"",
-                    ">"
+                    "<img src=\"img/hat.png\">"
                   ]
                 },
                 ") orbit at opposite sides of the ellipse."

@@ -69,7 +69,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var plan = [\"############################\",\n            \"#      #    #      o      ##\",\n            \"#                          #\",\n            \"#          #####           #\",\n            \"##         #   #    ##     #\",\n            \"###           ##     #     #\",\n            \"#           ###      #     #\",\n            \"#   ####                   #\",\n            \"#   ##       o             #\",\n            \"# o  #         o       ### #\",\n            \"#    #                     #\",\n            \"############################\"];"
         },
         {
           "element": "p",
@@ -106,7 +106,7 @@
         {
           "element": "p",
           "content": [
-            " The grid that models the world has a fixed width and height. Squares are identified by their x- and y-coordinates. We use a simple type, ",
+            "The grid that models the world has a fixed width and height. Squares are identified by their x- and y-coordinates. We use a simple type, ",
             {
               "element": "literal",
               "content": [
@@ -116,7 +116,9 @@
             " (as seen in the exercises for the ",
             {
               "element": "reference",
-              "content": "previous chapter"
+              "content": [
+                "previous chapter"
+              ]
             },
             "), to represent these coordinate pairs."
           ]
@@ -124,7 +126,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function Vector(x, y) {\n  this.x = x;\n  this.y = y;\n}\nVector.prototype.plus = function(other) {\n  return new Vector(this.x + other.x, this.y + other.y);\n};"
         },
         {
           "element": "p",
@@ -141,12 +143,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var grid = [[\"top left\",    \"top middle\",    \"top right\"],\n            [\"bottom left\", \"bottom middle\", \"bottom right\"]];\nconsole.log(grid[1][2]);\n// → bottom right"
         },
         {
           "element": "p",
           "content": [
-            " Or we can use a single array, with size width × height, and decide that the element at (",
+            "Or we can use a single array, with size width × height, and decide that the element at (",
             {
               "element": "em",
               "content": [
@@ -180,12 +182,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var grid = [\"top left\",    \"top middle\",    \"top right\",\n            \"bottom left\", \"bottom middle\", \"bottom right\"];\nconsole.log(grid[2 + (1 * 3)]);\n// → bottom right"
         },
         {
           "element": "p",
           "content": [
-            "  Since the actual access to this array will be wrapped in methods on the grid object type, it doesn’t matter to outside code which approach we take. I chose the second representation because it makes it much easier to create the array. When calling the ",
+            " Since the actual access to this array will be wrapped in methods on the grid object type, it doesn’t matter to outside code which approach we take. I chose the second representation because it makes it much easier to create the array. When calling the ",
             {
               "element": "literal",
               "content": [
@@ -211,7 +213,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function Grid(width, height) {\n  this.space = new Array(width * height);\n  this.width = width;\n  this.height = height;\n}\nGrid.prototype.isInside = function(vector) {\n  return vector.x >= 0 && vector.x < this.width &&\n         vector.y >= 0 && vector.y < this.height;\n};\nGrid.prototype.get = function(vector) {\n  return this.space[vector.x + this.width * vector.y];\n};\nGrid.prototype.set = function(vector, value) {\n  this.space[vector.x + this.width * vector.y] = value;\n};"
         },
         {
           "element": "p",
@@ -222,7 +224,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var grid = new Grid(5, 5);\nconsole.log(grid.get(new Vector(1, 1)));\n// → undefined\ngrid.set(new Vector(1, 1), \"X\");\nconsole.log(grid.get(new Vector(1, 1)));\n// → X"
         }
       ],
       "title": "Representing space"
@@ -274,7 +276,7 @@
         {
           "element": "p",
           "content": [
-            " Critters are terribly myopic and can see only the squares directly around them on the grid. But even this limited vision can be useful when deciding which action to take. When the ",
+            "Critters are terribly myopic and can see only the squares directly around them on the grid. But even this limited vision can be useful when deciding which action to take. When the ",
             {
               "element": "literal",
               "content": [
@@ -308,7 +310,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var directions = {\n  \"n\":  new Vector( 0, -1),\n  \"ne\": new Vector( 1, -1),\n  \"e\":  new Vector( 1,  0),\n  \"se\": new Vector( 1,  1),\n  \"s\":  new Vector( 0,  1),\n  \"sw\": new Vector(-1,  1),\n  \"w\":  new Vector(-1,  0),\n  \"nw\": new Vector(-1, -1)\n};"
         },
         {
           "element": "p",
@@ -388,12 +390,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function randomElement(array) {\n  return array[Math.floor(Math.random() * array.length)];\n}\n\nvar directionNames = \"n ne e se s sw w nw\".split(\" \");\n\nfunction BouncingCritter() {\n  this.direction = randomElement(directionNames);\n};\n\nBouncingCritter.prototype.act = function(view) {\n  if (view.look(this.direction) != \" \")\n    this.direction = view.find(\" \") || \"s\";\n  return {type: \"move\", direction: this.direction};\n};"
         },
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -444,7 +446,9 @@
             " object we defined ",
             {
               "element": "reference",
-              "content": "earlier"
+              "content": [
+                "earlier"
+              ]
             },
             ", but that provides no guarantees about the order in which the properties are listed. In most situations, modern JavaScript engines will return properties in the order they were defined, but they are not required to."
           ]
@@ -502,7 +506,9 @@
             " object type. The constructor takes a plan (the array of strings representing the world’s grid, described ",
             {
               "element": "reference",
-              "content": "earlier"
+              "content": [
+                "earlier"
+              ]
             },
             ") and a ",
             {
@@ -524,12 +530,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function elementFromChar(legend, ch) {\n  if (ch == \" \")\n    return null;\n  var element = new legend[ch]();\n  element.originChar = ch;\n  return element;\n}\n\nfunction World(map, legend) {\n  var grid = new Grid(map[0].length, map.length);\n  this.grid = grid;\n  this.legend = legend;\n\n  map.forEach(function(line, y) {\n    for (var x = 0; x < line.length; x++)\n      grid.set(new Vector(x, y),\n               elementFromChar(legend, line[x]));\n  });\n}"
         },
         {
           "element": "p",
           "content": [
-            " In ",
+            "In ",
             {
               "element": "literal",
               "content": [
@@ -556,7 +562,7 @@
         {
           "element": "p",
           "content": [
-            " We need this ",
+            "We need this ",
             {
               "element": "literal",
               "content": [
@@ -576,7 +582,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function charFromElement(element) {\n  if (element == null)\n    return \" \";\n  else\n    return element.originChar;\n}\n\nWorld.prototype.toString = function() {\n  var output = \"\";\n  for (var y = 0; y < this.grid.height; y++) {\n    for (var x = 0; x < this.grid.width; x++) {\n      var element = this.grid.get(new Vector(x, y));\n      output += charFromElement(element);\n    }\n    output += \"\\n\";\n  }\n  return output;\n};"
         },
         {
           "element": "p",
@@ -594,7 +600,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function Wall() {}"
         },
         {
           "element": "p",
@@ -609,7 +615,9 @@
             " object by creating an instance based on the plan from ",
             {
               "element": "reference",
-              "content": "earlier in the\nchapter"
+              "content": [
+                "earlier in thechapter"
+              ]
             },
             " and then calling ",
             {
@@ -624,7 +632,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var world = new World(plan, {\"#\": Wall,\n                             \"o\": BouncingCritter});\nconsole.log(world.toString());\n// → ############################\n//   #      #    #      o      ##\n//   #                          #\n//   #          #####           #\n//   ##         #   #    ##     #\n//   ###           ##     #     #\n//   #           ###      #     #\n//   #   ####                   #\n//   #   ##       o             #\n//   # o  #         o       ### #\n//   #    #                     #\n//   ############################"
         }
       ],
       "title": "The world object"
@@ -635,7 +643,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -757,7 +765,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var test = {\n  prop: 10,\n  addPropTo: function(array) {\n    return array.map(function(elt) {\n      return this.prop + elt;\n    }.bind(this));\n  }\n};\nconsole.log(test.addPropTo([5]));\n// → [15]"
         },
         {
           "element": "p",
@@ -810,7 +818,7 @@
         {
           "element": "p",
           "content": [
-            " Most standard higher-order methods on arrays, such as ",
+            "Most standard higher-order methods on arrays, such as ",
             {
               "element": "literal",
               "content": [
@@ -837,7 +845,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var test = {\n  prop: 10,\n  addPropTo: function(array) {\n    return array.map(function(elt) {\n      return this.prop + elt;\n    }, this); // ← no bind\n  }\n};\nconsole.log(test.addPropTo([5]));\n// → [15]"
         },
         {
           "element": "p",
@@ -855,7 +863,7 @@
         {
           "element": "p",
           "content": [
-            " In our own higher-order functions, we can support such a context parameter by using the ",
+            "In our own higher-order functions, we can support such a context parameter by using the ",
             {
               "element": "literal",
               "content": [
@@ -882,7 +890,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Grid.prototype.forEach = function(f, context) {\n  for (var y = 0; y < this.height; y++) {\n    for (var x = 0; x < this.width; x++) {\n      var value = this.space[x + y * this.width];\n      if (value != null)\n        f.call(context, value, new Vector(x, y));\n    }\n  }\n};"
         }
       ],
       "title": "this and its scope"
@@ -947,7 +955,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "World.prototype.turn = function() {\n  var acted = [];\n  this.grid.forEach(function(critter, vector) {\n    if (critter.act && acted.indexOf(critter) == -1) {\n      acted.push(critter);\n      this.letAct(critter, vector);\n    }\n  }, this);\n};"
         },
         {
           "element": "p",
@@ -979,7 +987,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "World.prototype.letAct = function(critter, vector) {\n  var action = critter.act(new View(this, vector));\n  if (action && action.type == \"move\") {\n    var dest = this.checkDestination(action, vector);\n    if (dest && this.grid.get(dest) == null) {\n      this.grid.set(vector, null);\n      this.grid.set(dest, critter);\n    }\n  }\n};\n\nWorld.prototype.checkDestination = function(action, vector) {\n  if (directions.hasOwnProperty(action.direction)) {\n    var dest = vector.plus(directions[action.direction]);\n    if (this.grid.isInside(dest))\n      return dest;\n  }\n};"
         },
         {
           "element": "p",
@@ -994,7 +1002,9 @@
             " in a ",
             {
               "element": "reference",
-              "content": "moment"
+              "content": [
+                "moment"
+              ]
             },
             "). The ",
             {
@@ -1091,7 +1101,7 @@
         {
           "element": "p",
           "content": [
-            " These two methods are not part of the external interface of a ",
+            "These two methods are not part of the external interface of a ",
             {
               "element": "literal",
               "content": [
@@ -1124,7 +1134,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function View(world, vector) {\n  this.world = world;\n  this.vector = vector;\n}\nView.prototype.look = function(dir) {\n  var target = this.vector.plus(directions[dir]);\n  if (this.world.grid.isInside(target))\n    return charFromElement(this.world.grid.get(target));\n  else\n    return \"#\";\n};\nView.prototype.findAll = function(ch) {\n  var found = [];\n  for (var dir in directions)\n    if (this.look(dir) == ch)\n      found.push(dir);\n  return found;\n};\nView.prototype.find = function(ch) {\n  var found = this.findAll(ch);\n  if (found.length == 0) return null;\n  return randomElement(found);\n};"
         },
         {
           "element": "p",
@@ -1161,7 +1171,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var i = 0; i < 5; i++) {\n  world.turn();\n  console.log(world.toString());\n}\n// → … five turns of moving critters"
         }
       ],
       "title": "It moves"
@@ -1218,7 +1228,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function dirPlus(dir, n) {\n  var index = directionNames.indexOf(dir);\n  return directionNames[(index + n + 8) % 8];\n}\n\nfunction WallFollower() {\n  this.dir = \"s\";\n}\n\nWallFollower.prototype.act = function(view) {\n  var start = this.dir;\n  if (view.look(dirPlus(this.dir, -3)) != \" \")\n    start = this.dir = dirPlus(this.dir, -2);\n  while (view.look(this.dir) != \" \") {\n    this.dir = dirPlus(this.dir, 1);\n    if (this.dir == start) break;\n  }\n  return {type: \"move\", direction: this.dir};\n};"
         },
         {
           "element": "p",
@@ -1361,12 +1371,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function LifelikeWorld(map, legend) {\n  World.call(this, map, legend);\n}\nLifelikeWorld.prototype = Object.create(World.prototype);\n\nvar actionTypes = Object.create(null);\n\nLifelikeWorld.prototype.letAct = function(critter, vector) {\n  var action = critter.act(new View(this, vector));\n  var handled = action &&\n    action.type in actionTypes &&\n    actionTypes[action.type].call(this, critter,\n                                  vector, action);\n  if (!handled) {\n    critter.energy -= 0.2;\n    if (critter.energy <= 0)\n      this.grid.set(vector, null);\n  }\n};"
         },
         {
           "element": "p",
           "content": [
-            " The new ",
+            "The new ",
             {
               "element": "literal",
               "content": [
@@ -1416,9 +1426,7 @@
             {
               "element": "literal",
               "content": [
-                "{type:",
-                " ",
-                "\"grow\"}"
+                "{type:\"grow\"}"
               ]
             },
             " is returned, the following handler method will be called:"
@@ -1427,7 +1435,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "actionTypes.grow = function(critter) {\n  critter.energy += 0.5;\n  return true;\n};"
         },
         {
           "element": "p",
@@ -1444,7 +1452,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "actionTypes.move = function(critter, vector, action) {\n  var dest = this.checkDestination(action, vector);\n  if (dest == null ||\n      critter.energy <= 1 ||\n      this.grid.get(dest) != null)\n    return false;\n  critter.energy -= 1;\n  this.grid.set(vector, null);\n  this.grid.set(dest, critter);\n  return true;\n};"
         },
         {
           "element": "p",
@@ -1459,7 +1467,9 @@
             " method defined ",
             {
               "element": "reference",
-              "content": "earlier"
+              "content": [
+                "earlier"
+              ]
             },
             ", whether the action provides a valid destination. If not, or if the destination isn’t empty, or if the critter lacks the required energy, ",
             {
@@ -1480,7 +1490,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "actionTypes.eat = function(critter, vector, action) {\n  var dest = this.checkDestination(action, vector);\n  var atDest = dest != null && this.grid.get(dest);\n  if (!atDest || atDest.energy == null)\n    return false;\n  critter.energy += atDest.energy;\n  this.grid.set(dest, null);\n  return true;\n};"
         },
         {
           "element": "p",
@@ -1497,7 +1507,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "actionTypes.reproduce = function(critter, vector, action) {\n  var baby = elementFromChar(this.legend,\n                             critter.originChar);\n  var dest = this.checkDestination(action, vector);\n  if (dest == null ||\n      critter.energy <= 2 * baby.energy ||\n      this.grid.get(dest) != null)\n    return false;\n  critter.energy -= 2 * baby.energy;\n  this.grid.set(dest, baby);\n  return true;\n};"
         },
         {
           "element": "p",
@@ -1533,7 +1543,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function Plant() {\n  this.energy = 3 + Math.random() * 4;\n}\nPlant.prototype.act = function(view) {\n  if (this.energy > 15) {\n    var space = view.find(\" \");\n    if (space)\n      return {type: \"reproduce\", direction: space};\n  }\n  if (this.energy < 20)\n    return {type: \"grow\"};\n};"
         },
         {
           "element": "p",
@@ -1550,7 +1560,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function PlantEater() {\n  this.energy = 20;\n}\nPlantEater.prototype.act = function(view) {\n  var space = view.find(\" \");\n  if (this.energy > 60 && space)\n    return {type: \"reproduce\", direction: space};\n  var plant = view.find(\"*\");\n  if (plant)\n    return {type: \"eat\", direction: plant};\n  if (space)\n    return {type: \"move\", direction: space};\n};"
         },
         {
           "element": "p",
@@ -1580,7 +1590,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var valley = new LifelikeWorld(\n  [\"############################\",\n   \"#####                 ######\",\n   \"##   ***                **##\",\n   \"#   *##**         **  O  *##\",\n   \"#    ***     O    ##**    *#\",\n   \"#       O         ##***    #\",\n   \"#                 ##**     #\",\n   \"#   O       #*             #\",\n   \"#*          #**       O    #\",\n   \"#***        ##**    O    **#\",\n   \"##****     ###***       *###\",\n   \"############################\"],\n  {\"#\": Wall,\n   \"O\": PlantEater,\n   \"*\": Plant}\n);"
         },
         {
           "element": "p",
@@ -1636,28 +1646,33 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The greediness problem can be attacked in several ways. The critters could stop eating when they reach a certain energy level. Or they could eat only every N turns (by keeping a counter of the turns since their last meal in a property on the creature object). Or, to make sure plants never go entirely extinct, the animals could refuse to eat a plant unless they see at least one other plant nearby (using the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "findAll"
+                    "The greediness problem can be attacked in several ways. The critters could stop eating when they reach a certain energy level. Or they could eat only every N turns (by keeping a counter of the turns since their last meal in a property on the creature object). Or, to make sure plants never go entirely extinct, the animals could refuse to eat a plant unless they see at least one other plant nearby (using the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "findAll"
+                      ]
+                    },
+                    " method on the view). A combination of these, or some entirely different strategy, might also work."
                   ]
                 },
-                " method on the view). A combination of these, or some entirely different strategy, might also work."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Making the critters move more effectively could be done by stealing one of the movement strategies from the critters in our old, energyless world. Both the bouncing behavior and the wall-following behavior showed a much wider range of movement than completely random staggering."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Making creatures breed more slowly is trivial. Just increase the minimum energy level at which they reproduce. Of course, making the ecosystem more stable also makes it more boring. If you have a handful of fat, immobile critters forever munching on a sea of plants and never reproducing, that makes for a very stable ecosystem. But no one wants to watch that."
+                {
+                  "element": "p",
+                  "content": [
+                    "Making the critters move more effectively could be done by stealing one of the movement strategies from the critters in our old, energyless world. Both the bouncing behavior and the wall-following behavior showed a much wider range of movement than completely random staggering."
+                  ]
+                },
+                {
+                  "element": "p",
+                  "content": [
+                    "Making creatures breed more slowly is trivial. Just increase the minimum energy level at which they reproduce. Of course, making the ecosystem more stable also makes it more boring. If you have a handful of fat, immobile critters forever munching on a sea of plants and never reproducing, that makes for a very stable ecosystem. But no one wants to watch that."
+                  ]
+                }
               ]
             }
           ],
@@ -1679,15 +1694,20 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Many of the same tricks that worked for the previous exercise also apply here. Making the predators big (lots of energy) and having them reproduce slowly is recommended. That’ll make them less vulnerable to periods of starvation when the herbivores are scarce."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Beyond staying alive, keeping its food stock alive is a predator’s main objective. Find some way to make predators hunt more aggressively when there are a lot of herbivores and hunt more slowly (or not at all) when prey is rare. Since plant eaters move around, the simple trick of eating one only when others are nearby is unlikely to work—that’ll happen so rarely that your predator will starve. But you could keep track of observations in previous turns, in some data structure kept on the predator objects, and have it base its behavior on what it has seen recently."
+                {
+                  "element": "p",
+                  "content": [
+                    "Many of the same tricks that worked for the previous exercise also apply here. Making the predators big (lots of energy) and having them reproduce slowly is recommended. That’ll make them less vulnerable to periods of starvation when the herbivores are scarce."
+                  ]
+                },
+                {
+                  "element": "p",
+                  "content": [
+                    "Beyond staying alive, keeping its food stock alive is a predator’s main objective. Find some way to make predators hunt more aggressively when there are a lot of herbivores and hunt more slowly (or not at all) when prey is rare. Since plant eaters move around, the simple trick of eating one only when others are nearby is unlikely to work—that’ll happen so rarely that your predator will starve. But you could keep track of observations in previous turns, in some data structure kept on the predator objects, and have it base its behavior on what it has seen recently."
+                  ]
+                }
               ]
             }
           ],

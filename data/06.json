@@ -130,7 +130,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var rabbit = {};\nrabbit.speak = function(line) {\n  console.log(\"The rabbit says '\" + line + \"'\");\n};\n\nrabbit.speak(\"I'm alive.\");\n// → The rabbit says 'I'm alive.'"
         },
         {
           "element": "p",
@@ -155,7 +155,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function speak(line) {\n  console.log(\"The \" + this.type + \" rabbit says '\" +\n              line + \"'\");\n}\nvar whiteRabbit = {type: \"white\", speak: speak};\nvar fatRabbit = {type: \"fat\", speak: speak};\n\nwhiteRabbit.speak(\"Oh my ears and whiskers, \" +\n                  \"how late it's getting!\");\n// → The white rabbit says 'Oh my ears and whiskers, how\n//   late it's getting!'\nfatRabbit.speak(\"I could sure use a carrot right now.\");\n// → The fat rabbit says 'I could sure use a carrot\n//   right now.'"
         },
         {
           "element": "p",
@@ -242,7 +242,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "speak.apply(fatRabbit, [\"Burp!\"]);\n// → The fat rabbit says 'Burp!'\nspeak.call({type: \"old\"}, \"Oh my.\");\n// → The old rabbit says 'Oh my.'"
         }
       ],
       "title": "Methods"
@@ -259,7 +259,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var empty = {};\nconsole.log(empty.toString);\n// → function toString(){…}\nconsole.log(empty.toString());\n// → [object Object]"
         },
         {
           "element": "p",
@@ -296,7 +296,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(Object.getPrototypeOf({}) ==\n            Object.prototype);\n// → true\nconsole.log(Object.getPrototypeOf(Object.prototype));\n// → null"
         },
         {
           "element": "p",
@@ -361,7 +361,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(Object.getPrototypeOf(isNaN) ==\n            Function.prototype);\n// → true\nconsole.log(Object.getPrototypeOf([]) ==\n            Array.prototype);\n// → true"
         },
         {
           "element": "p",
@@ -406,7 +406,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var protoRabbit = {\n  speak: function(line) {\n    console.log(\"The \" + this.type + \" rabbit says '\" +\n                line + \"'\");\n  }\n};\nvar killerRabbit = Object.create(protoRabbit);\nkillerRabbit.type = \"killer\";\nkillerRabbit.speak(\"SKREEEE!\");\n// → The killer rabbit says 'SKREEEE!'"
         },
         {
           "element": "p",
@@ -423,7 +423,7 @@
         {
           "element": "p",
           "content": [
-            " A more convenient way to create objects that derive from some shared prototype is to use a ",
+            "A more convenient way to create objects that derive from some shared prototype is to use a ",
             {
               "element": "em",
               "content": [
@@ -476,7 +476,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function Rabbit(type) {\n  this.type = type;\n}\n\nvar killerRabbit = new Rabbit(\"killer\");\nvar blackRabbit = new Rabbit(\"black\");\nconsole.log(blackRabbit.type);\n// → black"
         },
         {
           "element": "p",
@@ -515,7 +515,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Rabbit.prototype.speak = function(line) {\n  console.log(\"The \" + this.type + \" rabbit says '\" +\n              line + \"'\");\n};\nblackRabbit.speak(\"Doom...\");\n// → The black rabbit says 'Doom...'"
         },
         {
           "element": "p",
@@ -601,12 +601,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Rabbit.prototype.teeth = \"small\";\nconsole.log(killerRabbit.teeth);\n// → small\nkillerRabbit.teeth = \"long, sharp, and bloody\";\nconsole.log(killerRabbit.teeth);\n// → long, sharp, and bloody\nconsole.log(blackRabbit.teeth);\n// → small\nconsole.log(Rabbit.prototype.teeth);\n// → small"
         },
         {
           "element": "p",
           "content": [
-            " The following diagram sketches the situation after this code has run. The ",
+            "The following diagram sketches the situation after this code has run. The ",
             {
               "element": "literal",
               "content": [
@@ -656,7 +656,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(Array.prototype.toString ==\n            Object.prototype.toString);\n// → false\nconsole.log([1, 2].toString());\n// → 1,2"
         },
         {
           "element": "p",
@@ -688,7 +688,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(Object.prototype.toString.call([1, 2]));\n// → [object Array]"
         }
       ],
       "title": "Overriding derived properties"
@@ -699,21 +699,23 @@
         {
           "element": "p",
           "content": [
-            " A prototype can be used at any time to add new properties and methods to all objects based on it. For example, it might become necessary for our rabbits to dance."
+            "A prototype can be used at any time to add new properties and methods to all objects based on it. For example, it might become necessary for our rabbits to dance."
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Rabbit.prototype.dance = function() {\n  console.log(\"The \" + this.type + \" rabbit dances a jig.\");\n};\nkillerRabbit.dance();\n// → The killer rabbit dances a jig."
         },
         {
           "element": "p",
           "content": [
-            " That’s convenient. But there are situations where it causes problems. In previous chapters, we used an object as a way to associate values with names by creating properties for the names and giving them the corresponding value as their value. Here’s an example from ",
+            "That’s convenient. But there are situations where it causes problems. In previous chapters, we used an object as a way to associate values with names by creating properties for the names and giving them the corresponding value as their value. Here’s an example from ",
             {
               "element": "reference",
-              "content": "Chapter 4"
+              "content": [
+                "Chapter 4"
+              ]
             },
             ":"
           ]
@@ -721,7 +723,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var map = {};\nfunction storePhi(event, phi) {\n  map[event] = phi;\n}\n\nstorePhi(\"pizza\", 0.069);\nstorePhi(\"touched tree\", -0.081);"
         },
         {
           "element": "p",
@@ -753,12 +755,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Object.prototype.nonsense = \"hi\";\nfor (var name in map)\n  console.log(name);\n// → pizza\n// → touched tree\n// → nonsense\nconsole.log(\"nonsense\" in map);\n// → true\nconsole.log(\"toString\" in map);\n// → true\n\n// Delete the problematic property again\ndelete Object.prototype.nonsense;"
         },
         {
           "element": "p",
           "content": [
-            " That’s all wrong. There is no event called “nonsense” in our data set. And there ",
+            "That’s all wrong. There is no event called “nonsense” in our data set. And there ",
             {
               "element": "em",
               "content": [
@@ -859,12 +861,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Object.defineProperty(Object.prototype, \"hiddenNonsense\",\n                      {enumerable: false, value: \"hi\"});\nfor (var name in map)\n  console.log(name);\n// → pizza\n// → touched tree\nconsole.log(map.hiddenNonsense);\n// → hi"
         },
         {
           "element": "p",
           "content": [
-            " So now the property is there, but it won’t show up in a loop. That’s good. But we still have the problem with the regular ",
+            "So now the property is there, but it won’t show up in a loop. That’s good. But we still have the problem with the regular ",
             {
               "element": "literal",
               "content": [
@@ -891,12 +893,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(map.hasOwnProperty(\"toString\"));\n// → false"
         },
         {
           "element": "p",
           "content": [
-            " This method tells us whether the object ",
+            "This method tells us whether the object ",
             {
               "element": "em",
               "content": [
@@ -916,7 +918,7 @@
         {
           "element": "p",
           "content": [
-            " When you are worried that someone (some other code you loaded into your program) might have messed with the base object prototype, I recommend you write your ",
+            "When you are worried that someone (some other code you loaded into your program) might have messed with the base object prototype, I recommend you write your ",
             {
               "element": "literal",
               "content": [
@@ -936,7 +938,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var name in map) {\n  if (map.hasOwnProperty(name)) {\n    // ... this is an own property\n  }\n}"
         }
       ],
       "title": "Prototype interference"
@@ -947,7 +949,7 @@
         {
           "element": "p",
           "content": [
-            " But the rabbit hole doesn’t end there. What if someone registered the name ",
+            "But the rabbit hole doesn’t end there. What if someone registered the name ",
             {
               "element": "literal",
               "content": [
@@ -974,7 +976,7 @@
         {
           "element": "p",
           "content": [
-            " In such a case, prototypes just get in the way, and we would actually prefer to have objects without prototypes. We saw the ",
+            "In such a case, prototypes just get in the way, and we would actually prefer to have objects without prototypes. We saw the ",
             {
               "element": "literal",
               "content": [
@@ -1001,7 +1003,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var map = Object.create(null);\nmap[\"pizza\"] = 0.069;\nconsole.log(\"toString\" in map);\n// → false\nconsole.log(\"pizza\" in map);\n// → true"
         },
         {
           "element": "p",
@@ -1118,7 +1120,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "name         height country\n------------ ------ -------------\nKilimanjaro    5895 Tanzania\nEverest        8848 Nepal\nMount Fuji     3776 Japan\nMont Blanc     4808 Italy/France\nVaalserberg     323 Netherlands\nDenali         6168 United States\nPopocatepetl   5465 Mexico"
         },
         {
           "element": "p",
@@ -1147,7 +1149,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " ",
+                    "",
                     {
                       "element": "literal",
                       "content": [
@@ -1165,7 +1167,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " ",
+                    "",
                     {
                       "element": "literal",
                       "content": [
@@ -1183,7 +1185,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " ",
+                    "",
                     {
                       "element": "literal",
                       "content": [
@@ -1214,7 +1216,7 @@
         {
           "element": "p",
           "content": [
-            " I’m going to make heavy use of higher-order array methods in this example since it lends itself well to that approach."
+            "I’m going to make heavy use of higher-order array methods in this example since it lends itself well to that approach."
           ]
         },
         {
@@ -1233,7 +1235,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function rowHeights(rows) {\n  return rows.map(function(row) {\n    return row.reduce(function(max, cell) {\n      return Math.max(max, cell.minHeight());\n    }, 0);\n  });\n}\n\nfunction colWidths(rows) {\n  return rows[0].map(function(_, i) {\n    return rows.reduce(function(max, row) {\n      return Math.max(max, row[i].minWidth());\n    }, 0);\n  });\n}"
         },
         {
           "element": "p",
@@ -1278,7 +1280,7 @@
         {
           "element": "p",
           "content": [
-            " Things are slightly harder for the ",
+            "Things are slightly harder for the ",
             {
               "element": "literal",
               "content": [
@@ -1339,12 +1341,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function drawTable(rows) {\n  var heights = rowHeights(rows);\n  var widths = colWidths(rows);\n\n  function drawLine(blocks, lineNo) {\n    return blocks.map(function(block) {\n      return block[lineNo];\n    }).join(\" \");\n  }\n\n  function drawRow(row, rowNum) {\n    var blocks = row.map(function(cell, colNum) {\n      return cell.draw(widths[colNum], heights[rowNum]);\n    });\n    return blocks[0].map(function(_, lineNo) {\n      return drawLine(blocks, lineNo);\n    }).join(\"\\n\");\n  }\n\n  return rows.map(drawRow).join(\"\\n\");\n}"
         },
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -1438,7 +1440,7 @@
         {
           "element": "p",
           "content": [
-            " Now let’s write a constructor for cells that contain text, which implements the interface for table cells. The constructor splits a string into an array of lines using the string method ",
+            "Now let’s write a constructor for cells that contain text, which implements the interface for table cells. The constructor splits a string into an array of lines using the string method ",
             {
               "element": "literal",
               "content": [
@@ -1458,7 +1460,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function repeat(string, times) {\n  var result = \"\";\n  for (var i = 0; i < times; i++)\n    result += string;\n  return result;\n}\n\nfunction TextCell(text) {\n  this.text = text.split(\"\\n\");\n}\nTextCell.prototype.minWidth = function() {\n  return this.text.reduce(function(width, line) {\n    return Math.max(width, line.length);\n  }, 0);\n};\nTextCell.prototype.minHeight = function() {\n  return this.text.length;\n};\nTextCell.prototype.draw = function(width, height) {\n  var result = [];\n  for (var i = 0; i < height; i++) {\n    var line = this.text[i] || \"\";\n    result.push(line + repeat(\" \", width - line.length));\n  }\n  return result;\n};"
         },
         {
           "element": "p",
@@ -1503,7 +1505,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var rows = [];\nfor (var i = 0; i < 5; i++) {\n   var row = [];\n   for (var j = 0; j < 5; j++) {\n     if ((j + i) % 2 == 0)\n       row.push(new TextCell(\"##\"));\n     else\n       row.push(new TextCell(\"  \"));\n   }\n   rows.push(row);\n}\nconsole.log(drawTable(rows));\n// → ##    ##    ##\n//      ##    ##\n//   ##    ##    ##\n//      ##    ##\n//   ##    ##    ##"
         },
         {
           "element": "p",
@@ -1524,7 +1526,9 @@
             " variable in the sandbox and also ",
             {
               "element": "reference",
-              "content": "downloadable"
+              "content": [
+                "downloadable"
+              ]
             },
             " from the website."
           ]
@@ -1538,7 +1542,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function UnderlinedCell(inner) {\n  this.inner = inner;\n}\nUnderlinedCell.prototype.minWidth = function() {\n  return this.inner.minWidth();\n};\nUnderlinedCell.prototype.minHeight = function() {\n  return this.inner.minHeight() + 1;\n};\nUnderlinedCell.prototype.draw = function(width, height) {\n  return this.inner.draw(width, height - 1)\n    .concat([repeat(\"-\", width)]);\n};"
         },
         {
           "element": "p",
@@ -1582,7 +1586,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function dataTable(data) {\n  var keys = Object.keys(data[0]);\n  var headers = keys.map(function(name) {\n    return new UnderlinedCell(new TextCell(name));\n  });\n  var body = data.map(function(row) {\n    return keys.map(function(name) {\n      return new TextCell(String(row[name]));\n    });\n  });\n  return [headers].concat(body);\n}\n\nconsole.log(drawTable(dataTable(MOUNTAINS)));\n// → name         height country\n//   ------------ ------ -------------\n//   Kilimanjaro  5895   Tanzania\n//   … etcetera"
         },
         {
           "element": "p",
@@ -1679,7 +1683,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var pile = {\n  elements: [\"eggshell\", \"orange peel\", \"worm\"],\n  get height() {\n    return this.elements.length;\n  },\n  set height(value) {\n    console.log(\"Ignoring attempt to set height to\", value);\n  }\n};\n\nconsole.log(pile.height);\n// → 3\npile.height = 100;\n// → Ignoring attempt to set height to 100"
         },
         {
           "element": "p",
@@ -1711,7 +1715,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Object.defineProperty(TextCell.prototype, \"heightProp\", {\n  get: function() { return this.text.length; }\n});\n\nvar cell = new TextCell(\"no\\nway\");\nconsole.log(cell.heightProp);\n// → 2\ncell.heightProp = 100;\nconsole.log(cell.heightProp);\n// → 2"
         },
         {
           "element": "p",
@@ -1761,7 +1765,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function RTextCell(text) {\n  TextCell.call(this, text);\n}\nRTextCell.prototype = Object.create(TextCell.prototype);\nRTextCell.prototype.draw = function(width, height) {\n  var result = [];\n  for (var i = 0; i < height; i++) {\n    var line = this.text[i] || \"\";\n    result.push(repeat(\" \", width - line.length) + line);\n  }\n  return result;\n};"
         },
         {
           "element": "p",
@@ -1861,7 +1865,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function dataTable(data) {\n  var keys = Object.keys(data[0]);\n  var headers = keys.map(function(name) {\n    return new UnderlinedCell(new TextCell(name));\n  });\n  var body = data.map(function(row) {\n    return keys.map(function(name) {\n      var value = row[name];\n      // This was changed:\n      if (typeof value == \"number\")\n        return new RTextCell(String(value));\n      else\n        return new TextCell(String(value));\n    });\n  });\n  return [headers].concat(body);\n}\n\nconsole.log(drawTable(dataTable(MOUNTAINS)));\n// → … beautifully aligned table"
         },
         {
           "element": "p",
@@ -1924,7 +1928,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(new RTextCell(\"A\") instanceof RTextCell);\n// → true\nconsole.log(new RTextCell(\"A\") instanceof TextCell);\n// → true\nconsole.log(new TextCell(\"A\") instanceof RTextCell);\n// → false\nconsole.log([1] instanceof Array);\n// → true"
         },
         {
           "element": "p",
@@ -2164,50 +2168,55 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Your solution can follow the pattern of the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "Rabbit"
+                    "Your solution can follow the pattern of the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Rabbit"
+                      ]
+                    },
+                    " constructor from this chapter quite closely."
                   ]
                 },
-                " constructor from this chapter quite closely."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Adding a getter property to the constructor can be done with the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "Object.defineProperty"
+                    "Adding a getter property to the constructor can be done with the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Object.defineProperty"
+                      ]
+                    },
+                    " function. To compute the distance from (0, 0) to (x, y), you can use the Pythagorean theorem, which says that the square of the distance we are looking for is equal to the square of the x-coordinate plus the square of the y-coordinate. Thus, √(x",
+                    {
+                      "element": "superscript",
+                      "content": [
+                        "2"
+                      ]
+                    },
+                    " + y",
+                    {
+                      "element": "superscript",
+                      "content": [
+                        "2"
+                      ]
+                    },
+                    ") is the number you want, and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Math.sqrt"
+                      ]
+                    },
+                    " is the way you compute a square root in JavaScript."
                   ]
-                },
-                " function. To compute the distance from (0, 0) to (x, y), you can use the Pythagorean theorem, which says that the square of the distance we are looking for is equal to the square of the x-coordinate plus the square of the y-coordinate. Thus, √(x",
-                {
-                  "element": "superscript",
-                  "content": [
-                    "2"
-                  ]
-                },
-                " + y",
-                {
-                  "element": "superscript",
-                  "content": [
-                    "2"
-                  ]
-                },
-                ") is the number you want, and ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Math.sqrt"
-                  ]
-                },
-                " is the way you compute a square root in JavaScript."
+                }
               ]
             }
           ],
@@ -2229,7 +2238,9 @@
                 " that conforms to the ",
                 {
                   "element": "reference",
-                  "content": "table cell interface"
+                  "content": [
+                    "table cell interface"
+                  ]
                 },
                 " described earlier in the chapter. It should wrap another cell (like ",
                 {
@@ -2256,50 +2267,55 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "You’ll have to store all three constructor arguments in the instance object. The ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "minWidth"
+                    "You’ll have to store all three constructor arguments in the instance object. The ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "minWidth"
+                      ]
+                    },
+                    " and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "minHeight"
+                      ]
+                    },
+                    " methods should call through to the corresponding methods in the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "inner"
+                      ]
+                    },
+                    " cell but ensure that no number less than the given size is returned (possibly using ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Math.max"
+                      ]
+                    },
+                    ")."
                   ]
                 },
-                " and ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "minHeight"
+                    "Don’t forget to add a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "draw"
+                      ]
+                    },
+                    " method that simply forwards the call to the inner cell."
                   ]
-                },
-                " methods should call through to the corresponding methods in the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "inner"
-                  ]
-                },
-                " cell but ensure that no number less than the given size is returned (possibly using ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Math.max"
-                  ]
-                },
-                ")."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Don’t forget to add a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "draw"
-                  ]
-                },
-                " method that simply forwards the call to the inner cell."
+                }
               ]
             }
           ],
@@ -2376,56 +2392,61 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "One way to solve this is to give the sequence objects ",
                 {
-                  "element": "em",
+                  "element": "p",
                   "content": [
-                    "state"
+                    "One way to solve this is to give the sequence objects ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "state"
+                      ]
+                    },
+                    ", meaning their properties are changed in the process of using them. You could store a counter that indicates how far the sequence object has advanced."
                   ]
                 },
-                ", meaning their properties are changed in the process of using them. You could store a counter that indicates how far the sequence object has advanced."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Your interface will need to expose at least a way to get the next element and to find out whether the iteration has reached the end of the sequence yet. It is tempting to roll these into one method, ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "next"
+                    "Your interface will need to expose at least a way to get the next element and to find out whether the iteration has reached the end of the sequence yet. It is tempting to roll these into one method, ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "next"
+                      ]
+                    },
+                    ", which returns ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "null"
+                      ]
+                    },
+                    " or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "undefined"
+                      ]
+                    },
+                    " when the sequence is at its end. But now you have a problem when a sequence actually contains ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "null"
+                      ]
+                    },
+                    ". So a separate method (or getter property) to find out whether the end has been reached is probably preferable."
                   ]
                 },
-                ", which returns ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "null"
+                    "Another solution is to avoid changing state in the object. You can expose a method for getting the current element (without advancing any counter) and another for getting a new sequence that represents the remaining elements after the current one (or a special value if the end of the sequence is reached). This is quite elegant—a sequence value will “stay itself” even after it is used and can thus be shared with other code without worrying about what might happen to it. It is, unfortunately, also somewhat inefficient in a language like JavaScript because it involves creating a lot of objects during iteration."
                   ]
-                },
-                " or ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "undefined"
-                  ]
-                },
-                " when the sequence is at its end. But now you have a problem when a sequence actually contains ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "null"
-                  ]
-                },
-                ". So a separate method (or getter property) to find out whether the end has been reached is probably preferable."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Another solution is to avoid changing state in the object. You can expose a method for getting the current element (without advancing any counter) and another for getting a new sequence that represents the remaining elements after the current one (or a special value if the end of the sequence is reached). This is quite elegant—a sequence value will “stay itself” even after it is used and can thus be shared with other code without worrying about what might happen to it. It is, unfortunately, also somewhat inefficient in a language like JavaScript because it involves creating a lot of objects during iteration."
+                }
               ]
             }
           ],

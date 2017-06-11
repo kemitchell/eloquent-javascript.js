@@ -108,7 +108,9 @@
                 "Namespace pollution, the problem of a lot of unrelated code having to share a single set of global variable names, was mentioned in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 4"
+                  "content": [
+                    "Chapter 4"
+                  ]
                 },
                 ", where the ",
                 {
@@ -123,7 +125,7 @@
             {
               "element": "p",
               "content": [
-                " Though JavaScript provides no actual module construct yet, objects can be used to create publicly accessible subnamespaces, and functions can be used to create an isolated, private namespace inside of a module. Later in this chapter, I will discuss a way to build reasonably convenient, namespace-isolating modules on top of the primitive concepts that JavaScript gives us."
+                "Though JavaScript provides no actual module construct yet, objects can be used to create publicly accessible subnamespaces, and functions can be used to create an isolated, private namespace inside of a module. Later in this chapter, I will discuss a way to build reasonably convenient, namespace-isolating modules on top of the primitive concepts that JavaScript gives us."
               ]
             }
           ],
@@ -138,7 +140,9 @@
                 "In a “flat” project, which isn’t structured as a set of modules, it is not apparent which parts of the code are needed to use a particular function. In my program for spying on my enemies (see ",
                 {
                   "element": "reference",
-                  "content": "Chapter 9"
+                  "content": [
+                    "Chapter 9"
+                  ]
                 },
                 "), I wrote a function for reading configuration files. If I want to use that function in another project, I must go and copy out the parts of the old program that look like they are relevant to the functionality that I need and paste them into my new program. Then, if I find a mistake in that code, I’ll fix it only in whichever program that I’m working with at the time and forget to also fix it in the other program."
               ]
@@ -192,7 +196,9 @@
                 "). NPM consists of an online database of modules and a tool for downloading and upgrading the modules your program depends on. It grew out of Node.js, the browserless JavaScript environment we will discuss in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 20"
+                  "content": [
+                    "Chapter 20"
+                  ]
                 },
                 ", but can also be useful when programming for the browser."
               ]
@@ -209,7 +215,9 @@
                 "Another important role of modules is isolating pieces of code from each other, in the same way that the object interfaces from ",
                 {
                   "element": "reference",
-                  "content": "Chapter 6"
+                  "content": [
+                    "Chapter 6"
+                  ]
                 },
                 " do. A well-designed module will provide an interface for external code to use. As the module gets updated with bug fixes and new functionality, the existing interface stays the same (it is ",
                 {
@@ -236,7 +244,7 @@
             {
               "element": "p",
               "content": [
-                " For interfaces that expose a single, focused concept, such as a configuration file reader, this design comes naturally. For others, such as a text editor, which has many different aspects that external code might need to access (content, styling, user actions, and so on), it requires careful design."
+                "For interfaces that expose a single, focused concept, such as a configuration file reader, this design comes naturally. For others, such as a text editor, which has many different aspects that external code might need to access (content, styling, user actions, and so on), it requires careful design."
               ]
             }
           ],
@@ -251,7 +259,7 @@
         {
           "element": "p",
           "content": [
-            " Functions are the only things in JavaScript that create a new scope. So if we want our modules to have their own scope, we will have to base them on functions."
+            "Functions are the only things in JavaScript that create a new scope. So if we want our modules to have their own scope, we will have to base them on functions."
           ]
         },
         {
@@ -277,7 +285,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var names = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\",\n             \"Thursday\", \"Friday\", \"Saturday\"];\nfunction dayName(number) {\n  return names[number];\n}\n\nconsole.log(dayName(1));\n// → Monday"
         },
         {
           "element": "p",
@@ -315,7 +323,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var dayName = function() {\n  var names = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\",\n               \"Thursday\", \"Friday\", \"Saturday\"];\n  return function(number) {\n    return names[number];\n  };\n}();\n\nconsole.log(dayName(3));\n// → Wednesday"
         },
         {
           "element": "p",
@@ -346,7 +354,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "(function() {\n  function square(x) { return x * x; }\n  var hundred = 100;\n\n  console.log(square(hundred));\n})();\n// → 10000"
         },
         {
           "element": "p",
@@ -410,7 +418,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var weekDay = function() {\n  var names = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\",\n               \"Thursday\", \"Friday\", \"Saturday\"];\n  return {\n    name: function(number) { return names[number]; },\n    number: function(name) { return names.indexOf(name); }\n  };\n}();\n\nconsole.log(weekDay.name(weekDay.number(\"Sunday\")));\n// → Sunday"
         },
         {
           "element": "p",
@@ -442,7 +450,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "(function(exports) {\n  var names = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\",\n               \"Thursday\", \"Friday\", \"Saturday\"];\n\n  exports.name = function(number) {\n    return names[number];\n  };\n  exports.number = function(name) {\n    return names.indexOf(name);\n  };\n})(this.weekDay = {});\n\nconsole.log(weekDay.name(weekDay.number(\"Saturday\")));\n// → Saturday"
         }
       ],
       "title": "Objects as interfaces"
@@ -453,7 +461,7 @@
         {
           "element": "p",
           "content": [
-            " The previous pattern is commonly used by JavaScript modules intended for the browser. The module will claim a single global variable and wrap its code in a function in order to have its own private namespace. But this pattern still causes problems if multiple modules happen to claim the same name or if you want to load two versions of a module alongside each other."
+            "The previous pattern is commonly used by JavaScript modules intended for the browser. The module will claim a single global variable and wrap its code in a function in order to have its own private namespace. But this pattern still causes problems if multiple modules happen to claim the same name or if you want to load two versions of a module alongside each other."
           ]
         },
         {
@@ -530,7 +538,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function evalAndReturnX(code) {\n  eval(code);\n  return x;\n}\n\nconsole.log(evalAndReturnX(\"var x = 2\"));\n// → 2"
         },
         {
           "element": "p",
@@ -548,7 +556,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var plusOne = new Function(\"n\", \"return n + 1;\");\nconsole.log(plusOne(4));\n// → 5"
         },
         {
           "element": "p",
@@ -578,7 +586,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function require(name) {\n  var code = new Function(\"exports\", readFile(name));\n  var exports = {};\n  code(exports);\n  return exports;\n}\n\nconsole.log(require(\"weekDay\").name(1));\n// → Monday"
         },
         {
           "element": "p",
@@ -603,7 +611,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var names = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\",\n             \"Thursday\", \"Friday\", \"Saturday\"];\n\nexports.name = function(number) {\n  return names[number];\n};\nexports.number = function(name) {\n  return names.indexOf(name);\n};"
         },
         {
           "element": "p",
@@ -614,7 +622,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var weekDay = require(\"weekDay\");\nvar today = require(\"today\");\n\nconsole.log(weekDay.name(today.dayNumber()));"
         },
         {
           "element": "p",
@@ -706,7 +714,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function require(name) {\n  if (name in require.cache)\n    return require.cache[name];\n\n  var code = new Function(\"exports, module\", readFile(name));\n  var exports = {}, module = {exports: exports};\n  code(exports, module);\n\n  require.cache[name] = module.exports;\n  return module.exports;\n}\nrequire.cache = Object.create(null);"
         },
         {
           "element": "p",
@@ -746,7 +754,9 @@
             "Though it is possible to use the CommonJS module style when writing JavaScript for the browser, it is somewhat involved. The reason for this is that reading a file (module) from the Web is a lot slower than reading it from the hard disk. While a script is running in the browser, nothing else can happen to the website on which it runs, for reasons that will become clear in ",
             {
               "element": "reference",
-              "content": "Chapter 14"
+              "content": [
+                "Chapter 14"
+              ]
             },
             ". This means that if every ",
             {
@@ -798,7 +808,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "define([\"weekDay\", \"today\"], function(weekDay, today) {\n  console.log(weekDay.name(today.dayNumber()));\n});"
         },
         {
           "element": "p",
@@ -850,7 +860,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "define([], function() {\n  var names = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\",\n               \"Thursday\", \"Friday\", \"Saturday\"];\n  return {\n    name: function(number) { return names[number]; },\n    number: function(name) { return names.indexOf(name); }\n  };\n});"
         },
         {
           "element": "p",
@@ -872,7 +882,9 @@
             " function that takes a filename and a function and calls the function with the content of the file as soon as it has finished loading it. (",
             {
               "element": "reference",
-              "content": "Chapter\n17"
+              "content": [
+                "Chapter17"
+              ]
             },
             " will explain how to write that function.)"
           ]
@@ -906,7 +918,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var defineCache = Object.create(null);\nvar currentMod = null;\n\nfunction getModule(name) {\n  if (name in defineCache)\n    return defineCache[name];\n\n  var module = {exports: null,\n                loaded: false,\n                onLoad: []};\n  defineCache[name] = module;\n  backgroundReadFile(name, function(code) {\n    currentMod = module;\n    new Function(\"\", code)();\n  });\n  return module;\n}"
         },
         {
           "element": "p",
@@ -979,7 +991,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function define(depNames, moduleFunction) {\n  var myMod = currentMod;\n  var deps = depNames.map(getModule);\n\n  deps.forEach(function(mod) {\n    if (!mod.loaded)\n      mod.onLoad.push(whenDepsLoaded);\n  });\n\n  function whenDepsLoaded() {\n    if (!deps.every(function(m) { return m.loaded; }))\n      return;\n\n    var args = deps.map(function(m) { return m.exports; });\n    var exports = moduleFunction.apply(null, args);\n    if (myMod) {\n      myMod.exports = exports;\n      myMod.loaded = true;\n      myMod.onLoad.forEach(function(f) { f(); });\n    }\n  }\n  whenDepsLoaded();\n}"
         },
         {
           "element": "p",
@@ -1103,7 +1115,7 @@
         {
           "element": "p",
           "content": [
-            " Designing interfaces for modules and object types is one of the subtler aspects of programming. Any nontrivial piece of functionality can be modeled in various ways. Finding a way that works well requires insight and foresight."
+            "Designing interfaces for modules and object types is one of the subtler aspects of programming. Any nontrivial piece of functionality can be modeled in various ways. Finding a way that works well requires insight and foresight."
           ]
         },
         {
@@ -1146,7 +1158,9 @@
                 "In your interfaces, try to use the simplest data structures possible and make functions do a single, clear thing. Whenever practical, make them pure functions (see ",
                 {
                   "element": "reference",
-                  "content": "Chapter 3"
+                  "content": [
+                    "Chapter 3"
+                  ]
                 },
                 ")."
               ]
@@ -1301,23 +1315,28 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "This follows the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "weekDay"
+                    "This follows the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "weekDay"
+                      ]
+                    },
+                    " module almost exactly. A function expression, called immediately, wraps the variable that holds the array of names, along with the two functions that must be exported. The functions are put in an object and returned. The returned interface object is stored in the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "month"
+                      ]
+                    },
+                    " variable."
                   ]
-                },
-                " module almost exactly. A function expression, called immediately, wraps the variable that holds the array of names, along with the two functions that must be exported. The functions are put in an object and returned. The returned interface object is stored in the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "month"
-                  ]
-                },
-                " variable."
+                }
               ]
             }
           ],
@@ -1332,7 +1351,9 @@
                 "Hoping that ",
                 {
                   "element": "reference",
-                  "content": "Chapter 7"
+                  "content": [
+                    "Chapter 7"
+                  ]
                 },
                 " is still somewhat fresh in your mind, think back to the system designed in that chapter and come up with a way to separate the code into modules. To refresh your memory, these are the functions and types defined in that chapter, in order of appearance:"
               ]
@@ -1360,67 +1381,72 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Here is what I came up with. I’ve put parentheses around internal functions."
-              ]
-            },
-            {
-              "element": "pre",
-              "content": "Module \"grid\"\n  Vector\n  Grid\n  directions\n  directionNames\n\nModule \"world\"\n  (randomElement)\n  (elementFromChar)\n  (charFromElement)\n  View\n  World\n  LifelikeWorld\n  directions [reexported]\n\nModule \"simple_ecosystem\"\n  (randomElement) [duplicated]\n  (dirPlus)\n  Wall\n  BouncingCritter\n  WallFollower\n\nModule \"ecosystem\"\n  Wall [duplicated]\n  Plant\n  PlantEater\n  SmartPlantEater\n  Tiger"
-            },
-            {
-              "element": "p",
-              "content": [
-                "I have reexported the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "directions"
+                    "Here is what I came up with. I’ve put parentheses around internal functions."
                   ]
                 },
-                " array from the ",
                 {
-                  "element": "literal",
+                  "element": "pre",
+                  "content": "Module \"grid\"\n  Vector\n  Grid\n  directions\n  directionNames\n\nModule \"world\"\n  (randomElement)\n  (elementFromChar)\n  (charFromElement)\n  View\n  World\n  LifelikeWorld\n  directions [reexported]\n\nModule \"simple_ecosystem\"\n  (randomElement) [duplicated]\n  (dirPlus)\n  Wall\n  BouncingCritter\n  WallFollower\n\nModule \"ecosystem\"\n  Wall [duplicated]\n  Plant\n  PlantEater\n  SmartPlantEater\n  Tiger"
+                },
+                {
+                  "element": "p",
                   "content": [
-                    "grid"
+                    "I have reexported the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "directions"
+                      ]
+                    },
+                    " array from the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "grid"
+                      ]
+                    },
+                    " module from ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "world"
+                      ]
+                    },
+                    " so that modules built on that (the ecosystems) don’t have to know or worry about the existence of the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "grid"
+                      ]
+                    },
+                    " module."
                   ]
                 },
-                " module from ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "world"
+                    "I also duplicated two generic and tiny helper values (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "randomElement"
+                      ]
+                    },
+                    " and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Wall"
+                      ]
+                    },
+                    ") since they are used as internal details in different contexts and do not belong in the interfaces for these modules."
                   ]
-                },
-                " so that modules built on that (the ecosystems) don’t have to know or worry about the existence of the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "grid"
-                  ]
-                },
-                " module."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "I also duplicated two generic and tiny helper values (",
-                {
-                  "element": "literal",
-                  "content": [
-                    "randomElement"
-                  ]
-                },
-                " and ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Wall"
-                  ]
-                },
-                ") since they are used as internal details in different contexts and do not belong in the interfaces for these modules."
+                }
               ]
             }
           ],
@@ -1456,57 +1482,62 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The trick is to add the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "exports"
+                    "The trick is to add the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "exports"
+                      ]
+                    },
+                    " object created for a module to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "require"
+                      ]
+                    },
+                    "'s cache ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "before"
+                      ]
+                    },
+                    " actually running the module. This means the module will not yet have had a chance to override ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "module.exports"
+                      ]
+                    },
+                    ", so we do not know whether it may want to export some other value. After loading, the cache object is overridden with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "module.exports"
+                      ]
+                    },
+                    ", which may be a different value."
                   ]
                 },
-                " object created for a module to ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "require"
+                    "But if in the course of loading the module, a second module is loaded that asks for the first module, its default ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "exports"
+                      ]
+                    },
+                    " object, which is likely still empty at this point, will be in the cache, and the second module will receive a reference to it. If it doesn’t try to do anything with the object until the first module has finished loading, things will work."
                   ]
-                },
-                "'s cache ",
-                {
-                  "element": "em",
-                  "content": [
-                    "before"
-                  ]
-                },
-                " actually running the module. This means the module will not yet have had a chance to override ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "module.exports"
-                  ]
-                },
-                ", so we do not know whether it may want to export some other value. After loading, the cache object is overridden with ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "module.exports"
-                  ]
-                },
-                ", which may be a different value."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "But if in the course of loading the module, a second module is loaded that asks for the first module, its default ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "exports"
-                  ]
-                },
-                " object, which is likely still empty at this point, will be in the cache, and the second module will receive a reference to it. If it doesn’t try to do anything with the object until the first module has finished loading, things will work."
+                }
               ]
             }
           ],

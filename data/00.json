@@ -31,7 +31,7 @@
     {
       "element": "p",
       "content": [
-        " Casual computing has become much more widespread in the past 20 years, and language-based interfaces, which once were the default way in which people interacted with computers, have largely been replaced with graphical interfaces. But they are still there, if you know where to look. One such language, JavaScript, is built into almost every web browser and is thus available on just about every consumer device."
+        "Casual computing has become much more widespread in the past 20 years, and language-based interfaces, which once were the default way in which people interacted with computers, have largely been replaced with graphical interfaces. But they are still there, if you know where to look. One such language, JavaScript, is built into almost every web browser and is thus available on just about every consumer device."
       ]
     },
     {
@@ -58,7 +58,7 @@
         {
           "element": "p",
           "content": [
-            " Besides explaining JavaScript, I also will introduce the basic principles of programming. Programming, it turns out, is hard. The fundamental rules are typically simple and clear. But programs built on top of these rules tend to become complex enough to introduce their own rules and complexity. You’re building your own maze, in a way, and you might just get lost in it."
+            "Besides explaining JavaScript, I also will introduce the basic principles of programming. Programming, it turns out, is hard. The fundamental rules are typically simple and clear. But programs built on top of these rules tend to become complex enough to introduce their own rules and complexity. You’re building your own maze, in a way, and you might just get lost in it."
           ]
         },
         {
@@ -102,7 +102,7 @@
         {
           "element": "p",
           "content": [
-            " A program is many things. It is a piece of text typed by a programmer, it is the directing force that makes the computer do what it does, it is data in the computer’s memory, yet it controls the actions performed on this same memory. Analogies that try to compare programs to objects we are familiar with tend to fall short. A superficially fitting one is that of a machine—lots of separate parts tend to be involved, and to make the whole thing tick, we have to consider the ways in which these parts interconnect and contribute to the operation of the whole."
+            "A program is many things. It is a piece of text typed by a programmer, it is the directing force that makes the computer do what it does, it is data in the computer’s memory, yet it controls the actions performed on this same memory. Analogies that try to compare programs to objects we are familiar with tend to fall short. A superficially fitting one is that of a machine—lots of separate parts tend to be involved, and to make the whole thing tick, we have to consider the ways in which these parts interconnect and contribute to the operation of the whole."
           ]
         },
         {
@@ -114,7 +114,7 @@
         {
           "element": "p",
           "content": [
-            " To some of us, writing computer programs is a fascinating game. A program is a building of thought. It is costless to build, it is weightless, and it grows easily under our typing hands."
+            "To some of us, writing computer programs is a fascinating game. A program is a building of thought. It is costless to build, it is weightless, and it grows easily under our typing hands."
           ]
         },
         {
@@ -161,7 +161,7 @@
         {
           "element": "p",
           "content": [
-            " That is a program to add the numbers from 1 to 10 together and print out the result: ",
+            "That is a program to add the numbers from 1 to 10 together and print out the result: ",
             {
               "element": "literal",
               "content": [
@@ -186,7 +186,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "1. Store the number 0 in memory location 0.\n2. Store the number 1 in memory location 1.\n3. Store the value of memory location 1 in memory location 2.\n4. Subtract the number 11 from the value in memory location 2.\n5. If the value in memory location 2 is the number 0,\n   continue with instruction 9.\n6. Add the value of memory location 1 to memory location 0.\n7. Add the number 1 to the value of memory location 1.\n8. Continue with instruction 3.\n9. Output the value of memory location 0."
         },
         {
           "element": "p",
@@ -197,7 +197,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": " Set “total” to 0.\n Set “count” to 1.\n[loop]\n Set “compare” to “count”.\n Subtract 11 from “compare”.\n If “compare” is zero, continue at [end].\n Add “count” to “total”.\n Add 1 to “count”.\n Continue at [loop].\n[end]\n Output “total”."
         },
         {
           "element": "p",
@@ -277,7 +277,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var total = 0, count = 1;\nwhile (count <= 10) {\n  total += count;\n  count += 1;\n}\nconsole.log(total);\n// → 55"
         },
         {
           "element": "p",
@@ -293,9 +293,7 @@
             {
               "element": "literal",
               "content": [
-                "count ",
-                "<",
-                "= 10"
+                "count <= 10"
               ]
             },
             ", which means “",
@@ -351,7 +349,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(sum(range(1, 10)));\n// → 55"
         },
         {
           "element": "p",
@@ -380,7 +378,9 @@
             " of numbers from 1 to 10. (We will see in ",
             {
               "element": "reference",
-              "content": "later chapters"
+              "content": [
+                "later chapters"
+              ]
             },
             " how to build operations like ",
             {
@@ -402,7 +402,7 @@
         {
           "element": "p",
           "content": [
-            " A good programming language helps the programmer by allowing them to talk about the actions that the computer has to perform on a higher level. It helps omit uninteresting details, provides convenient building blocks (such as ",
+            "A good programming language helps the programmer by allowing them to talk about the actions that the computer has to perform on a higher level. It helps omit uninteresting details, provides convenient building blocks (such as ",
             {
               "element": "literal",
               "content": [
@@ -442,7 +442,7 @@
         {
           "element": "p",
           "content": [
-            "   JavaScript was introduced in 1995 as a way to add programs to web pages in the Netscape Navigator browser. The language has since been adopted by all other major graphical web browsers. It has made modern web applications possible—applications with which you can interact directly, without doing a page reload for every action. But it is also used in more traditional websites to provide various forms of interactivity and cleverness."
+            "  JavaScript was introduced in 1995 as a way to add programs to web pages in the Netscape Navigator browser. The language has since been adopted by all other major graphical web browsers. It has made modern web applications possible—applications with which you can interact directly, without doing a page reload for every action. But it is also used in more traditional websites to provide various forms of interactivity and cleverness."
           ]
         },
         {
@@ -460,7 +460,7 @@
         {
           "element": "p",
           "content": [
-            " There are those who will say ",
+            "There are those who will say ",
             {
               "element": "em",
               "content": [
@@ -473,10 +473,12 @@
         {
           "element": "p",
           "content": [
-            " This flexibility also has its advantages, though. It leaves space for a lot of techniques that are impossible in more rigid languages, and as you will see (for example in ",
+            "This flexibility also has its advantages, though. It leaves space for a lot of techniques that are impossible in more rigid languages, and as you will see (for example in ",
             {
               "element": "reference",
-              "content": "Chapter 10"
+              "content": [
+                "Chapter 10"
+              ]
             },
             ") it can be used to overcome some of JavaScript’s shortcomings. After learning the language properly and working with it for a while, I have learned to actually ",
             {
@@ -491,16 +493,18 @@
         {
           "element": "p",
           "content": [
-            " There have been several versions of JavaScript. ECMAScript version 3 was the widely supported version in the time of JavaScript’s ascent to dominance, roughly between 2000 and 2010. During this time, work was underway on an ambitious version 4, which planned a number of radical improvements and extensions to the language. Changing a living, widely used language in such a radical way turned out to be politically difficult, and work on the version 4 was abandoned in 2008, leading to the much less ambitious version 5 coming out in 2009. We’re now at the point where all major browsers support version 5, which is the language version that this book will be focusing on. A version 6 is in the process of being finalized, and some browsers are starting to support new features from this version."
+            "There have been several versions of JavaScript. ECMAScript version 3 was the widely supported version in the time of JavaScript’s ascent to dominance, roughly between 2000 and 2010. During this time, work was underway on an ambitious version 4, which planned a number of radical improvements and extensions to the language. Changing a living, widely used language in such a radical way turned out to be politically difficult, and work on the version 4 was abandoned in 2008, leading to the much less ambitious version 5 coming out in 2009. We’re now at the point where all major browsers support version 5, which is the language version that this book will be focusing on. A version 6 is in the process of being finalized, and some browsers are starting to support new features from this version."
           ]
         },
         {
           "element": "p",
           "content": [
-            " Web browsers are not the only platforms on which JavaScript is used. Some databases, such as MongoDB and CouchDB, use JavaScript as their scripting and query language. Several platforms for desktop and server programming, most notably the Node.js project (the subject of ",
+            "Web browsers are not the only platforms on which JavaScript is used. Some databases, such as MongoDB and CouchDB, use JavaScript as their scripting and query language. Several platforms for desktop and server programming, most notably the Node.js project (the subject of ",
             {
               "element": "reference",
-              "content": "Chapter\n20"
+              "content": [
+                "Chapter20"
+              ]
             },
             ") are providing a powerful environment for programming JavaScript outside of the browser."
           ]
@@ -529,7 +533,9 @@
             "If you want to run the programs defined in this book outside of the book’s sandbox, some care is required. Many examples stand on their own and should work in any JavaScript environment. But code in later chapters is mostly written for a specific environment (the browser or Node.js) and can run only there. In addition, many chapters define bigger programs, and the pieces of code that appear in them depend on each other or on external files. The ",
             {
               "element": "reference",
-              "content": "sandbox"
+              "content": [
+                "sandbox"
+              ]
             },
             " on the website provides links to Zip files containing all of the scripts and data files necessary to run the code for a given chapter."
           ]
@@ -559,27 +565,37 @@
             ", which describe larger example programs to give you a taste of real programming. In order of appearance, we will work through building an ",
             {
               "element": "reference",
-              "content": "artificial life simulation"
+              "content": [
+                "artificial life simulation"
+              ]
             },
             ", a ",
             {
               "element": "reference",
-              "content": "programming language"
+              "content": [
+                "programming language"
+              ]
             },
             ", a ",
             {
               "element": "reference",
-              "content": "platform game"
+              "content": [
+                "platform game"
+              ]
             },
             ", a ",
             {
               "element": "reference",
-              "content": "paint program"
+              "content": [
+                "paint program"
+              ]
             },
             ", and a ",
             {
               "element": "reference",
-              "content": "dynamic website"
+              "content": [
+                "dynamic website"
+              ]
             },
             "."
           ]
@@ -590,7 +606,9 @@
             "The language part of the book starts with four chapters to introduce the basic structure of the JavaScript language. They introduce ",
             {
               "element": "reference",
-              "content": "control structures"
+              "content": [
+                "control structures"
+              ]
             },
             " (such as the ",
             {
@@ -602,22 +620,30 @@
             " word you saw in this introduction), ",
             {
               "element": "reference",
-              "content": "functions"
+              "content": [
+                "functions"
+              ]
             },
             " (writing your own operations), and ",
             {
               "element": "reference",
-              "content": "data structures"
+              "content": [
+                "data structures"
+              ]
             },
             ". After these, you will be able to write simple programs. Next, Chapters ",
             {
               "element": "reference",
-              "content": "5"
+              "content": [
+                "5"
+              ]
             },
             " and ",
             {
               "element": "reference",
-              "content": "6"
+              "content": [
+                "6"
+              ]
             },
             " introduce techniques to use functions and objects to write more ",
             {
@@ -635,27 +661,37 @@
             "After a ",
             {
               "element": "reference",
-              "content": "first project chapter"
+              "content": [
+                "first project chapter"
+              ]
             },
             ", the first part of the book continues with chapters on ",
             {
               "element": "reference",
-              "content": "error handling and fixing"
+              "content": [
+                "error handling and fixing"
+              ]
             },
             ", on ",
             {
               "element": "reference",
-              "content": "regular expressions"
+              "content": [
+                "regular expressions"
+              ]
             },
             " (an important tool for working with text data), and on ",
             {
               "element": "reference",
-              "content": "modularity"
+              "content": [
+                "modularity"
+              ]
             },
             "—another weapon against complexity. The ",
             {
               "element": "reference",
-              "content": "second project chapter"
+              "content": [
+                "second project chapter"
+              ]
             },
             " concludes the first part of the book."
           ]
@@ -666,37 +702,51 @@
             "The second part, Chapters ",
             {
               "element": "reference",
-              "content": "12"
+              "content": [
+                "12"
+              ]
             },
             " to ",
             {
               "element": "reference",
-              "content": "19"
+              "content": [
+                "19"
+              ]
             },
             ", describes the tools that browser JavaScript has access to. You’ll learn to display things on the screen (Chapters ",
             {
               "element": "reference",
-              "content": "13"
+              "content": [
+                "13"
+              ]
             },
             " and ",
             {
               "element": "reference",
-              "content": "16"
+              "content": [
+                "16"
+              ]
             },
             "), respond to user input (Chapters ",
             {
               "element": "reference",
-              "content": "14"
+              "content": [
+                "14"
+              ]
             },
             " and ",
             {
               "element": "reference",
-              "content": "18"
+              "content": [
+                "18"
+              ]
             },
             "), and communicate over the network (",
             {
               "element": "reference",
-              "content": "Chapter 17"
+              "content": [
+                "Chapter 17"
+              ]
             },
             "). There are again two project chapters in this part."
           ]
@@ -707,12 +757,16 @@
             "After that, ",
             {
               "element": "reference",
-              "content": "Chapter 20"
+              "content": [
+                "Chapter 20"
+              ]
             },
             " describes Node.js, and ",
             {
               "element": "reference",
-              "content": "Chapter 21"
+              "content": [
+                "Chapter 21"
+              ]
             },
             " builds a simple web system using that tool."
           ]
@@ -739,7 +793,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function fac(n) {\n  if (n == 0)\n    return 1;\n  else\n    return fac(n - 1) * n;\n}"
         },
         {
           "element": "p",
@@ -750,7 +804,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(fac(8));\n// → 40320"
         },
         {
           "element": "p",

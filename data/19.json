@@ -44,18 +44,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "canvas",
-                ">"
+                "<canvas>"
               ]
             },
             " element on top, with a number of form fields below it. The user draws on the picture by selecting a tool from a ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " field and then clicking or dragging across the canvas. There are tools for drawing lines, erasing parts of the picture, adding text, and so on."
@@ -148,10 +144,12 @@
         {
           "element": "p",
           "content": [
-            " It would be nice if the DOM structure for each part of our interface is defined close to the JavaScript code that drives it. Thus, I’ve chosen to do all creation of DOM nodes in JavaScript. As we saw in ",
+            "It would be nice if the DOM structure for each part of our interface is defined close to the JavaScript code that drives it. Thus, I’ve chosen to do all creation of DOM nodes in JavaScript. As we saw in ",
             {
               "element": "reference",
-              "content": "Chapter 13"
+              "content": [
+                "Chapter 13"
+              ]
             },
             ", the built-in interface for building up a DOM structure is horrendously verbose. If we are going to do a lot of DOM construction, we need a helper function."
           ]
@@ -169,7 +167,9 @@
             " function from ",
             {
               "element": "reference",
-              "content": "Chapter 13"
+              "content": [
+                "Chapter 13"
+              ]
             },
             ". It creates an element with the given name and attributes and appends all further arguments it gets as child nodes, automatically converting strings to text nodes."
           ]
@@ -177,7 +177,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function elt(name, attributes) {\n  var node = document.createElement(name);\n  if (attributes) {\n    for (var attr in attributes)\n      if (attributes.hasOwnProperty(attr))\n        node.setAttribute(attr, attributes[attr]);\n  }\n  for (var i = 2; i < arguments.length; i++) {\n    var child = arguments[i];\n    if (typeof child == \"string\")\n      child = document.createTextNode(child);\n    node.appendChild(child);\n  }\n  return node;\n}"
         },
         {
           "element": "p",
@@ -214,7 +214,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var controls = Object.create(null);\n\nfunction createPaint(parent) {\n  var canvas = elt(\"canvas\", {width: 500, height: 300});\n  var cx = canvas.getContext(\"2d\");\n  var toolbar = elt(\"div\", {class: \"toolbar\"});\n  for (var name in controls)\n    toolbar.appendChild(controls[name](cx));\n\n  var panel = elt(\"div\", {class: \"picturepanel\"}, canvas);\n  parent.appendChild(elt(\"div\", null, panel, toolbar));\n}"
         },
         {
           "element": "p",
@@ -230,9 +230,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "canvas",
-                ">"
+                "<canvas>"
               ]
             },
             " element. Most of the program’s state lives in this canvas—it contains the current picture as well as the selected color (in its ",
@@ -259,9 +257,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "div",
-                ">"
+                "<div>"
               ]
             },
             " elements with classes so we can add some styling, such as a gray border around the picture."
@@ -280,9 +276,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " element that allows the user to pick a drawing tool. As with ",
@@ -298,7 +292,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var tools = Object.create(null);\n\ncontrols.tool = function(cx) {\n  var select = elt(\"select\");\n  for (var name in tools)\n    select.appendChild(elt(\"option\", null, name));\n\n  cx.canvas.addEventListener(\"mousedown\", function(event) {\n    if (event.which == 1) {\n      tools[select.value](event, cx);\n      event.preventDefault();\n    }\n  });\n\n  return elt(\"span\", null, \"Tool: \", select);\n};"
         },
         {
           "element": "p",
@@ -307,9 +301,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "option",
-                ">"
+                "<option>"
               ]
             },
             " elements for all tools that have been defined, and a ",
@@ -342,7 +334,9 @@
             " method, briefly mentioned in ",
             {
               "element": "reference",
-              "content": "Chapter 13"
+              "content": [
+                "Chapter 13"
+              ]
             },
             ", can help us here. It tells us where an element is shown, relative to the top-left corner of the screen. The ",
             {
@@ -364,7 +358,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function relativePos(event, element) {\n  var rect = element.getBoundingClientRect();\n  return {x: Math.floor(event.clientX - rect.left),\n          y: Math.floor(event.clientY - rect.top)};\n}"
         },
         {
           "element": "p",
@@ -389,7 +383,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function trackDrag(onMove, onEnd) {\n  function end(event) {\n    removeEventListener(\"mousemove\", onMove);\n    removeEventListener(\"mouseup\", end);\n    if (onEnd)\n      onEnd(event);\n  }\n  addEventListener(\"mousemove\", onMove);\n  addEventListener(\"mouseup\", end);\n}"
         },
         {
           "element": "p",
@@ -413,12 +407,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "tools.Line = function(event, cx, onEnd) {\n  cx.lineCap = \"round\";\n\n  var pos = relativePos(event, cx.canvas);\n  trackDrag(function(event) {\n    cx.beginPath();\n    cx.moveTo(pos.x, pos.y);\n    pos = relativePos(event, cx.canvas);\n    cx.lineTo(pos.x, pos.y);\n    cx.stroke();\n  }, onEnd);\n};"
         },
         {
           "element": "p",
           "content": [
-            " The function starts by setting the drawing context’s ",
+            "The function starts by setting the drawing context’s ",
             {
               "element": "literal",
               "content": [
@@ -499,7 +493,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "tools.Erase = function(event, cx) {\n  cx.globalCompositeOperation = \"destination-out\";\n  tools.Line(event, cx, function() {\n    cx.globalCompositeOperation = \"source-over\";\n  });\n};"
         },
         {
           "element": "p",
@@ -579,15 +573,15 @@
             "In ",
             {
               "element": "reference",
-              "content": "Chapter 18"
+              "content": [
+                "Chapter 18"
+              ]
             },
             ", I discussed a number of different form fields. Color fields were not among those. Traditionally, browsers don’t have built-in support for color pickers, but in the past few years, a number of new form field types have been standardized. One of those is ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "input type=\"color\"",
-                ">"
+                "<input type=\"color\">"
               ]
             },
             ". Others include ",
@@ -622,9 +616,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "input",
-                ">"
+                "<input>"
               ]
             },
             " tag is ",
@@ -640,7 +632,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "controls.color = function(cx) {\n  var input = elt(\"input\", {type: \"color\"});\n  input.addEventListener(\"change\", function() {\n    cx.fillStyle = input.value;\n    cx.strokeStyle = input.value;\n  });\n  return elt(\"span\", null, \"Color: \", input);\n};"
         },
         {
           "element": "p",
@@ -671,7 +663,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "controls.brushSize = function(cx) {\n  var select = elt(\"select\");\n  var sizes = [1, 2, 3, 5, 8, 12, 25, 35, 50, 75, 100];\n  sizes.forEach(function(size) {\n    select.appendChild(elt(\"option\", {value: size},\n                           size + \" pixels\"));\n  });\n  select.addEventListener(\"change\", function() {\n    cx.lineWidth = select.value;\n  });\n  return elt(\"span\", null, \"Brush size: \", select);\n};"
         },
         {
           "element": "p",
@@ -759,7 +751,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "controls.save = function(cx) {\n  var link = elt(\"a\", {href: \"/\"}, \"Save\");\n  function update() {\n    try {\n      link.href = cx.canvas.toDataURL();\n    } catch (e) {\n      if (e instanceof SecurityError)\n        link.href = \"javascript:alert(\" +\n          JSON.stringify(\"Can't save: \" + e.toString()) + \")\";\n      else\n        throw e;\n    }\n  }\n  link.addEventListener(\"mouseover\", update);\n  link.addEventListener(\"focus\", update);\n  return link;\n};"
         },
         {
           "element": "p",
@@ -779,7 +771,9 @@
             "But here we once again run into the subtleties of browser sandboxing. When an image is loaded from a URL on another domain, if the server’s response doesn’t include a header that tells the browser the resource may be used from other domains (see ",
             {
               "element": "reference",
-              "content": "Chapter 17"
+              "content": [
+                "Chapter 17"
+              ]
             },
             "), then the canvas will contain information that the ",
             {
@@ -880,12 +874,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function loadImageURL(cx, url) {\n  var image = document.createElement(\"img\");\n  image.addEventListener(\"load\", function() {\n    var color = cx.fillStyle, size = cx.lineWidth;\n    cx.canvas.width = image.width;\n    cx.canvas.height = image.height;\n    cx.drawImage(image, 0, 0);\n    cx.fillStyle = color;\n    cx.strokeStyle = color;\n    cx.lineWidth = size;\n  });\n  image.src = url;\n}"
         },
         {
           "element": "p",
           "content": [
-            " We want to change the size of the canvas to precisely fit the image. For some reason, changing the size of a canvas will cause its drawing context to forget configuration properties such as ",
+            "We want to change the size of the canvas to precisely fit the image. For some reason, changing the size of a canvas will cause its drawing context to forget configuration properties such as ",
             {
               "element": "literal",
               "content": [
@@ -915,7 +909,9 @@
             " technique from ",
             {
               "element": "reference",
-              "content": "Chapter 18"
+              "content": [
+                "Chapter 18"
+              ]
             },
             ". Apart from the ",
             {
@@ -944,7 +940,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "controls.openFile = function(cx) {\n  var input = elt(\"input\", {type: \"file\"});\n  input.addEventListener(\"change\", function() {\n    if (input.files.length == 0) return;\n    var reader = new FileReader();\n    reader.addEventListener(\"load\", function() {\n      loadImageURL(cx, reader.result);\n    });\n    reader.readAsDataURL(input.files[0]);\n  });\n  return elt(\"div\", null, \"Open file: \", input);\n};"
         },
         {
           "element": "p",
@@ -962,7 +958,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "controls.openURL = function(cx) {\n  var input = elt(\"input\", {type: \"text\"});\n  var form = elt(\"form\", null,\n                 \"Open URL: \", input,\n                 elt(\"button\", {type: \"submit\"}, \"load\"));\n  form.addEventListener(\"submit\", function(event) {\n    event.preventDefault();\n    loadImageURL(cx, input.value);\n  });\n  return form;\n};"
         },
         {
           "element": "p",
@@ -992,7 +988,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "tools.Text = function(event, cx) {\n  var text = prompt(\"Text:\", \"\");\n  if (text) {\n    var pos = relativePos(event, cx.canvas);\n    cx.font = Math.max(7, cx.lineWidth) + \"px sans-serif\";\n    cx.fillText(text, pos.x, pos.y);\n  }\n};"
         },
         {
           "element": "p",
@@ -1009,7 +1005,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "tools.Spray = function(event, cx) {\n  var radius = cx.lineWidth / 2;\n  var area = radius * radius * Math.PI;\n  var dotsPerTick = Math.ceil(area / 30);\n\n  var currentPos = relativePos(event, cx.canvas);\n  var spray = setInterval(function() {\n    for (var i = 0; i < dotsPerTick; i++) {\n      var offset = randomPointInRadius(radius);\n      cx.fillRect(currentPos.x + offset.x,\n                  currentPos.y + offset.y, 1, 1);\n    }\n  }, 25);\n  trackDrag(function(event) {\n    currentPos = relativePos(event, cx.canvas);\n  }, function() {\n    clearInterval(spray);\n  });\n};"
         },
         {
           "element": "p",
@@ -1054,7 +1050,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function randomPointInRadius(radius) {\n  for (;;) {\n    var x = Math.random() * 2 - 1;\n    var y = Math.random() * 2 - 1;\n    if (x * x + y * y <= 1)\n      return {x: x * radius, y: y * radius};\n  }\n}"
         },
         {
           "element": "p",
@@ -1130,7 +1126,9 @@
                 " method from ",
                 {
                   "element": "reference",
-                  "content": "Chapter 16"
+                  "content": [
+                    "Chapter 16"
+                  ]
                 },
                 ") with the current color. The rectangle should span from the point where the user pressed the mouse button to the point where they released it. Note that the latter might be above or to the left of the former."
               ]
@@ -1148,15 +1146,15 @@
                 {
                   "element": "literal",
                   "content": [
-                    "position:",
-                    " ",
-                    "absolute"
+                    "position:absolute"
                   ]
                 },
                 " style discussed in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 13"
+                  "content": [
+                    "Chapter 13"
+                  ]
                 },
                 ", which can be used to overlay a node on the rest of the document. The ",
                 {
@@ -1204,134 +1202,137 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "You can use ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "relativePos"
+                    "You can use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "relativePos"
+                      ]
+                    },
+                    " to find the corner corresponding to the start of the mouse drag. Figuring out where the drag ends can be done with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "trackDrag"
+                      ]
+                    },
+                    " or by registering your own event handler."
                   ]
                 },
-                " to find the corner corresponding to the start of the mouse drag. Figuring out where the drag ends can be done with ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "trackDrag"
+                    "When you have two corners of the rectangle, you must somehow translate these into the arguments that ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "fillRect"
+                      ]
+                    },
+                    " expects: the top-left corner, width, and height of the rectangle. ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Math.min"
+                      ]
+                    },
+                    " can be used to find the leftmost x-coordinate and topmost y-coordinate. To get the width or height, you can call ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Math.abs"
+                      ]
+                    },
+                    " (the absolute value) on the difference between two sides."
                   ]
                 },
-                " or by registering your own event handler."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "When you have two corners of the rectangle, you must somehow translate these into the arguments that ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "fillRect"
+                    "Showing the rectangle during the mouse drag requires a similar set of numbers but in the context of the whole page rather than relative to the canvas. Consider writing a function ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "findRect"
+                      ]
+                    },
+                    ", which converts two points into an object with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "top"
+                      ]
+                    },
+                    ", ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "left"
+                      ]
+                    },
+                    ", ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "width"
+                      ]
+                    },
+                    ", and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "height"
+                      ]
+                    },
+                    " properties so that you don’t have to write the same logic twice."
                   ]
                 },
-                " expects: the top-left corner, width, and height of the rectangle. ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "Math.min"
+                    "You can then create a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<div>"
+                      ]
+                    },
+                    " node and set its ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "style.position"
+                      ]
+                    },
+                    " to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "absolute"
+                      ]
+                    },
+                    ". When setting positioning styles, do not forget to append ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"px\""
+                      ]
+                    },
+                    " to the numbers. The node must be added to the document (you can append it to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "document.body"
+                      ]
+                    },
+                    ") and also removed again when the drag ends and the actual rectangle gets drawn onto the canvas."
                   ]
-                },
-                " can be used to find the leftmost x-coordinate and topmost y-coordinate. To get the width or height, you can call ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Math.abs"
-                  ]
-                },
-                " (the absolute value) on the difference between two sides."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Showing the rectangle during the mouse drag requires a similar set of numbers but in the context of the whole page rather than relative to the canvas. Consider writing a function ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "findRect"
-                  ]
-                },
-                ", which converts two points into an object with ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "top"
-                  ]
-                },
-                ", ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "left"
-                  ]
-                },
-                ", ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "width"
-                  ]
-                },
-                ", and ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "height"
-                  ]
-                },
-                " properties so that you don’t have to write the same logic twice."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "You can then create a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "<",
-                    "div",
-                    ">"
-                  ]
-                },
-                " node and set its ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "style.position"
-                  ]
-                },
-                " to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "absolute"
-                  ]
-                },
-                ". When setting positioning styles, do not forget to append ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"px\""
-                  ]
-                },
-                " to the numbers. The node must be added to the document (you can append it to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "document.body"
-                  ]
-                },
-                ") and also removed again when the drag ends and the actual rectangle gets drawn onto the canvas."
+                }
               ]
             }
           ],
@@ -1403,7 +1404,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function pixelAt(cx, x, y) {\n  var data = cx.getImageData(x, y, 1, 1);\n  console.log(data.data);\n}\n\nvar canvas = document.createElement(\"canvas\");\nvar cx = canvas.getContext(\"2d\");\npixelAt(cx, 10, 10);\n// → [0, 0, 0, 0]\n\ncx.fillStyle = \"red\";\ncx.fillRect(10, 10, 1, 1);\npixelAt(cx, 10, 10);\n// → [255, 0, 0, 255]"
             },
             {
               "element": "p",
@@ -1451,7 +1452,9 @@
                 " style you saw in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 15"
+                  "content": [
+                    "Chapter 15"
+                  ]
                 },
                 "."
               ]
@@ -1491,43 +1494,48 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "You’ll again need to use ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "relativePos"
+                    "You’ll again need to use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "relativePos"
+                      ]
+                    },
+                    " to find out which pixel was clicked. The ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "pixelAt"
+                      ]
+                    },
+                    " function in the example demonstrates how to get the values for a given pixel. Putting those into an ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "rgb"
+                      ]
+                    },
+                    " string merely requires some string concatenation."
                   ]
                 },
-                " to find out which pixel was clicked. The ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "pixelAt"
+                    "Make sure you verify that the exception you catch is an instance of ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "SecurityError"
+                      ]
+                    },
+                    " so that you don’t accidentally handle the wrong kind of exception."
                   ]
-                },
-                " function in the example demonstrates how to get the values for a given pixel. Putting those into an ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "rgb"
-                  ]
-                },
-                " string merely requires some string concatenation."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Make sure you verify that the exception you catch is an instance of ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "SecurityError"
-                  ]
-                },
-                " so that you don’t accidentally handle the wrong kind of exception."
+                }
               ]
             }
           ],
@@ -1567,7 +1575,7 @@
             {
               "element": "p",
               "content": [
-                " You will once again need ",
+                "You will once again need ",
                 {
                   "element": "literal",
                   "content": [
@@ -1577,7 +1585,9 @@
                 " to find out the color for each pixel. It is probably a good idea to fetch the whole image in one go and then pick out pixel data from the resulting array. The pixels are organized in this array in a similar way to the grid elements in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 7"
+                  "content": [
+                    "Chapter 7"
+                  ]
                 },
                 ", one row at a time, except that each pixel is represented by four values. The first value for the pixel at (",
                 {
@@ -1622,7 +1632,9 @@
                 "Finding all adjacent pixels with the same color requires you to “walk” over the pixel surface, one pixel up, down, left, or right, as long as new same-colored pixels can be found. But you won’t find all pixels in a group on the first walk. Rather, you have to do something similar to the backtracking done by the regular expression matcher, described in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 9"
+                  "content": [
+                    "Chapter 9"
+                  ]
                 },
                 ". Whenever more than one possible direction to proceed is seen, you must store all the directions you do not take immediately and look at them later, when you finish your current walk."
               ]
@@ -1654,127 +1666,132 @@
               ]
             },
             {
-              "element": "p",
-              "content": [
-                "Given a pair of starting coordinates and the image data for the whole canvas, this approach should work:"
-              ]
-            },
-            {
-              "element": "ol",
+              "element": "hint",
               "content": [
                 {
-                  "element": "item",
+                  "element": "p",
+                  "content": [
+                    "Given a pair of starting coordinates and the image data for the whole canvas, this approach should work:"
+                  ]
+                },
+                {
+                  "element": "ol",
                   "content": [
                     {
-                      "element": "p",
+                      "element": "item",
                       "content": [
-                        " Create an array to hold information about already colored  coordinates. "
+                        {
+                          "element": "p",
+                          "content": [
+                            "Create an array to hold information about already colored  coordinates. "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "item",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "Create a work list array to hold coordinates that must be looked  at. Put the start position in it. "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "item",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "When the work list is empty, we are done. "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "item",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "Remove one pair of coordinates from the work list. "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "item",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "If those coordinates are already in our array of colored pixels, go  back to step 3. "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "item",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "Color the pixel at the current coordinates and add the  coordinates to the array of colored pixels. "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "item",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "Add the coordinates of each adjacent pixel whose color is the same  as the starting pixel’s original color to the work list. "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "element": "item",
+                      "content": [
+                        {
+                          "element": "p",
+                          "content": [
+                            "Return to step 3. "
+                          ]
+                        }
                       ]
                     }
                   ]
                 },
                 {
-                  "element": "item",
+                  "element": "p",
                   "content": [
+                    "The work list can simply be an array of vector objects. The data structure that tracks colored pixels will be consulted ",
                     {
-                      "element": "p",
+                      "element": "em",
                       "content": [
-                        " Create a work list array to hold coordinates that must be looked  at. Put the start position in it. "
+                        "very"
                       ]
-                    }
+                    },
+                    " often. Searching through the whole thing every time a new pixel is visited will take a lot of time. You could instead create an array that has a value in it for every pixel, using again the x + y × width scheme for associating positions with pixels. When checking whether a pixel has been colored already, you could directly access the field corresponding to the current pixel."
                   ]
                 },
                 {
-                  "element": "item",
+                  "element": "p",
                   "content": [
-                    {
-                      "element": "p",
-                      "content": [
-                        " When the work list is empty, we are done. "
-                      ]
-                    }
+                    "You can compare colors by running over the relevant part of the data array, comparing one field at a time. Or you can “condense” a color to a single number or string and compare those. When doing this, ensure that every color produces a unique value. For example, simply adding the color’s components is not safe since multiple colors will have the same sum."
                   ]
                 },
                 {
-                  "element": "item",
+                  "element": "p",
                   "content": [
-                    {
-                      "element": "p",
-                      "content": [
-                        " Remove one pair of coordinates from the work list. "
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "element": "item",
-                  "content": [
-                    {
-                      "element": "p",
-                      "content": [
-                        " If those coordinates are already in our array of colored pixels, go  back to step 3. "
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "element": "item",
-                  "content": [
-                    {
-                      "element": "p",
-                      "content": [
-                        " Color the pixel at the current coordinates and add the  coordinates to the array of colored pixels. "
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "element": "item",
-                  "content": [
-                    {
-                      "element": "p",
-                      "content": [
-                        " Add the coordinates of each adjacent pixel whose color is the same  as the starting pixel’s original color to the work list. "
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "element": "item",
-                  "content": [
-                    {
-                      "element": "p",
-                      "content": [
-                        " Return to step 3. "
-                      ]
-                    }
+                    "When enumerating the neighbors of a given point, take care to exclude neighbors that are not inside of the canvas or your program might run off into one direction forever."
                   ]
                 }
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The work list can simply be an array of vector objects. The data structure that tracks colored pixels will be consulted ",
-                {
-                  "element": "em",
-                  "content": [
-                    "very"
-                  ]
-                },
-                " often. Searching through the whole thing every time a new pixel is visited will take a lot of time. You could instead create an array that has a value in it for every pixel, using again the x + y × width scheme for associating positions with pixels. When checking whether a pixel has been colored already, you could directly access the field corresponding to the current pixel."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " You can compare colors by running over the relevant part of the data array, comparing one field at a time. Or you can “condense” a color to a single number or string and compare those. When doing this, ensure that every color produces a unique value. For example, simply adding the color’s components is not safe since multiple colors will have the same sum."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "When enumerating the neighbors of a given point, take care to exclude neighbors that are not inside of the canvas or your program might run off into one direction forever."
               ]
             }
           ],

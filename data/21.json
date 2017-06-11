@@ -42,7 +42,9 @@
         "Just like in the ",
         {
           "element": "reference",
-          "content": "previous chapter"
+          "content": [
+            "previous chapter"
+          ]
         },
         ", the code in this chapter is written for Node.js, and running it directly in the HTML page that you are looking at is unlikely to work. The full code for the project can be downloaded from ",
         {
@@ -188,10 +190,12 @@
         {
           "element": "p",
           "content": [
-            " We will base our interface on JSON, and like in the file server from ",
+            "We will base our interface on JSON, and like in the file server from ",
             {
               "element": "reference",
-              "content": "Chapter 20"
+              "content": [
+                "Chapter 20"
+              ]
             },
             ", we’ll try to make good use of HTTP methods. The interface is centered around the ",
             {
@@ -233,7 +237,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "{\"serverTime\": 1405438911833,\n \"talks\": [{\"title\": \"Unituning\",\n            \"presenter\": \"Carlos\",\n            \"summary\": \"Modifying your cycle for extra style\",\n            \"comment\": []}]}"
         },
         {
           "element": "p",
@@ -248,7 +252,9 @@
             " field will be used to make reliable long polling possible. I will return to it ",
             {
               "element": "reference",
-              "content": "later"
+              "content": [
+                "later"
+              ]
             },
             "."
           ]
@@ -297,7 +303,7 @@
         {
           "element": "p",
           "content": [
-            " Since talk titles may contain spaces and other characters that may not appear normally in a URL, title strings must be encoded with the ",
+            "Since talk titles may contain spaces and other characters that may not appear normally in a URL, title strings must be encoded with the ",
             {
               "element": "literal",
               "content": [
@@ -310,7 +316,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"/talks/\" + encodeURIComponent(\"How to Idle\"));\n// → /talks/How%20to%20Idle"
         },
         {
           "element": "p",
@@ -321,7 +327,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "PUT /talks/How%20to%20Idle HTTP/1.1\nContent-Type: application/json\nContent-Length: 92\n\n{\"presenter\": \"Dana\",\n \"summary\": \"Standing still on a unicycle\"}"
         },
         {
           "element": "p",
@@ -380,7 +386,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "POST /talks/Unituning/comments HTTP/1.1\nContent-Type: application/json\nContent-Length: 72\n\n{\"author\": \"Alice\",\n \"message\": \"Will you talk about raising a cycle?\"}"
         },
         {
           "element": "p",
@@ -503,7 +509,7 @@
             {
               "element": "p",
               "content": [
-                " Our server will use ",
+                "Our server will use ",
                 {
                   "element": "literal",
                   "content": [
@@ -583,7 +589,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var Router = module.exports = function() {\n  this.routes = [];\n};\n\nRouter.prototype.add = function(method, url, handler) {\n  this.routes.push({method: method,\n                    url: url,\n                    handler: handler});\n};\n\nRouter.prototype.resolve = function(request, response) {\n  var path = require(\"url\").parse(request.url).pathname;\n\n  return this.routes.some(function(route) {\n    var match = route.url.exec(path);\n    if (!match || route.method != request.method)\n      return false;\n\n    var urlParts = match.slice(1).map(decodeURIComponent);\n    route.handler.apply(null, [request, response]\n                                .concat(urlParts));\n    return true;\n  });\n};"
             },
             {
               "element": "p",
@@ -635,7 +641,7 @@
             {
               "element": "p",
               "content": [
-                " The handler functions are called with the ",
+                "The handler functions are called with the ",
                 {
                   "element": "literal",
                   "content": [
@@ -678,7 +684,9 @@
                 " directory. It would be possible to use the file server defined in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 20"
+                  "content": [
+                    "Chapter 20"
+                  ]
                 },
                 " to serve such files, but we neither need nor want to support ",
                 {
@@ -755,7 +763,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var http = require(\"http\");\nvar Router = require(\"./router\");\nvar ecstatic = require(\"ecstatic\");\n\nvar fileServer = ecstatic({root: \"./public\"});\nvar router = new Router();\n\nhttp.createServer(function(request, response) {\n  if (!router.resolve(request, response))\n    fileServer(request, response);\n}).listen(8000);"
             },
             {
               "element": "p",
@@ -780,7 +788,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function respond(response, status, data, type) {\n  response.writeHead(status, {\n    \"Content-Type\": type || \"text/plain\"\n  });\n  response.end(data);\n}\n\nfunction respondJSON(response, status, data) {\n  respond(response, status, JSON.stringify(data),\n          \"application/json\");\n}"
             }
           ],
           "title": "Serving files"
@@ -824,7 +832,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var talks = Object.create(null);\n\nrouter.add(\"GET\", /^\\/talks\\/([^\\/]+)$/,\n           function(request, response, title) {\n  if (title in talks)\n    respondJSON(response, 200, talks[title]);\n  else\n    respond(response, 404, \"No talk '\" + title + \"' found\");\n});"
             },
             {
               "element": "p",
@@ -842,7 +850,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "router.add(\"DELETE\", /^\\/talks\\/([^\\/]+)$/,\n           function(request, response, title) {\n  if (title in talks) {\n    delete talks[title];\n    registerChange(title);\n  }\n  respond(response, 204, null);\n});"
             },
             {
               "element": "p",
@@ -857,7 +865,9 @@
                 " function, which we will define ",
                 {
                   "element": "reference",
-                  "content": "later"
+                  "content": [
+                    "later"
+                  ]
                 },
                 ", notifies waiting long-polling requests about the change."
               ]
@@ -878,7 +888,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function readStreamAsJSON(stream, callback) {\n  var data = \"\";\n  stream.on(\"data\", function(chunk) {\n    data += chunk;\n  });\n  stream.on(\"end\", function() {\n    var result, error;\n    try { result = JSON.parse(data); }\n    catch (e) { error = e; }\n    callback(error, result);\n  });\n  stream.on(\"error\", function(error) {\n    callback(error);\n  });\n}"
             },
             {
               "element": "p",
@@ -930,7 +940,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "router.add(\"PUT\", /^\\/talks\\/([^\\/]+)$/,\n           function(request, response, title) {\n  readStreamAsJSON(request, function(error, talk) {\n    if (error) {\n      respond(response, 400, error.toString());\n    } else if (!talk ||\n               typeof talk.presenter != \"string\" ||\n               typeof talk.summary != \"string\") {\n      respond(response, 400, \"Bad talk data\");\n    } else {\n      talks[title] = {title: title,\n                      presenter: talk.presenter,\n                      summary: talk.summary,\n                      comments: []};\n      registerChange(title);\n      respond(response, 204, null);\n    }\n  });\n});"
             },
             {
               "element": "p",
@@ -948,7 +958,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "router.add(\"POST\", /^\\/talks\\/([^\\/]+)\\/comments$/,\n           function(request, response, title) {\n  readStreamAsJSON(request, function(error, comment) {\n    if (error) {\n      respond(response, 400, error.toString());\n    } else if (!comment ||\n               typeof comment.author != \"string\" ||\n               typeof comment.message != \"string\") {\n      respond(response, 400, \"Bad comment data\");\n    } else if (title in talks) {\n      talks[title].comments.push(comment);\n      registerChange(title);\n      respond(response, 204, null);\n    } else {\n      respond(response, 404, \"No talk '\" + title + \"' found\");\n    }\n  });\n});"
             },
             {
               "element": "p",
@@ -1005,7 +1015,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function sendTalks(talks, response) {\n  respondJSON(response, 200, {\n    serverTime: Date.now(),\n    talks: talks\n  });\n}"
             },
             {
               "element": "p",
@@ -1051,7 +1061,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "router.add(\"GET\", /^\\/talks$/, function(request, response) {\n  var query = require(\"url\").parse(request.url, true).query;\n  if (query.changesSince == null) {\n    var list = [];\n    for (var title in talks)\n      list.push(talks[title]);\n    sendTalks(list, response);\n  } else {\n    var since = Number(query.changesSince);\n    if (isNaN(since)) {\n      respond(response, 400, \"Invalid parameter\");\n    } else {\n      var changed = getChangedTalks(since);\n      if (changed.length > 0)\n         sendTalks(changed, response);\n      else\n        waitForChanges(since, response);\n    }\n  }\n});"
             },
             {
               "element": "p",
@@ -1096,12 +1106,12 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var waiting = [];\n\nfunction waitForChanges(since, response) {\n  var waiter = {since: since, response: response};\n  waiting.push(waiter);\n  setTimeout(function() {\n    var found = waiting.indexOf(waiter);\n    if (found > -1) {\n      waiting.splice(found, 1);\n      sendTalks([], response);\n    }\n  }, 90 * 1000);\n}"
             },
             {
               "element": "p",
               "content": [
-                "  The ",
+                " The ",
                 {
                   "element": "literal",
                   "content": [
@@ -1175,7 +1185,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var changes = [];\n\nfunction registerChange(title) {\n  changes.push({title: title, time: Date.now()});\n  waiting.forEach(function(waiter) {\n    sendTalks(getChangedTalks(waiter.since), waiter.response);\n  });\n  waiting = [];\n}"
             },
             {
               "element": "p",
@@ -1214,7 +1224,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function getChangedTalks(since) {\n  var found = [];\n  function alreadySeen(title) {\n    return found.some(function(f) {return f.title == title;});\n  }\n  for (var i = changes.length - 1; i >= 0; i--) {\n    var change = changes[i];\n    if (change.time <= since)\n      break;\n    else if (alreadySeen(change.title))\n      continue;\n    else if (change.title in talks)\n      found.push(talks[change.title]);\n    else\n      found.push({title: change.title, deleted: true});\n  }\n  return found;\n}"
             },
             {
               "element": "p",
@@ -1311,7 +1321,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "<!doctype html>\n\n<title>Skill Sharing</title>\n<link rel=\"stylesheet\" href=\"skillsharing.css\">\n\n<h1>Skill sharing</h1>\n\n<p>Your name: <input type=\"text\" id=\"name\"></p>\n\n<div id=\"talks\"></div>"
             },
             {
               "element": "p",
@@ -1326,9 +1336,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "div",
-                    ">"
+                    "<div>"
                   ]
                 },
                 " element with the ID ",
@@ -1350,7 +1358,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "<form id=\"newtalk\">\n  <h3>Submit a talk</h3>\n  Title: <input type=\"text\" style=\"width: 40em\" name=\"title\">\n  <br>\n  Summary: <input type=\"text\" style=\"width: 40em\" name=\"summary\">\n  <button type=\"submit\">Send</button>\n</form>"
             },
             {
               "element": "p",
@@ -1388,7 +1396,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "<div id=\"template\" style=\"display: none\">\n  <div class=\"talk\">\n    <h2>{{title}}</h2>\n    <div>by <span class=\"name\">{{presenter}}</span></div>\n    <p>{{summary}}</p>\n    <div class=\"comments\"></div>\n    <form>\n      <input type=\"text\" name=\"comment\">\n      <button type=\"submit\">Add comment</button>\n      <button type=\"button\" class=\"del\">Delete talk</button>\n    </form>\n  </div>\n  <div class=\"comment\">\n    <span class=\"name\">{{author}}</span>: {{message}}\n  </div>\n</div>"
             },
             {
               "element": "p",
@@ -1403,7 +1411,9 @@
                 " function from ",
                 {
                   "element": "reference",
-                  "content": "Chapter 13"
+                  "content": [
+                    "Chapter 13"
+                  ]
                 },
                 ", but the result will still look worse than HTML, which can be thought of as a domain-specific language for expressing DOM structures."
               ]
@@ -1411,7 +1421,7 @@
             {
               "element": "p",
               "content": [
-                " To create DOM structures for the talks, our program will define a simple ",
+                "To create DOM structures for the talks, our program will define a simple ",
                 {
                   "element": "em",
                   "content": [
@@ -1430,7 +1440,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "<script src=\"skillsharing_client.js\"></script>"
             }
           ],
           "title": "HTML"
@@ -1454,7 +1464,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function request(options, callback) {\n  var req = new XMLHttpRequest();\n  req.open(options.method || \"GET\", options.pathname, true);\n  req.addEventListener(\"load\", function() {\n    if (req.status < 400)\n      callback(null, req.responseText);\n    else\n      callback(new Error(\"Request failed: \" + req.statusText));\n  });\n  req.addEventListener(\"error\", function() {\n    callback(new Error(\"Network error\"));\n  });\n  req.send(options.body || null);\n}"
             },
             {
               "element": "p",
@@ -1472,7 +1482,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var lastServerTime = 0;\n\nrequest({pathname: \"talks\"}, function(error, response) {\n  if (error) {\n    reportError(error);\n  } else {\n    response = JSON.parse(response);\n    displayTalks(response.talks);\n    lastServerTime = response.serverTime;\n    waitForChanges();\n  }\n});"
             },
             {
               "element": "p",
@@ -1517,7 +1527,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function reportError(error) {\n  if (error)\n    alert(error.toString());\n}"
             },
             {
               "element": "p",
@@ -1574,7 +1584,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var talkDiv = document.querySelector(\"#talks\");\nvar shownTalks = Object.create(null);\n\nfunction displayTalks(talks) {\n  talks.forEach(function(talk) {\n    var shown = shownTalks[talk.title];\n    if (talk.deleted) {\n      if (shown) {\n        talkDiv.removeChild(shown);\n        delete shownTalks[talk.title];\n      }\n    } else {\n      var node = drawTalk(talk);\n      if (shown)\n        talkDiv.replaceChild(node, shown);\n      else\n        talkDiv.appendChild(node);\n      shownTalks[talk.title] = node;\n    }\n  });\n}"
             },
             {
               "element": "p",
@@ -1633,7 +1643,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function instantiateTemplate(name, values) {\n  function instantiateText(text) {\n    return text.replace(/\\{\\{(\\w+)\\}\\}/g, function(_, name) {\n      return values[name];\n    });\n  }\n  function instantiate(node) {\n    if (node.nodeType == document.ELEMENT_NODE) {\n      var copy = node.cloneNode();\n      for (var i = 0; i < node.childNodes.length; i++)\n        copy.appendChild(instantiate(node.childNodes[i]));\n      return copy;\n    } else if (node.nodeType == document.TEXT_NODE) {\n      return document.createTextNode(\n               instantiateText(node.nodeValue));\n    } else {\n      return node;\n    }\n  }\n\n  var template = document.querySelector(\"#template .\" + name);\n  return instantiate(template);\n}"
             },
             {
               "element": "p",
@@ -1712,7 +1722,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function drawTalk(talk) {\n  var node = instantiateTemplate(\"talk\", talk);\n  var comments = node.querySelector(\".comments\");\n  talk.comments.forEach(function(comment) {\n    comments.appendChild(\n      instantiateTemplate(\"comment\", comment));\n  });\n\n  node.querySelector(\"button.del\").addEventListener(\n    \"click\", deleteTalk.bind(null, talk.title));\n\n  var form = node.querySelector(\"form\");\n  form.addEventListener(\"submit\", function(event) {\n    event.preventDefault();\n    addComment(talk.title, form.elements.comment.value);\n    form.reset();\n  });\n  return node;\n}"
             },
             {
               "element": "p",
@@ -1784,7 +1794,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function talkURL(title) {\n  return \"talks/\" + encodeURIComponent(title);\n}"
             },
             {
               "element": "p",
@@ -1809,7 +1819,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function deleteTalk(title) {\n  request({pathname: talkURL(title), method: \"DELETE\"},\n          reportError);\n}"
             },
             {
               "element": "p",
@@ -1827,7 +1837,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function addComment(title, comment) {\n  var comment = {author: nameField.value, message: comment};\n  request({pathname: talkURL(title) + \"/comments\",\n           body: JSON.stringify(comment),\n           method: \"POST\"},\n          reportError);\n}"
             },
             {
               "element": "p",
@@ -1850,9 +1860,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "input",
-                    ">"
+                    "<input>"
                   ]
                 },
                 " field at the top of the page that allows the user to specify their name. We also wire up that field to ",
@@ -1868,7 +1876,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var nameField = document.querySelector(\"#name\");\n\nnameField.value = localStorage.getItem(\"name\") || \"\";\n\nnameField.addEventListener(\"change\", function() {\n  localStorage.setItem(\"name\", nameField.value);\n});"
             },
             {
               "element": "p",
@@ -1893,7 +1901,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var talkForm = document.querySelector(\"#newtalk\");\n\ntalkForm.addEventListener(\"submit\", function(event) {\n  event.preventDefault();\n  request({pathname: talkURL(talkForm.elements.title.value),\n           method: \"PUT\",\n           body: JSON.stringify({\n             presenter: nameField.value,\n             summary: talkForm.elements.summary.value\n           })}, reportError);\n  talkForm.reset();\n});"
             }
           ],
           "title": "Updating the server"
@@ -1923,7 +1931,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function waitForChanges() {\n  request({pathname: \"talks?changesSince=\" + lastServerTime},\n          function(error, response) {\n    if (error) {\n      setTimeout(waitForChanges, 2500);\n      console.error(error.stack);\n    } else {\n      response = JSON.parse(response);\n      displayTalks(response.talks);\n      lastServerTime = response.serverTime;\n      waitForChanges();\n    }\n  });\n}"
             },
             {
               "element": "p",
@@ -2024,91 +2032,96 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The simplest solution I can come up with is to encode the whole ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "talks"
+                    "The simplest solution I can come up with is to encode the whole ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "talks"
+                      ]
+                    },
+                    " object as JSON and dump it to a file with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "fs.writeFile"
+                      ]
+                    },
+                    ". There is already a function (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "registerChange"
+                      ]
+                    },
+                    ") that is called every time the server’s data changes. It can be extended to write the new data to disk."
                   ]
                 },
-                " object as JSON and dump it to a file with ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "fs.writeFile"
+                    "Pick a filename, for example ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "./talks.json"
+                      ]
+                    },
+                    ". When the server starts, it can try to read that file with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "fs.readFile"
+                      ]
+                    },
+                    ", and if that succeeds, the server can use the file’s contents as its starting data."
                   ]
                 },
-                ". There is already a function (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "registerChange"
+                    "Beware, though. The ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "talks"
+                      ]
+                    },
+                    " object started as a prototype-less object so that the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "in"
+                      ]
+                    },
+                    " operator could be sanely used. ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "JSON.parse"
+                      ]
+                    },
+                    " will return regular objects with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Object.prototype"
+                      ]
+                    },
+                    " as their prototype. If you use JSON as your file format, you’ll have to copy the properties of the object returned by ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "JSON.parse"
+                      ]
+                    },
+                    " into a new, prototype-less object."
                   ]
-                },
-                ") that is called every time the server’s data changes. It can be extended to write the new data to disk."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Pick a filename, for example ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "./talks.json"
-                  ]
-                },
-                ". When the server starts, it can try to read that file with ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "fs.readFile"
-                  ]
-                },
-                ", and if that succeeds, the server can use the file’s contents as its starting data."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Beware, though. The ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "talks"
-                  ]
-                },
-                " object started as a prototype-less object so that the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "in"
-                  ]
-                },
-                " operator could be sanely used. ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "JSON.parse"
-                  ]
-                },
-                " will return regular objects with ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Object.prototype"
-                  ]
-                },
-                " as their prototype. If you use JSON as your file format, you’ll have to copy the properties of the object returned by ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "JSON.parse"
-                  ]
-                },
-                " into a new, prototype-less object."
+                }
               ]
             }
           ],
@@ -2130,15 +2143,20 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The ad hoc approach is to simply store the state of a talk’s comment field (its content and whether it is focused) before redrawing the talk and then reset the field to its old state afterward."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " Another solution would be to not simply replace the old DOM structure with the new one but recursively compare them, node by node, and update only the parts that actually changed. This is a lot harder to implement, but it’s more general and continues working even if we add another text field."
+                {
+                  "element": "p",
+                  "content": [
+                    "The ad hoc approach is to simply store the state of a talk’s comment field (its content and whether it is focused) before redrawing the talk and then reset the field to its old state afterward."
+                  ]
+                },
+                {
+                  "element": "p",
+                  "content": [
+                    "Another solution would be to not simply replace the old DOM structure with the new one but recursively compare them, node by node, and update only the parts that actually changed. This is a lot harder to implement, but it’s more general and continues working even if we add another text field."
+                  ]
+                }
               ]
             }
           ],
@@ -2196,7 +2214,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "<div class=\"comments\">\n  <div class=\"comment\" template-repeat=\"comments\">\n    <span class=\"name\">{{author}}</span>: {{message}}\n  </div>\n</div>"
             },
             {
               "element": "p",
@@ -2259,43 +2277,48 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "You could change ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "instantiateTemplate"
+                    "You could change ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "instantiateTemplate"
+                      ]
+                    },
+                    " so that its inner function takes not just a node but also a current context as an argument. You can then, when looping over a node’s child nodes, check whether the child has a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "template-repeat"
+                      ]
+                    },
+                    " attribute. If it does, don’t instantiate it once but instead loop over the array indicated by the attribute’s value and instantiate it once for every element in the array, passing the current array element as context."
                   ]
                 },
-                " so that its inner function takes not just a node but also a current context as an argument. You can then, when looping over a node’s child nodes, check whether the child has a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "template-repeat"
+                    "Conditionals can be implemented in a similar way, with attributes called, for example, ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "template-when"
+                      ]
+                    },
+                    " and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "template-unless"
+                      ]
+                    },
+                    ", which cause a node to be instantiated only when a given property is true (or false)."
                   ]
-                },
-                " attribute. If it does, don’t instantiate it once but instead loop over the array indicated by the attribute’s value and instantiate it once for every element in the array, passing the current array element as context."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Conditionals can be implemented in a similar way, with attributes called, for example, ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "template-when"
-                  ]
-                },
-                " and ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "template-unless"
-                  ]
-                },
-                ", which cause a node to be instantiated only when a given property is true (or false)."
+                }
               ]
             }
           ],
@@ -2307,7 +2330,7 @@
             {
               "element": "p",
               "content": [
-                " When someone visits our website with a browser that has JavaScript disabled or is simply not capable of displaying JavaScript, they will get a completely broken, inoperable page. This is not nice."
+                "When someone visits our website with a browser that has JavaScript disabled or is simply not capable of displaying JavaScript, they will get a completely broken, inoperable page. This is not nice."
               ]
             },
             {
@@ -2329,68 +2352,75 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Two central aspects of the approach taken in this chapter—a clean HTTP interface and client-side template rendering—don’t work without JavaScript. Normal HTML forms can send ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "GET"
+                    "Two central aspects of the approach taken in this chapter—a clean HTTP interface and client-side template rendering—don’t work without JavaScript. Normal HTML forms can send ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "GET"
+                      ]
+                    },
+                    " and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "POST"
+                      ]
+                    },
+                    " requests but not ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "PUT"
+                      ]
+                    },
+                    " or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "DELETE"
+                      ]
+                    },
+                    " requests and can send their data only to a fixed URL."
                   ]
                 },
-                " and ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "POST"
+                    "Thus, the server would have to be revised to accept comments, new talks, and deleted talks through ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "POST"
+                      ]
+                    },
+                    " requests, whose bodies aren’t JSON but rather use the URL-encoded format that HTML forms use (see ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        "Chapter 17"
+                      ]
+                    },
+                    "). These requests would have to return the full new page so that users see the new state of the site after they make a change. This would not be too hard to engineer and could be implemented alongside the “clean” HTTP interface."
                   ]
                 },
-                " requests but not ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "PUT"
+                    "The code for rendering talks would have to be duplicated on the server. The ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "index.html"
+                      ]
+                    },
+                    " file, rather than being a static file, would have to be generated dynamically by adding a handler for it to the router. That way, it already includes the current talks and comments when it gets served."
                   ]
-                },
-                " or ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "DELETE"
-                  ]
-                },
-                " requests and can send their data only to a fixed URL."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Thus, the server would have to be revised to accept comments, new talks, and deleted talks through ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "POST"
-                  ]
-                },
-                " requests, whose bodies aren’t JSON but rather use the URL-encoded format that HTML forms use (see ",
-                {
-                  "element": "reference",
-                  "content": "Chapter 17"
-                },
-                "). These requests would have to return the full new page so that users see the new state of the site after they make a change. This would not be too hard to engineer and could be implemented alongside the “clean” HTTP interface."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The code for rendering talks would have to be duplicated on the server. The ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "index.html"
-                  ]
-                },
-                " file, rather than being a static file, would have to be generated dynamically by adding a handler for it to the router. That way, it already includes the current talks and comments when it gets served."
+                }
               ]
             }
           ],

@@ -100,9 +100,7 @@
             {
               "element": "literal",
               "content": [
-                "\"2 3",
-                " ",
-                "5 7 11\""
+                "\"2 35 7 11\""
               ]
             },
             " as our representation. But this is awkward. You’d have to somehow extract the digits and convert them back to numbers to access them."
@@ -111,7 +109,7 @@
         {
           "element": "p",
           "content": [
-            " Fortunately, JavaScript provides a data type specifically for storing sequences of values. It is called an ",
+            "Fortunately, JavaScript provides a data type specifically for storing sequences of values. It is called an ",
             {
               "element": "em",
               "content": [
@@ -124,12 +122,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var listOfNumbers = [2, 3, 5, 7, 11];\nconsole.log(listOfNumbers[1]);\n// → 3\nconsole.log(listOfNumbers[1 - 1]);\n// → 2"
         },
         {
           "element": "p",
           "content": [
-            " The notation for getting at the elements inside an array also uses square brackets. A pair of square brackets immediately after an expression, with another expression inside of them, will look up the element in the left-hand expression that corresponds to the ",
+            "The notation for getting at the elements inside an array also uses square brackets. A pair of square brackets immediately after an expression, with another expression inside of them, will look up the element in the left-hand expression that corresponds to the ",
             {
               "element": "em",
               "content": [
@@ -161,7 +159,7 @@
         {
           "element": "p",
           "content": [
-            "  We’ve seen a few suspicious-looking expressions like ",
+            " We’ve seen a few suspicious-looking expressions like ",
             {
               "element": "literal",
               "content": [
@@ -236,7 +234,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "null.length;\n// → TypeError: Cannot read property 'length' of null"
         },
         {
           "element": "p",
@@ -351,7 +349,7 @@
         {
           "element": "p",
           "content": [
-            "  The elements in an array are stored in properties. Because the names of these properties are numbers and we often need to get their name from a variable, we have to use the bracket syntax to access them. The ",
+            " The elements in an array are stored in properties. Because the names of these properties are numbers and we often need to get their name from a variable, we have to use the bracket syntax to access them. The ",
             {
               "element": "literal",
               "content": [
@@ -384,7 +382,7 @@
         {
           "element": "p",
           "content": [
-            " Both string and array objects contain, in addition to the ",
+            "Both string and array objects contain, in addition to the ",
             {
               "element": "literal",
               "content": [
@@ -397,7 +395,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var doh = \"Doh\";\nconsole.log(typeof doh.toUpperCase);\n// → function\nconsole.log(doh.toUpperCase());\n// → DOH"
         },
         {
           "element": "p",
@@ -439,7 +437,9 @@
             ", the value whose property we called. How this works is described in ",
             {
               "element": "reference",
-              "content": "Chapter 6"
+              "content": [
+                "Chapter 6"
+              ]
             },
             "."
           ]
@@ -473,7 +473,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var mack = [];\nmack.push(\"Mack\");\nmack.push(\"the\", \"Knife\");\nconsole.log(mack);\n// → [\"Mack\", \"the\", \"Knife\"]\nconsole.log(mack.join(\" \"));\n// → Mack the Knife\nconsole.log(mack.pop());\n// → Knife\nconsole.log(mack);\n// → [\"Mack\", \"the\"]"
         },
         {
           "element": "p",
@@ -537,18 +537,18 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var day1 = {\n  squirrel: false,\n  events: [\"work\", \"touched tree\", \"pizza\", \"running\",\n           \"television\"]\n};\nconsole.log(day1.squirrel);\n// → false\nconsole.log(day1.wolf);\n// → undefined\nday1.wolf = false;\nconsole.log(day1.wolf);\n// → false"
         },
         {
           "element": "p",
           "content": [
-            " Inside the curly braces, we can give a list of properties separated by commas. Each property is written as a name, followed by a colon, followed by an expression that provides a value for the property. Spaces and line breaks are not significant. When an object spans multiple lines, indenting it like in the previous example improves readability. Properties whose names are not valid variable names or valid numbers have to be quoted."
+            "Inside the curly braces, we can give a list of properties separated by commas. Each property is written as a name, followed by a colon, followed by an expression that provides a value for the property. Spaces and line breaks are not significant. When an object spans multiple lines, indenting it like in the previous example improves readability. Properties whose names are not valid variable names or valid numbers have to be quoted."
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var descriptions = {\n  work: \"Went to work\",\n  \"touched tree\": \"Touched a tree\"\n};"
         },
         {
           "element": "p",
@@ -586,7 +586,7 @@
         {
           "element": "p",
           "content": [
-            " It is possible to assign a value to a property expression with the ",
+            "It is possible to assign a value to a property expression with the ",
             {
               "element": "literal",
               "content": [
@@ -599,7 +599,7 @@
         {
           "element": "p",
           "content": [
-            " To briefly return to our tentacle model of variable bindings—property bindings are similar. They ",
+            "To briefly return to our tentacle model of variable bindings—property bindings are similar. They ",
             {
               "element": "em",
               "content": [
@@ -616,7 +616,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -629,12 +629,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var anObject = {left: 1, right: 2};\nconsole.log(anObject.left);\n// → 1\ndelete anObject.left;\nconsole.log(anObject.left);\n// → undefined\nconsole.log(\"left\" in anObject);\n// → false\nconsole.log(\"right\" in anObject);\n// → true"
         },
         {
           "element": "p",
           "content": [
-            " The binary ",
+            "The binary ",
             {
               "element": "literal",
               "content": [
@@ -705,7 +705,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var journal = [\n  {events: [\"work\", \"touched tree\", \"pizza\",\n            \"running\", \"television\"],\n   squirrel: false},\n  {events: [\"work\", \"ice cream\", \"cauliflower\",\n            \"lasagna\", \"touched tree\", \"brushed teeth\"],\n   squirrel: false},\n  {events: [\"weekend\", \"cycling\", \"break\",\n            \"peanuts\", \"beer\"],\n   squirrel: true},\n  /* and so on... */\n];"
         }
       ],
       "title": "Objects"
@@ -776,18 +776,18 @@
         {
           "element": "p",
           "content": [
-            " When we have two numbers, 120 and 120, we can consider them precisely the same number, whether or not they refer to the same physical bits. But with objects, there is a difference between having two references to the same object and having two different objects that contain the same properties. Consider the following code:"
+            "When we have two numbers, 120 and 120, we can consider them precisely the same number, whether or not they refer to the same physical bits. But with objects, there is a difference between having two references to the same object and having two different objects that contain the same properties. Consider the following code:"
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var object1 = {value: 10};\nvar object2 = object1;\nvar object3 = {value: 10};\n\nconsole.log(object1 == object2);\n// → true\nconsole.log(object1 == object3);\n// → false\n\nobject1.value = 15;\nconsole.log(object2.value);\n// → 15\nconsole.log(object3.value);\n// → 10"
         },
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -842,7 +842,7 @@
         {
           "element": "p",
           "content": [
-            " JavaScript’s ",
+            "JavaScript’s ",
             {
               "element": "literal",
               "content": [
@@ -866,7 +866,9 @@
             ", even if they have identical contents. There is no “deep” comparison operation built into JavaScript, which looks at object’s contents, but it is possible to write it yourself (which will be one of the ",
             {
               "element": "reference",
-              "content": "exercises"
+              "content": [
+                "exercises"
+              ]
             },
             " at the end of this chapter)."
           ]
@@ -886,7 +888,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var journal = [];\n\nfunction addEntry(events, didITurnIntoASquirrel) {\n  journal.push({\n    events: events,\n    squirrel: didITurnIntoASquirrel\n  });\n}"
         },
         {
           "element": "p",
@@ -897,7 +899,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "addEntry([\"work\", \"touched tree\", \"pizza\", \"running\",\n          \"television\"], false);\naddEntry([\"work\", \"ice cream\", \"cauliflower\", \"lasagna\",\n          \"touched tree\", \"brushed teeth\"], false);\naddEntry([\"weekend\", \"cycling\", \"break\", \"peanuts\",\n          \"beer\"], true);"
         },
         {
           "element": "p",
@@ -1036,13 +1038,11 @@
         {
           "element": "p",
           "content": [
-            "  We can represent a two-by-two table in JavaScript with a four-element array (",
+            " We can represent a two-by-two table in JavaScript with a four-element array (",
             {
               "element": "literal",
               "content": [
-                "[76, 9,",
-                " ",
-                "4, 1]"
+                "[76, 9,4, 1]"
               ]
             },
             "). We could also use other representations, such as an array containing two two-element arrays (",
@@ -1099,7 +1099,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function phi(table) {\n  return (table[3] * table[0] - table[2] * table[1]) /\n    Math.sqrt((table[2] + table[3]) *\n              (table[0] + table[1]) *\n              (table[1] + table[3]) *\n              (table[0] + table[2]));\n}\n\nconsole.log(phi([76, 9, 4, 1]));\n// → 0.068599434"
         },
         {
           "element": "p",
@@ -1141,7 +1141,9 @@
             " variable, and in a downloadable ",
             {
               "element": "reference",
-              "content": "file"
+              "content": [
+                "file"
+              ]
             },
             "."
           ]
@@ -1155,12 +1157,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function hasEvent(event, entry) {\n  return entry.events.indexOf(event) != -1;\n}\n\nfunction tableFor(event, journal) {\n  var table = [0, 0, 0, 0];\n  for (var i = 0; i < journal.length; i++) {\n    var entry = journal[i], index = 0;\n    if (hasEvent(event, entry)) index += 1;\n    if (entry.squirrel) index += 2;\n    table[index] += 1;\n  }\n  return table;\n}\n\nconsole.log(tableFor(\"pizza\", JOURNAL));\n// → [76, 9, 4, 1]"
         },
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -1187,7 +1189,7 @@
         {
           "element": "p",
           "content": [
-            " The body of the loop in ",
+            "The body of the loop in ",
             {
               "element": "literal",
               "content": [
@@ -1239,7 +1241,7 @@
         {
           "element": "p",
           "content": [
-            " A better way is to use object properties named after the event types. We can use the square bracket access notation to create and read the properties and can use the ",
+            "A better way is to use object properties named after the event types. We can use the square bracket access notation to create and read the properties and can use the ",
             {
               "element": "literal",
               "content": [
@@ -1252,7 +1254,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var map = {};\nfunction storePhi(event, phi) {\n  map[event] = phi;\n}\n\nstorePhi(\"pizza\", 0.069);\nstorePhi(\"touched tree\", -0.081);\nconsole.log(\"pizza\" in map);\n// → true\nconsole.log(map[\"touched tree\"]);\n// → -0.081"
         },
         {
           "element": "p",
@@ -1280,7 +1282,9 @@
             "There are a few potential problems with using objects like this, which we will discuss in ",
             {
               "element": "reference",
-              "content": "Chapter 6"
+              "content": [
+                "Chapter 6"
+              ]
             },
             ", but for the time being, we won’t worry about those."
           ]
@@ -1288,7 +1292,7 @@
         {
           "element": "p",
           "content": [
-            " What if we want to find all the events for which we have stored a coefficient? The properties don’t form a predictable series, like they would in an array, so we cannot use a normal ",
+            "What if we want to find all the events for which we have stored a coefficient? The properties don’t form a predictable series, like they would in an array, so we cannot use a normal ",
             {
               "element": "literal",
               "content": [
@@ -1315,7 +1319,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var event in map)\n  console.log(\"The correlation for '\" + event +\n              \"' is \" + map[event]);\n// → The correlation for 'pizza' is 0.069\n// → The correlation for 'touched tree' is -0.081"
         }
       ],
       "title": "Objects as maps"
@@ -1346,7 +1350,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function gatherCorrelations(journal) {\n  var phis = {};\n  for (var entry = 0; entry < journal.length; entry++) {\n    var events = journal[entry].events;\n    for (var i = 0; i < events.length; i++) {\n      var event = events[i];\n      if (!(event in phis))\n        phis[event] = phi(tableFor(event, journal));\n    }\n  }\n  return phis;\n}\n\nvar correlations = gatherCorrelations(JOURNAL);\nconsole.log(correlations.pizza);\n// → 0.068599434"
         },
         {
           "element": "p",
@@ -1357,7 +1361,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var event in correlations)\n  console.log(event + \": \" + correlations[event]);\n// → carrot:   0.0140970969\n// → exercise: 0.0685994341\n// → weekend:  0.1371988681\n// → bread:   -0.0757554019\n// → pudding: -0.0648203724\n// and so on..."
         },
         {
           "element": "p",
@@ -1375,7 +1379,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var event in correlations) {\n  var correlation = correlations[event];\n  if (correlation > 0.1 || correlation < -0.1)\n    console.log(event + \": \" + correlation);\n}\n// → weekend:        0.1371988681\n// → brushed teeth: -0.3805211953\n// → candy:          0.1296407447\n// → work:          -0.1371988681\n// → spaghetti:      0.2425356250\n// → reading:        0.1106828054\n// → peanuts:        0.5902679812"
         },
         {
           "element": "p",
@@ -1392,7 +1396,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (var i = 0; i < JOURNAL.length; i++) {\n  var entry = JOURNAL[i];\n  if (hasEvent(\"peanuts\", entry) &&\n     !hasEvent(\"brushed teeth\", entry))\n    entry.events.push(\"peanut teeth\");\n}\nconsole.log(phi(tableFor(\"peanut teeth\", JOURNAL)));\n// → 1"
         },
         {
           "element": "p",
@@ -1413,9 +1417,7 @@
             {
               "element": "em",
               "content": [
-                "The Incredible",
-                " ",
-                "Squirrelman"
+                "The IncredibleSquirrelman"
               ]
             },
             " by stuffing his mouth with peanut butter before every show. One day, fed up with this pitiful existence, Jacques fails to change back into his human form, hops through a crack in the circus tent, and vanishes into the forest. He is never seen again."
@@ -1430,7 +1432,7 @@
         {
           "element": "p",
           "content": [
-            " Before finishing up this chapter, I want to introduce you to a few more object-related concepts. We’ll start by introducing some generally useful array methods."
+            "Before finishing up this chapter, I want to introduce you to a few more object-related concepts. We’ll start by introducing some generally useful array methods."
           ]
         },
         {
@@ -1453,7 +1455,9 @@
             ", which add and remove elements at the end of an array, ",
             {
               "element": "reference",
-              "content": "earlier"
+              "content": [
+                "earlier"
+              ]
             },
             " in this chapter. The corresponding methods for adding and removing things at the start of an array are called ",
             {
@@ -1475,7 +1479,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var todoList = [];\nfunction rememberTo(task) {\n  todoList.push(task);\n}\nfunction whatIsNext() {\n  return todoList.shift();\n}\nfunction urgentlyRememberTo(task) {\n  todoList.unshift(task);\n}"
         },
         {
           "element": "p",
@@ -1507,7 +1511,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -1527,7 +1531,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log([1, 2, 3, 2, 1].indexOf(2));\n// → 1\nconsole.log([1, 2, 3, 2, 1].lastIndexOf(2));\n// → 3"
         },
         {
           "element": "p",
@@ -1552,7 +1556,7 @@
         {
           "element": "p",
           "content": [
-            " Another fundamental method is ",
+            "Another fundamental method is ",
             {
               "element": "literal",
               "content": [
@@ -1565,12 +1569,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log([0, 1, 2, 3, 4].slice(2, 4));\n// → [2, 3]\nconsole.log([0, 1, 2, 3, 4].slice(2));\n// → [2, 3, 4]"
         },
         {
           "element": "p",
           "content": [
-            " When the end index is not given, ",
+            "When the end index is not given, ",
             {
               "element": "literal",
               "content": [
@@ -1624,7 +1628,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function remove(array, index) {\n  return array.slice(0, index)\n    .concat(array.slice(index + 1));\n}\nconsole.log(remove([\"a\", \"b\", \"c\", \"d\", \"e\"], 2));\n// → [\"a\", \"b\", \"d\", \"e\"]"
         }
       ],
       "title": "Further arrayology"
@@ -1635,7 +1639,7 @@
         {
           "element": "p",
           "content": [
-            " We can read properties like ",
+            "We can read properties like ",
             {
               "element": "literal",
               "content": [
@@ -1655,7 +1659,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var myString = \"Fido\";\nmyString.myProperty = \"value\";\nconsole.log(myString.myProperty);\n// → undefined"
         },
         {
           "element": "p",
@@ -1666,7 +1670,7 @@
         {
           "element": "p",
           "content": [
-            "  But these types do have some built-in properties. Every string value has a number of methods. The most useful ones are probably ",
+            " But these types do have some built-in properties. Every string value has a number of methods. The most useful ones are probably ",
             {
               "element": "literal",
               "content": [
@@ -1686,7 +1690,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"coconuts\".slice(4, 7));\n// → nut\nconsole.log(\"coconut\".indexOf(\"u\"));\n// → 5"
         },
         {
           "element": "p",
@@ -1704,7 +1708,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"one two three\".indexOf(\"ee\"));\n// → 11"
         },
         {
           "element": "p",
@@ -1722,12 +1726,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"  okay \\n \".trim());\n// → okay"
         },
         {
           "element": "p",
           "content": [
-            "  We have already seen the string type’s ",
+            " We have already seen the string type’s ",
             {
               "element": "literal",
               "content": [
@@ -1747,7 +1751,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var string = \"abc\";\nconsole.log(string.length);\n// → 3\nconsole.log(string.charAt(0));\n// → a\nconsole.log(string[1]);\n// → b"
         }
       ],
       "title": "Strings and their properties"
@@ -1771,7 +1775,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function noArguments() {}\nnoArguments(1, 2, 3); // This is okay\nfunction threeArguments(a, b, c) {}\nthreeArguments(); // And so is this"
         },
         {
           "element": "p",
@@ -1796,7 +1800,7 @@
         {
           "element": "p",
           "content": [
-            " If that sounds a lot like an array to you, you’re right, it ",
+            "If that sounds a lot like an array to you, you’re right, it ",
             {
               "element": "em",
               "content": [
@@ -1823,7 +1827,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function argumentCounter() {\n  console.log(\"You gave me\", arguments.length, \"arguments.\");\n}\nargumentCounter(\"Straw man\", \"Tautology\", \"Ad hominem\");\n// → You gave me 3 arguments."
         },
         {
           "element": "p",
@@ -1848,7 +1852,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "addEntry([\"work\", \"touched tree\", \"pizza\", \"running\",\n          \"television\"], false);"
         },
         {
           "element": "p",
@@ -1859,12 +1863,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function addEntry(squirrel) {\n  var entry = {events: [], squirrel: squirrel};\n  for (var i = 1; i < arguments.length; i++)\n    entry.events.push(arguments[i]);\n  journal.push(entry);\n}\naddEntry(true, \"work\", \"touched tree\", \"pizza\",\n         \"running\", \"television\");"
         },
         {
           "element": "p",
           "content": [
-            " This version reads its first argument (",
+            "This version reads its first argument (",
             {
               "element": "literal",
               "content": [
@@ -1944,7 +1948,7 @@
         {
           "element": "p",
           "content": [
-            " Having too many global variables “pollutes” the namespace. The more names that have been taken, the more likely you are to accidentally overwrite the value of some variable. For example, it’s not unlikely that you’ll want to name something ",
+            "Having too many global variables “pollutes” the namespace. The more names that have been taken, the more likely you are to accidentally overwrite the value of some variable. For example, it’s not unlikely that you’ll want to name something ",
             {
               "element": "literal",
               "content": [
@@ -2046,7 +2050,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function randomPointOnCircle(radius) {\n  var angle = Math.random() * 2 * Math.PI;\n  return {x: radius * Math.cos(angle),\n          y: radius * Math.sin(angle)};\n}\nconsole.log(randomPointOnCircle(2));\n// → {x: 0.3667, y: 1.966}"
         },
         {
           "element": "p",
@@ -2054,7 +2058,9 @@
             "If sines and cosines are not something you are very familiar with, don’t worry. When they are used in this book, in ",
             {
               "element": "reference",
-              "content": "Chapter 13"
+              "content": [
+                "Chapter 13"
+              ]
             },
             ", I’ll explain them."
           ]
@@ -2075,7 +2081,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(Math.random());\n// → 0.36993729369714856\nconsole.log(Math.random());\n// → 0.727367032552138\nconsole.log(Math.random());\n// → 0.40180766698904335"
         },
         {
           "element": "p",
@@ -2106,7 +2112,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(Math.floor(Math.random() * 10));\n// → 2"
         },
         {
           "element": "p",
@@ -2163,7 +2169,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var myVar = 10;\nconsole.log(\"myVar\" in window);\n// → true\nconsole.log(window.myVar);\n// → 10"
         }
       ],
       "title": "The global object"
@@ -2273,7 +2279,9 @@
                 "The ",
                 {
                   "element": "reference",
-                  "content": "introduction"
+                  "content": [
+                    "introduction"
+                  ]
                 },
                 " of this book alluded to the following as a nice way to compute the sum of a range of numbers:"
               ]
@@ -2281,7 +2289,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(sum(range(1, 10)));"
             },
             {
               "element": "p",
@@ -2358,9 +2366,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "[1, 3, 5,",
-                    " ",
-                    "7, 9]"
+                    "[1, 3, 5,7, 9]"
                   ]
                 },
                 ". Make sure it also works with negative step values so that ",
@@ -2381,106 +2387,108 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                " Building up an array is most easily done by first initializing a variable to ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "[]"
+                    "Building up an array is most easily done by first initializing a variable to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "[]"
+                      ]
+                    },
+                    " (a fresh, empty array) and repeatedly calling its ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "push"
+                      ]
+                    },
+                    " method to add a value. Don’t forget to return the array at the end of the function."
                   ]
                 },
-                " (a fresh, empty array) and repeatedly calling its ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "push"
+                    "Since the end boundary is inclusive, you’ll need to use the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<="
+                      ]
+                    },
+                    " operator rather than simply ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<"
+                      ]
+                    },
+                    " to check for the end of your loop."
                   ]
                 },
-                " method to add a value. Don’t forget to return the array at the end of the function."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " Since the end boundary is inclusive, you’ll need to use the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<",
-                    "="
+                    "To check whether the optional step argument was given, either check ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "arguments.length"
+                      ]
+                    },
+                    " or compare the value of the argument to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "undefined"
+                      ]
+                    },
+                    ". If it wasn’t given, simply set it to its default value (1) at the top of the function."
                   ]
                 },
-                " operator rather than simply ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<"
+                    "Having ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "range"
+                      ]
+                    },
+                    " understand negative step values is probably best done by writing two separate loops—one for counting up and one for counting down—because the comparison that checks whether the loop is finished needs to be ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        ">="
+                      ]
+                    },
+                    " rather than ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<="
+                      ]
+                    },
+                    " when counting downward."
                   ]
                 },
-                " to check for the end of your loop."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "To check whether the optional step argument was given, either check ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "arguments.length"
+                    "It might also be worthwhile to use a different default step, namely, -1, when the end of the range is smaller than the start. That way, ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "range(5, 2)"
+                      ]
+                    },
+                    " returns something meaningful, rather than getting stuck in an infinite loop."
                   ]
-                },
-                " or compare the value of the argument to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "undefined"
-                  ]
-                },
-                ". If it wasn’t given, simply set it to its default value (1) at the top of the function."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Having ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "range"
-                  ]
-                },
-                " understand negative step values is probably best done by writing two separate loops—one for counting up and one for counting down—because the comparison that checks whether the loop is finished needs to be ",
-                {
-                  "element": "literal",
-                  "content": [
-                    ">",
-                    "="
-                  ]
-                },
-                " rather than ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "<",
-                    "="
-                  ]
-                },
-                " when counting downward."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "It might also be worthwhile to use a different default step, namely, -1, when the end of the range is smaller than the start. That way, ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "range(5, 2)"
-                  ]
-                },
-                " returns something meaningful, rather than getting stuck in an infinite loop."
+                }
               ]
             }
           ],
@@ -2492,7 +2500,7 @@
             {
               "element": "p",
               "content": [
-                " Arrays have a method ",
+                "Arrays have a method ",
                 {
                   "element": "literal",
                   "content": [
@@ -2557,108 +2565,111 @@
                 "Thinking back to the notes about side effects and pure functions in the ",
                 {
                   "element": "reference",
-                  "content": "previous chapter"
+                  "content": [
+                    "previous chapter"
+                  ]
                 },
                 ", which variant do you expect to be useful in more situations? Which one is more efficient?"
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "There are two obvious ways to implement ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "reverseArray"
+                    "There are two obvious ways to implement ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "reverseArray"
+                      ]
+                    },
+                    ". The first is to simply go over the input array from front to back and use the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "unshift"
+                      ]
+                    },
+                    " method on the new array to insert each element at its start. The second is to loop over the input array backward and use the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "push"
+                      ]
+                    },
+                    " method. Iterating over an array backward requires a (somewhat awkward) ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "for"
+                      ]
+                    },
+                    " specification like ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "(var i =array.length - 1; i >= 0; i--)"
+                      ]
+                    },
+                    "."
                   ]
                 },
-                ". The first is to simply go over the input array from front to back and use the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "unshift"
+                    "Reversing the array in place is harder. You have to be careful not to overwrite elements that you will later need. Using ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "reverseArray"
+                      ]
+                    },
+                    " or otherwise copying the whole array (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "array.slice(0)"
+                      ]
+                    },
+                    " is a good way to copy an array) works but is cheating."
                   ]
                 },
-                " method on the new array to insert each element at its start. The second is to loop over the input array backward and use the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "push"
+                    "The trick is to ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "swap"
+                      ]
+                    },
+                    " the first and last elements, then the second and second-to-last, and so on. You can do this by looping over half the length of the array (use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Math.floor"
+                      ]
+                    },
+                    " to round down—you don’t need to touch the middle element in an array with an odd length) and swapping the element at position ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "i"
+                      ]
+                    },
+                    " with the one at position ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "array.length - 1 - i"
+                      ]
+                    },
+                    ". You can use a local variable to briefly hold on to one of the elements, overwrite that one with its mirror image, and then put the value from the local variable in the place where the mirror image used to be."
                   ]
-                },
-                " method. Iterating over an array backward requires a (somewhat awkward) ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "for"
-                  ]
-                },
-                " specification like ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "(var i =",
-                    " ",
-                    "array.length - 1; i ",
-                    ">",
-                    "= 0; i--)"
-                  ]
-                },
-                "."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Reversing the array in place is harder. You have to be careful not to overwrite elements that you will later need. Using ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "reverseArray"
-                  ]
-                },
-                " or otherwise copying the whole array (",
-                {
-                  "element": "literal",
-                  "content": [
-                    "array.slice(0)"
-                  ]
-                },
-                " is a good way to copy an array) works but is cheating."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The trick is to ",
-                {
-                  "element": "em",
-                  "content": [
-                    "swap"
-                  ]
-                },
-                " the first and last elements, then the second and second-to-last, and so on. You can do this by looping over half the length of the array (use ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Math.floor"
-                  ]
-                },
-                " to round down—you don’t need to touch the middle element in an array with an odd length) and swapping the element at position ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "i"
-                  ]
-                },
-                " with the one at position ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "array.length - 1 - i"
-                  ]
-                },
-                ". You can use a local variable to briefly hold on to one of the elements, overwrite that one with its mirror image, and then put the value from the local variable in the place where the mirror image used to be."
+                }
               ]
             }
           ],
@@ -2683,7 +2694,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var list = {\n  value: 1,\n  rest: {\n    value: 2,\n    rest: {\n      value: 3,\n      rest: null\n    }\n  }\n};"
             },
             {
               "element": "p",
@@ -2784,132 +2795,135 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Building up a list is best done back to front. So ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "arrayToList"
+                    "Building up a list is best done back to front. So ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "arrayToList"
+                      ]
+                    },
+                    " could iterate over the array backward (see previous exercise) and, for each element, add an object to the list. You can use a local variable to hold the part of the list that was built so far and use a pattern like ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "list = {value: X, rest:list}"
+                      ]
+                    },
+                    " to add an element."
                   ]
                 },
-                " could iterate over the array backward (see previous exercise) and, for each element, add an object to the list. You can use a local variable to hold the part of the list that was built so far and use a pattern like ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "list = {value: X, rest:",
-                    " ",
-                    "list}"
+                    "To run over a list (in ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "listToArray"
+                      ]
+                    },
+                    " and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "nth"
+                      ]
+                    },
+                    "), a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "for"
+                      ]
+                    },
+                    " loop specification like this can be used:"
                   ]
                 },
-                " to add an element."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "To run over a list (in ",
                 {
-                  "element": "literal",
+                  "element": "listing",
+                  "numbered": false,
+                  "content": "for (var node = list; node; node = node.rest) {}"
+                },
+                {
+                  "element": "p",
                   "content": [
-                    "listToArray"
+                    "Can you see how that works? Every iteration of the loop, ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "node"
+                      ]
+                    },
+                    " points to the current sublist, and the body can read its ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "value"
+                      ]
+                    },
+                    " property to get the current element. At the end of an iteration, ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "node"
+                      ]
+                    },
+                    " moves to the next sublist. When that is null, we have reached the end of the list and the loop is finished."
                   ]
                 },
-                " and ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "nth"
+                    "The recursive version of ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "nth"
+                      ]
+                    },
+                    " will, similarly, look at an ever smaller part of the “tail” of the list and at the same time count down the index until it reaches zero, at which point it can return the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "value"
+                      ]
+                    },
+                    " property of the node it is looking at. To get the zeroeth element of a list, you simply take the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "value"
+                      ]
+                    },
+                    " property of its head node. To get element ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "N"
+                      ]
+                    },
+                    " + 1, you take the ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "N"
+                      ]
+                    },
+                    "th element of the list that’s in this list’s ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "rest"
+                      ]
+                    },
+                    " property."
                   ]
-                },
-                "), a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "for"
-                  ]
-                },
-                " loop specification like this can be used:"
-              ]
-            },
-            {
-              "element": "listing",
-              "numbered": false,
-              "content": []
-            },
-            {
-              "element": "p",
-              "content": [
-                "Can you see how that works? Every iteration of the loop, ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "node"
-                  ]
-                },
-                " points to the current sublist, and the body can read its ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "value"
-                  ]
-                },
-                " property to get the current element. At the end of an iteration, ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "node"
-                  ]
-                },
-                " moves to the next sublist. When that is null, we have reached the end of the list and the loop is finished."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The recursive version of ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "nth"
-                  ]
-                },
-                " will, similarly, look at an ever smaller part of the “tail” of the list and at the same time count down the index until it reaches zero, at which point it can return the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "value"
-                  ]
-                },
-                " property of the node it is looking at. To get the zeroeth element of a list, you simply take the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "value"
-                  ]
-                },
-                " property of its head node. To get element ",
-                {
-                  "element": "em",
-                  "content": [
-                    "N"
-                  ]
-                },
-                " + 1, you take the ",
-                {
-                  "element": "em",
-                  "content": [
-                    "N"
-                  ]
-                },
-                "th element of the list that’s in this list’s ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "rest"
-                  ]
-                },
-                " property."
+                }
               ]
             }
           ],
@@ -2993,68 +3007,68 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Your test for whether you are dealing with a real object will look something like ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "typeof x == \"object\" ",
-                    "&",
-                    "&",
-                    " x !=",
-                    " ",
-                    "null"
+                    "Your test for whether you are dealing with a real object will look something like ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "typeof x == \"object\" && x !=null"
+                      ]
+                    },
+                    ". Be careful to compare properties only when ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "both"
+                      ]
+                    },
+                    " arguments are objects. In all other cases you can just immediately return the result of applying ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "==="
+                      ]
+                    },
+                    "."
                   ]
                 },
-                ". Be careful to compare properties only when ",
                 {
-                  "element": "em",
+                  "element": "p",
                   "content": [
-                    "both"
+                    "Use a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "for"
+                      ]
+                    },
+                    "/",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "in"
+                      ]
+                    },
+                    " loop to go over the properties. You need to test whether both objects have the same set of property names and whether those properties have identical values. The first test can be done by counting the properties in both objects and returning false if the numbers of properties are different. If they’re the same, then go over the properties of one object, and for each of them, verify that the other object also has the property. The values of the properties are compared by a recursive call to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "deepEqual"
+                      ]
+                    },
+                    "."
                   ]
                 },
-                " arguments are objects. In all other cases you can just immediately return the result of applying ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "==="
+                    "Returning the correct value from the function is best done by immediately returning false when a mismatch is noticed and returning true at the end of the function."
                   ]
-                },
-                "."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Use a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "for"
-                  ]
-                },
-                "/",
-                {
-                  "element": "literal",
-                  "content": [
-                    "in"
-                  ]
-                },
-                " loop to go over the properties. You need to test whether both objects have the same set of property names and whether those properties have identical values. The first test can be done by counting the properties in both objects and returning false if the numbers of properties are different. If they’re the same, then go over the properties of one object, and for each of them, verify that the other object also has the property. The values of the properties are compared by a recursive call to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "deepEqual"
-                  ]
-                },
-                "."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Returning the correct value from the function is best done by immediately returning false when a mismatch is noticed and returning true at the end of the function."
+                }
               ]
             }
           ],

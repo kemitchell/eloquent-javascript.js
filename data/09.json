@@ -34,7 +34,7 @@
     {
       "element": "p",
       "content": [
-        " Regular expressions are both terribly awkward and extremely useful. Their syntax is cryptic, and the programming interface JavaScript provides for them is clumsy. But they are a powerful tool for inspecting and processing strings. Properly understanding regular expressions will make you a more effective programmer."
+        "Regular expressions are both terribly awkward and extremely useful. Their syntax is cryptic, and the programming interface JavaScript provides for them is clumsy. But they are a powerful tool for inspecting and processing strings. Properly understanding regular expressions will make you a more effective programmer."
       ]
     },
     {
@@ -43,7 +43,7 @@
         {
           "element": "p",
           "content": [
-            " A regular expression is a type of object. It can either be constructed with the ",
+            "A regular expression is a type of object. It can either be constructed with the ",
             {
               "element": "literal",
               "content": [
@@ -63,7 +63,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var re1 = new RegExp(\"abc\");\nvar re2 = /abc/;"
         },
         {
           "element": "p",
@@ -108,7 +108,7 @@
         {
           "element": "p",
           "content": [
-            "  The second notation, where the pattern appears between slash characters, treats backslashes somewhat differently. First, since a forward slash ends the pattern, we need to put a backslash before any forward slash that we want to be ",
+            " The second notation, where the pattern appears between slash characters, treats backslashes somewhat differently. First, since a forward slash ends the pattern, we need to put a backslash before any forward slash that we want to be ",
             {
               "element": "em",
               "content": [
@@ -135,7 +135,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var eighteenPlus = /eighteen\\+/;"
         },
         {
           "element": "p",
@@ -152,7 +152,7 @@
         {
           "element": "p",
           "content": [
-            " Regular expression objects have a number of methods. The simplest one is ",
+            "Regular expression objects have a number of methods. The simplest one is ",
             {
               "element": "literal",
               "content": [
@@ -165,7 +165,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(/abc/.test(\"abcde\"));\n// → true\nconsole.log(/abc/.test(\"abxde\"));\n// → false"
         },
         {
           "element": "p",
@@ -235,7 +235,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(/[0123456789]/.test(\"in 1992\"));\n// → true\nconsole.log(/[0-9]/.test(\"in 1992\"));\n// → true"
         },
         {
           "element": "p",
@@ -555,7 +555,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var dateTime = /\\d\\d-\\d\\d-\\d\\d\\d\\d \\d\\d:\\d\\d/;\nconsole.log(dateTime.test(\"30-01-2003 15:20\"));\n// → true\nconsole.log(dateTime.test(\"30-jan-2003 15:20\"));\n// → false"
         },
         {
           "element": "p",
@@ -563,7 +563,9 @@
             "That looks completely awful, doesn’t it? It has way too many backslashes, producing background noise that makes it hard to spot the actual pattern expressed. We’ll see a slightly improved version of this expression ",
             {
               "element": "reference",
-              "content": "later"
+              "content": [
+                "later"
+              ]
             },
             "."
           ]
@@ -571,7 +573,7 @@
         {
           "element": "p",
           "content": [
-            " These backslash codes can also be used inside square brackets. For example, ",
+            "These backslash codes can also be used inside square brackets. For example, ",
             {
               "element": "literal",
               "content": [
@@ -618,7 +620,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var notBinary = /[^01]/;\nconsole.log(notBinary.test(\"1100100010100110\"));\n// → false\nconsole.log(notBinary.test(\"1100100010200110\"));\n// → true"
         }
       ],
       "title": "Matching a set of characters"
@@ -629,7 +631,7 @@
         {
           "element": "p",
           "content": [
-            " We now know how to match a single digit. What if we want to match a whole number—a sequence of one or more digits?"
+            "We now know how to match a single digit. What if we want to match a whole number—a sequence of one or more digits?"
           ]
         },
         {
@@ -655,7 +657,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(/'\\d+'/.test(\"'123'\"));\n// → true\nconsole.log(/'\\d+'/.test(\"''\"));\n// → false\nconsole.log(/'\\d*'/.test(\"'123'\"));\n// → true\nconsole.log(/'\\d*'/.test(\"''\"));\n// → true"
         },
         {
           "element": "p",
@@ -686,7 +688,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var neighbor = /neighbou?r/;\nconsole.log(neighbor.test(\"neighbour\"));\n// → true\nconsole.log(neighbor.test(\"neighbor\"));\n// → true"
         },
         {
           "element": "p",
@@ -717,7 +719,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var dateTime = /\\d{1,2}-\\d{1,2}-\\d{4} \\d{1,2}:\\d{2}/;\nconsole.log(dateTime.test(\"30-1-2003 8:45\"));\n// → true"
         },
         {
           "element": "p",
@@ -741,7 +743,7 @@
         {
           "element": "p",
           "content": [
-            " To use an operator like ",
+            "To use an operator like ",
             {
               "element": "literal",
               "content": [
@@ -761,7 +763,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var cartoonCrying = /boo+(hoo+)+/i;\nconsole.log(cartoonCrying.test(\"Boohoooohoohooo\"));\n// → true"
         },
         {
           "element": "p",
@@ -814,7 +816,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -840,7 +842,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -867,12 +869,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var match = /\\d+/.exec(\"one two 100\");\nconsole.log(match);\n// → [\"100\"]\nconsole.log(match.index);\n// → 8"
         },
         {
           "element": "p",
           "content": [
-            " An object returned from ",
+            "An object returned from ",
             {
               "element": "literal",
               "content": [
@@ -899,7 +901,7 @@
         {
           "element": "p",
           "content": [
-            " String values have a ",
+            "String values have a ",
             {
               "element": "literal",
               "content": [
@@ -912,7 +914,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"one two 100\".match(/\\d+/));\n// → [\"100\"]"
         },
         {
           "element": "p",
@@ -923,7 +925,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var quotedText = /'([^']*)'/;\nconsole.log(quotedText.exec(\"she said 'hello'\"));\n// → [\"'hello'\", \"hello\"]"
         },
         {
           "element": "p",
@@ -941,12 +943,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(/bad(ly)?/.exec(\"bad\"));\n// → [\"bad\", undefined]\nconsole.log(/(\\d)+/.exec(\"123\"));\n// → [\"123\", \"3\"]"
         },
         {
           "element": "p",
           "content": [
-            " Groups can be useful for extracting parts of a string. If we don’t just want to verify whether a string contains a date but also extract it and construct an object that represents it, we can wrap parentheses around the digit patterns and directly pick the date out of the result of ",
+            "Groups can be useful for extracting parts of a string. If we don’t just want to verify whether a string contains a date but also extract it and construct an object that represents it, we can wrap parentheses around the digit patterns and directly pick the date out of the result of ",
             {
               "element": "literal",
               "content": [
@@ -991,7 +993,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(new Date());\n// → Wed Dec 04 2013 14:24:57 GMT+0100 (CET)"
         },
         {
           "element": "p",
@@ -1002,12 +1004,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(new Date(2009, 11, 9));\n// → Wed Dec 09 2009 00:00:00 GMT+0100 (CET)\nconsole.log(new Date(2009, 11, 9, 12, 59, 59, 999));\n// → Wed Dec 09 2009 12:59:59 GMT+0100 (CET)"
         },
         {
           "element": "p",
           "content": [
-            " JavaScript uses a convention where month numbers start at zero (so December is 11), yet day numbers start at one. This is confusing and silly. Be careful."
+            "JavaScript uses a convention where month numbers start at zero (so December is 11), yet day numbers start at one. This is confusing and silly. Be careful."
           ]
         },
         {
@@ -1032,7 +1034,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(new Date(2013, 11, 19).getTime());\n// → 1387407600000\nconsole.log(new Date(1387407600000));\n// → Thu Dec 19 2013 00:00:00 GMT+0100 (CET)"
         },
         {
           "element": "p",
@@ -1146,7 +1148,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function findDate(string) {\n  var dateTime = /(\\d{1,2})-(\\d{1,2})-(\\d{4})/;\n  var match = dateTime.exec(string);\n  return new Date(Number(match[3]),\n                  Number(match[2]) - 1,\n                  Number(match[1]));\n}\nconsole.log(findDate(\"30-1-2003\"));\n// → Thu Jan 30 2003 00:00:00 GMT+0100 (CET)"
         }
       ],
       "title": "The date type"
@@ -1157,7 +1159,7 @@
         {
           "element": "p",
           "content": [
-            " Unfortunately, ",
+            "Unfortunately, ",
             {
               "element": "literal",
               "content": [
@@ -1245,7 +1247,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(/cat/.test(\"concatenate\"));\n// → true\nconsole.log(/\\bcat\\b/.test(\"concatenate\"));\n// → false"
         },
         {
           "element": "p",
@@ -1262,7 +1264,7 @@
         {
           "element": "p",
           "content": [
-            " Say we want to know whether a piece of text contains not only a number but a number followed by one of the words ",
+            "Say we want to know whether a piece of text contains not only a number but a number followed by one of the words ",
             {
               "element": "em",
               "content": [
@@ -1302,7 +1304,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var animalCount = /\\b\\d+ (pig|cow|chicken)s?\\b/;\nconsole.log(animalCount.test(\"15 pigs\"));\n// → true\nconsole.log(animalCount.test(\"15 pigchickens\"));\n// → false"
         },
         {
           "element": "p",
@@ -1319,7 +1321,7 @@
         {
           "element": "p",
           "content": [
-            "  Regular expressions can be thought of as flow diagrams. This is the diagram for the livestock expression in the previous example:"
+            " Regular expressions can be thought of as flow diagrams. This is the diagram for the livestock expression in the previous example:"
           ]
         },
         {
@@ -1354,7 +1356,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " At position 4, there is a word boundary, so we can move past  the first box. "
+                    "At position 4, there is a word boundary, so we can move past  the first box. "
                   ]
                 }
               ]
@@ -1365,7 +1367,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " Still at position 4, we find a digit, so we can also move past the  second box. "
+                    "Still at position 4, we find a digit, so we can also move past the  second box. "
                   ]
                 }
               ]
@@ -1376,7 +1378,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " At position 5, one path loops back to before the second (digit) box,  while the other moves forward through the box that holds a single space  character. There is a space here, not a digit, so we must take the  second path. "
+                    "At position 5, one path loops back to before the second (digit) box,  while the other moves forward through the box that holds a single space  character. There is a space here, not a digit, so we must take the  second path. "
                   ]
                 }
               ]
@@ -1387,7 +1389,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " We are now at position 6 (the start of “pigs”) and at the three-way  branch in the diagram. We don’t see “cow” or “chicken” here, but we  do see “pig”, so we take that branch. "
+                    "We are now at position 6 (the start of “pigs”) and at the three-way  branch in the diagram. We don’t see “cow” or “chicken” here, but we  do see “pig”, so we take that branch. "
                   ]
                 }
               ]
@@ -1398,7 +1400,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " At position 9, after the three-way branch, one path skips  the ",
+                    "At position 9, after the three-way branch, one path skips  the ",
                     {
                       "element": "em",
                       "content": [
@@ -1437,7 +1439,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " We’re at position 10 (the end of the string) and can match only a  word boundary. The end of a string counts as a word boundary,  so we go through the last box and have successfully matched this  string. "
+                    "We’re at position 10 (the end of the string) and can match only a  word boundary. The end of a string counts as a word boundary,  so we go through the last box and have successfully matched this  string. "
                   ]
                 }
               ]
@@ -1447,7 +1449,7 @@
         {
           "element": "p",
           "content": [
-            "  Conceptually, a regular expression engine looks for a match in a string as follows: it starts at the start of the string and tries a match there. In this case, there ",
+            " Conceptually, a regular expression engine looks for a match in a string as follows: it starts at the start of the string and tries a match there. In this case, there ",
             {
               "element": "em",
               "content": [
@@ -1466,7 +1468,7 @@
         {
           "element": "p",
           "content": [
-            "  The regular expression ",
+            " The regular expression ",
             {
               "element": "literal",
               "content": [
@@ -1551,7 +1553,7 @@
         {
           "element": "p",
           "content": [
-            " The matcher stops as soon as it finds a full match. This means that if multiple branches could potentially match a string, only the first one (ordered by where the branches appear in the regular expression) is used."
+            "The matcher stops as soon as it finds a full match. This means that if multiple branches could potentially match a string, only the first one (ordered by where the branches appear in the regular expression) is used."
           ]
         },
         {
@@ -1664,7 +1666,7 @@
         {
           "element": "p",
           "content": [
-            " If that tries to match some long series of zeros and ones with no trailing ",
+            "If that tries to match some long series of zeros and ones with no trailing ",
             {
               "element": "em",
               "content": [
@@ -1710,12 +1712,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"papa\".replace(\"p\", \"m\"));\n// → mapa"
         },
         {
           "element": "p",
           "content": [
-            "  The first argument can also be a regular expression, in which case the first match of the regular expression is replaced. When a ",
+            " The first argument can also be a regular expression, in which case the first match of the regular expression is replaced. When a ",
             {
               "element": "literal",
               "content": [
@@ -1742,12 +1744,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"Borobudur\".replace(/[ou]/, \"a\"));\n// → Barobudur\nconsole.log(\"Borobudur\".replace(/[ou]/g, \"a\"));\n// → Barabadar"
         },
         {
           "element": "p",
           "content": [
-            " It would have been sensible if the choice between replacing one match or all matches was made through an additional argument to ",
+            "It would have been sensible if the choice between replacing one match or all matches was made through an additional argument to ",
             {
               "element": "literal",
               "content": [
@@ -1767,7 +1769,7 @@
         {
           "element": "p",
           "content": [
-            " The real power of using regular expressions with ",
+            "The real power of using regular expressions with ",
             {
               "element": "literal",
               "content": [
@@ -1794,7 +1796,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\n  \"Hopper, Grace\\nMcCarthy, John\\nRitchie, Dennis\"\n    .replace(/([\\w ]+), ([\\w ]+)/g, \"$2 $1\"));\n// → Grace Hopper\n//   John McCarthy\n//   Dennis Ritchie"
         },
         {
           "element": "p",
@@ -1838,8 +1840,7 @@
             {
               "element": "literal",
               "content": [
-                "$",
-                "&"
+                "$&"
               ]
             },
             "."
@@ -1848,7 +1849,7 @@
         {
           "element": "p",
           "content": [
-            " It is also possible to pass a function, rather than a string, as the second argument to ",
+            "It is also possible to pass a function, rather than a string, as the second argument to ",
             {
               "element": "literal",
               "content": [
@@ -1867,7 +1868,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var s = \"the cia and fbi\";\nconsole.log(s.replace(/\\b(fbi|cia)\\b/g, function(str) {\n  return str.toUpperCase();\n}));\n// → the CIA and FBI"
         },
         {
           "element": "p",
@@ -1878,7 +1879,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var stock = \"1 lemon, 2 cabbages, and 101 eggs\";\nfunction minusOne(match, amount, unit) {\n  amount = Number(amount) - 1;\n  if (amount == 1) // only one left, remove the 's'\n    unit = unit.slice(0, unit.length - 1);\n  else if (amount == 0)\n    amount = \"no\";\n  return amount + \" \" + unit;\n}\nconsole.log(stock.replace(/(\\d+) (\\w+)/g, minusOne));\n// → no lemon, 1 cabbage, and 100 eggs"
         },
         {
           "element": "p",
@@ -1956,7 +1957,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function stripComments(code) {\n  return code.replace(/\\/\\/.*|\\/\\*[^]*\\*\\//g, \"\");\n}\nconsole.log(stripComments(\"1 + /* 2 */3\"));\n// → 1 + 3\nconsole.log(stripComments(\"x = 10;// ten!\"));\n// → x = 10;\nconsole.log(stripComments(\"1 /* a */+/* b */ 1\"));\n// → 1  1"
         },
         {
           "element": "p",
@@ -2089,7 +2090,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function stripComments(code) {\n  return code.replace(/\\/\\/.*|\\/\\*[^]*?\\*\\//g, \"\");\n}\nconsole.log(stripComments(\"1 /* a */+/* b */ 1\"));\n// → 1 + 1"
         },
         {
           "element": "p",
@@ -2106,7 +2107,7 @@
         {
           "element": "p",
           "content": [
-            " There are cases where you might not know the exact pattern you need to match against when you are writing your code. Say you want to look for the user’s name in a piece of text and enclose it in underscore characters to make it stand out. Since you will know the name only once the program is actually running, you can’t use the slash-based notation."
+            "There are cases where you might not know the exact pattern you need to match against when you are writing your code. Say you want to look for the user’s name in a piece of text and enclose it in underscore characters to make it stand out. Since you will know the name only once the program is actually running, you can’t use the slash-based notation."
           ]
         },
         {
@@ -2125,12 +2126,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var name = \"harry\";\nvar text = \"Harry is a suspicious character.\";\nvar regexp = new RegExp(\"\\\\b(\" + name + \")\\\\b\", \"gi\");\nconsole.log(text.replace(regexp, \"_$1_\"));\n// → _Harry_ is a suspicious character."
         },
         {
           "element": "p",
           "content": [
-            " When creating the ",
+            "When creating the ",
             {
               "element": "literal",
               "content": [
@@ -2170,7 +2171,7 @@
         {
           "element": "p",
           "content": [
-            "  To work around this, we can add backslashes before any character that we don’t trust. Adding backslashes before alphabetic characters is a bad idea because things like ",
+            " To work around this, we can add backslashes before any character that we don’t trust. Adding backslashes before alphabetic characters is a bad idea because things like ",
             {
               "element": "literal",
               "content": [
@@ -2190,7 +2191,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var name = \"dea+hl[]rd\";\nvar text = \"This dea+hl[]rd guy is super annoying.\";\nvar escaped = name.replace(/[^\\w\\s]/g, \"\\\\$&\");\nvar regexp = new RegExp(\"\\\\b(\" + escaped + \")\\\\b\", \"gi\");\nconsole.log(text.replace(regexp, \"_$1_\"));\n// → This _dea+hl[]rd_ guy is super annoying."
         }
       ],
       "title": "Dynamically creating RegExp objects"
@@ -2201,7 +2202,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -2228,7 +2229,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"  word\".search(/\\S/));\n// → 2\nconsole.log(\"    \".search(/\\S/));\n// → -1"
         },
         {
           "element": "p",
@@ -2272,7 +2273,7 @@
         {
           "element": "p",
           "content": [
-            " Regular expression objects have properties. One such property is ",
+            "Regular expression objects have properties. One such property is ",
             {
               "element": "literal",
               "content": [
@@ -2292,7 +2293,7 @@
         {
           "element": "p",
           "content": [
-            "  Those circumstances are that the regular expression must have the global (",
+            " Those circumstances are that the regular expression must have the global (",
             {
               "element": "literal",
               "content": [
@@ -2319,7 +2320,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var pattern = /y/g;\npattern.lastIndex = 3;\nvar match = pattern.exec(\"xyzzy\");\nconsole.log(match.index);\n// → 4\nconsole.log(pattern.lastIndex);\n// → 5"
         },
         {
           "element": "p",
@@ -2371,12 +2372,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var digit = /\\d/g;\nconsole.log(digit.exec(\"here it is: 1\"));\n// → [\"1\"]\nconsole.log(digit.exec(\"and now: 1\"));\n// → null"
         },
         {
           "element": "p",
           "content": [
-            " Another interesting effect of the global option is that it changes the way the ",
+            "Another interesting effect of the global option is that it changes the way the ",
             {
               "element": "literal",
               "content": [
@@ -2410,7 +2411,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(\"Banana\".match(/an/g));\n// → [\"an\", \"an\"]"
         },
         {
           "element": "p",
@@ -2458,7 +2459,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var input = \"A string with 3 numbers in it... 42 and 88.\";\nvar number = /\\b(\\d+)\\b/g;\nvar match;\nwhile (match = number.exec(input))\n  console.log(\"Found\", match[1], \"at\", match.index);\n// → Found 3 at 14\n//   Found 42 at 33\n//   Found 88 at 40"
             },
             {
               "element": "p",
@@ -2505,7 +2506,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "searchengine=http://www.google.com/search?q=$1\nspitefulness=9.7\n\n; comments are preceded by a semicolon...\n; each section concerns an individual enemy\n[larry]\nfullname=Larry Doe\ntype=kindergarten bully\nwebsite=http://www.geocities.com/CapeCanaveral/11451\n\n[gargamel]\nfullname=Gargamel\ntype=evil sorcerer\noutputdir=/home/marijn/enemies/gargamel"
         },
         {
           "element": "p",
@@ -2529,7 +2530,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " Blank lines and lines starting with semicolons are ignored. "
+                    "Blank lines and lines starting with semicolons are ignored. "
                   ]
                 }
               ]
@@ -2540,7 +2541,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " Lines wrapped in ",
+                    "Lines wrapped in ",
                     {
                       "element": "literal",
                       "content": [
@@ -2565,7 +2566,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " Lines containing an alphanumeric identifier followed by an ",
+                    "Lines containing an alphanumeric identifier followed by an ",
                     {
                       "element": "literal",
                       "content": [
@@ -2583,7 +2584,7 @@
                 {
                   "element": "p",
                   "content": [
-                    " Anything else is invalid. "
+                    "Anything else is invalid. "
                   ]
                 }
               ]
@@ -2616,7 +2617,9 @@
             " to do this in ",
             {
               "element": "reference",
-              "content": "Chapter 6"
+              "content": [
+                "Chapter 6"
+              ]
             },
             ". Some operating systems, however, use not just a newline character to separate lines but a carriage return character followed by a newline (",
             {
@@ -2659,7 +2662,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function parseINI(string) {\n  // Start with an object to hold the top-level fields\n  var currentSection = {name: null, fields: []};\n  var categories = [currentSection];\n\n  string.split(/\\r?\\n/).forEach(function(line) {\n    var match;\n    if (/^\\s*(;.*)?$/.test(line)) {\n      return;\n    } else if (match = line.match(/^\\[(.*)\\]$/)) {\n      currentSection = {name: match[1], fields: []};\n      categories.push(currentSection);\n    } else if (match = line.match(/^(\\w+)=(.*)$/)) {\n      currentSection.fields.push({name: match[1],\n                                  value: match[2]});\n    } else {\n      throw new Error(\"Line '\" + line + \"' is invalid.\");\n    }\n  });\n\n  return categories;\n}"
         },
         {
           "element": "p",
@@ -2726,9 +2729,7 @@
             {
               "element": "literal",
               "content": [
-                "if (match",
-                " ",
-                "= string.match(...))"
+                "if (match= string.match(...))"
               ]
             },
             " is similar to the trick of using an assignment as the condition for ",
@@ -2778,7 +2779,7 @@
         {
           "element": "p",
           "content": [
-            " Because of JavaScript’s initial simplistic implementation and the fact that this simplistic approach was later set in stone as standard behavior, JavaScript’s regular expressions are rather dumb about characters that do not appear in the English language. For example, as far as JavaScript’s regular expressions are concerned, a “word character” is only one of the 26 characters in the Latin alphabet (uppercase or lowercase) and, for some reason, the underscore character. Things like ",
+            "Because of JavaScript’s initial simplistic implementation and the fact that this simplistic approach was later set in stone as standard behavior, JavaScript’s regular expressions are rather dumb about characters that do not appear in the English language. For example, as far as JavaScript’s regular expressions are concerned, a “word character” is only one of the 26 characters in the Latin alphabet (uppercase or lowercase) and, for some reason, the underscore character. Things like ",
             {
               "element": "em",
               "content": [
@@ -3665,9 +3666,7 @@
                 {
                   "element": "em",
                   "content": [
-                    "Code",
-                    " ",
-                    "golf"
+                    "Codegolf"
                   ]
                 },
                 " is a term used for the game of trying to express a particular program in as few characters as possible. Similarly, ",
@@ -3702,7 +3701,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " ",
+                        "",
                         {
                           "element": "em",
                           "content": [
@@ -3727,7 +3726,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " ",
+                        "",
                         {
                           "element": "em",
                           "content": [
@@ -3752,7 +3751,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " ",
+                        "",
                         {
                           "element": "em",
                           "content": [
@@ -3784,7 +3783,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " Any word ending in ",
+                        "Any word ending in ",
                         {
                           "element": "em",
                           "content": [
@@ -3802,7 +3801,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " A whitespace character followed by a dot, comma, colon, or semicolon "
+                        "A whitespace character followed by a dot, comma, colon, or semicolon "
                       ]
                     }
                   ]
@@ -3813,7 +3812,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " A word longer than six letters "
+                        "A word longer than six letters "
                       ]
                     }
                   ]
@@ -3824,7 +3823,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " A word without the letter ",
+                        "A word without the letter ",
                         {
                           "element": "em",
                           "content": [
@@ -3844,7 +3843,9 @@
                 "Refer to the table in the ",
                 {
                   "element": "reference",
-                  "content": "chapter summary"
+                  "content": [
+                    "chapter summary"
+                  ]
                 },
                 " for help. Test each solution with a few test strings."
               ]
@@ -3862,9 +3863,7 @@
                 {
                   "element": "em",
                   "content": [
-                    "aren",
-                    "’",
-                    "t"
+                    "aren’t"
                   ]
                 },
                 "."
@@ -3884,43 +3883,48 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The most obvious solution is to only replace quotes with a nonword character on at least one side. Something like ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "/\\W'|'\\W/"
+                    "The most obvious solution is to only replace quotes with a nonword character on at least one side. Something like ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "/\\W'|'\\W/"
+                      ]
+                    },
+                    ". But you also have to take the start and end of the line into account."
                   ]
                 },
-                ". But you also have to take the start and end of the line into account."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "In addition, you must ensure that the replacement also includes the characters that were matched by the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\\W"
+                    "In addition, you must ensure that the replacement also includes the characters that were matched by the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\\W"
+                      ]
+                    },
+                    " pattern so that those are not dropped. This can be done by wrapping them in parentheses and including their groups in the replacement string (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "$1"
+                      ]
+                    },
+                    ", ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "$2"
+                      ]
+                    },
+                    "). Groups that are not matched will be replaced by nothing."
                   ]
-                },
-                " pattern so that those are not dropped. This can be done by wrapping them in parentheses and including their groups in the replacement string (",
-                {
-                  "element": "literal",
-                  "content": [
-                    "$1"
-                  ]
-                },
-                ", ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "$2"
-                  ]
-                },
-                "). Groups that are not matched will be replaced by nothing."
+                }
               ]
             }
           ],
@@ -3984,106 +3988,109 @@
                 {
                   "element": "em",
                   "content": [
-                    "isn",
-                    "’",
-                    "t"
+                    "isn’t"
                   ]
                 },
                 "."
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                " First, do not forget the backslash in front of the dot."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Matching the optional sign in front of the number, as well as in front of the exponent, can be done with ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "[+\\-]?"
+                    "First, do not forget the backslash in front of the dot."
                   ]
                 },
-                " or ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "(\\+|-|)"
+                    "Matching the optional sign in front of the number, as well as in front of the exponent, can be done with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "[+\\-]?"
+                      ]
+                    },
+                    " or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "(\\+|-|)"
+                      ]
+                    },
+                    " (plus, minus, or nothing)."
                   ]
                 },
-                " (plus, minus, or nothing)."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The more complicated part of the exercise is the problem of matching both ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"5.\""
+                    "The more complicated part of the exercise is the problem of matching both ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"5.\""
+                      ]
+                    },
+                    " and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\".5\""
+                      ]
+                    },
+                    " without also matching ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\".\""
+                      ]
+                    },
+                    ". For this, a good solution is to use the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "|"
+                      ]
+                    },
+                    " operator to separate the two cases—either one or more digits optionally followed by a dot and zero or more digits ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "or"
+                      ]
+                    },
+                    " a dot followed by one or more digits."
                   ]
                 },
-                " and ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\".5\""
+                    "Finally, to make the ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "e"
+                      ]
+                    },
+                    " case-insensitive, either add an ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "i"
+                      ]
+                    },
+                    " option to the regular expression or use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "[eE]"
+                      ]
+                    },
+                    "."
                   ]
-                },
-                " without also matching ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\".\""
-                  ]
-                },
-                ". For this, a good solution is to use the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "|"
-                  ]
-                },
-                " operator to separate the two cases—either one or more digits optionally followed by a dot and zero or more digits ",
-                {
-                  "element": "em",
-                  "content": [
-                    "or"
-                  ]
-                },
-                " a dot followed by one or more digits."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " Finally, to make the ",
-                {
-                  "element": "em",
-                  "content": [
-                    "e"
-                  ]
-                },
-                " case-insensitive, either add an ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "i"
-                  ]
-                },
-                " option to the regular expression or use ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "[eE]"
-                  ]
-                },
-                "."
+                }
               ]
             }
           ],

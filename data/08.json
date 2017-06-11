@@ -127,12 +127,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function canYouSpotTheProblem() {\n  \"use strict\";\n  for (counter = 0; counter < 10; counter++)\n    console.log(\"Happy happy\");\n}\n\ncanYouSpotTheProblem();\n// → ReferenceError: counter is not defined"
         },
         {
           "element": "p",
           "content": [
-            " Normally, when you forget to put ",
+            "Normally, when you forget to put ",
             {
               "element": "literal",
               "content": [
@@ -213,7 +213,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function Person(name) { this.name = name; }\nvar ferdinand = Person(\"Ferdinand\"); // oops\nconsole.log(name);\n// → Ferdinand"
         },
         {
           "element": "p",
@@ -238,7 +238,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "\"use strict\";\nfunction Person(name) { this.name = name; }\n// Oops, forgot 'new'\nvar ferdinand = Person(\"Ferdinand\");\n// → TypeError: Cannot set property 'name' of undefined"
         },
         {
           "element": "p",
@@ -249,7 +249,7 @@
         {
           "element": "p",
           "content": [
-            " Strict mode does a few more things. It disallows giving a function multiple parameters with the same name and removes certain problematic language features entirely (such as the ",
+            "Strict mode does a few more things. It disallows giving a function multiple parameters with the same name and removes certain problematic language features entirely (such as the ",
             {
               "element": "literal",
               "content": [
@@ -306,7 +306,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function Vector(x, y) {\n  this.x = x;\n  this.y = y;\n}\nVector.prototype.plus = function(other) {\n  return new Vector(this.x + other.x, this.y + other.y);\n};"
         },
         {
           "element": "p",
@@ -331,7 +331,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function testVector() {\n  var p1 = new Vector(10, 20);\n  var p2 = new Vector(-10, 5);\n  var p3 = p1.plus(p2);\n\n  if (p1.x !== 10) return \"fail: x property\";\n  if (p1.y !== 20) return \"fail: y property\";\n  if (p2.x !== -10) return \"fail: negative x property\";\n  if (p3.x !== 0) return \"fail: x from plus\";\n  if (p3.y !== 25) return \"fail: y from plus\";\n  return \"everything ok\";\n}\nconsole.log(testVector());\n// → everything ok"
         },
         {
           "element": "p",
@@ -393,7 +393,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function numberToString(n, base) {\n  var result = \"\", sign = \"\";\n  if (n < 0) {\n    sign = \"-\";\n    n = -n;\n  }\n  do {\n    result = String(n % base) + result;\n    n /= base;\n  } while (n > 0);\n  return sign + result;\n}\nconsole.log(numberToString(13, 10));\n// → 1.5e-3231.3e-3221.3e-3211.3e-3201.3e-3191.3e-3181.3…"
         },
         {
           "element": "p",
@@ -479,9 +479,7 @@
             {
               "element": "literal",
               "content": [
-                "n =",
-                " ",
-                "Math.floor(n / base)"
+                "n =Math.floor(n / base)"
               ]
             },
             " so that the number is properly “shifted” to the right."
@@ -582,7 +580,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function promptNumber(question) {\n  var result = Number(prompt(question, \"\"));\n  if (isNaN(result)) return null;\n  else return result;\n}\n\nconsole.log(promptNumber(\"How many trees do you see?\"));"
         },
         {
           "element": "p",
@@ -697,7 +695,9 @@
             ". You may remember the stack of function calls that was mentioned in ",
             {
               "element": "reference",
-              "content": "Chapter 3"
+              "content": [
+                "Chapter 3"
+              ]
             },
             ". An exception zooms down this stack, throwing away all the call contexts it encounters."
           ]
@@ -724,7 +724,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function promptDirection(question) {\n  var result = prompt(question, \"\");\n  if (result.toLowerCase() == \"left\") return \"L\";\n  if (result.toLowerCase() == \"right\") return \"R\";\n  throw new Error(\"Invalid direction: \" + result);\n}\n\nfunction look() {\n  if (promptDirection(\"Which way?\") == \"L\")\n    return \"a house\";\n  else\n    return \"two angry bears\";\n}\n\ntry {\n  console.log(\"You see\", look());\n} catch (error) {\n  console.log(\"Something went wrong: \" + error);\n}"
         },
         {
           "element": "p",
@@ -884,7 +884,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var context = null;\n\nfunction withContext(newContext, body) {\n  var oldContext = context;\n  context = newContext;\n  var result = body();\n  context = oldContext;\n  return result;\n}"
         },
         {
           "element": "p",
@@ -971,7 +971,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function withContext(newContext, body) {\n  var oldContext = context;\n  context = newContext;\n  try {\n    return body();\n  } finally {\n    context = oldContext;\n  }\n}"
         },
         {
           "element": "p",
@@ -1003,7 +1003,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "try {\n  withContext(5, function() {\n    if (context < 10)\n      throw new Error(\"Not enough context!\");\n  });\n} catch (e) {\n  console.log(\"Ignoring: \" + e);\n}\n// → Ignoring: Error: Not enough context!\n\nconsole.log(context);\n// → null"
         },
         {
           "element": "p",
@@ -1066,7 +1066,7 @@
         {
           "element": "p",
           "content": [
-            " Invalid uses of the language, such as referencing a nonexistent variable, looking up a property on ",
+            "Invalid uses of the language, such as referencing a nonexistent variable, looking up a property on ",
             {
               "element": "literal",
               "content": [
@@ -1160,7 +1160,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (;;) {\n  try {\n    var dir = promtDirection(\"Where?\"); // ← typo!\n    console.log(\"You chose \", dir);\n    break;\n  } catch (e) {\n    console.log(\"Not a valid direction. Try again.\");\n  }\n}"
         },
         {
           "element": "p",
@@ -1258,7 +1258,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function InputError(message) {\n  this.message = message;\n  this.stack = (new Error()).stack;\n}\nInputError.prototype = Object.create(Error.prototype);\nInputError.prototype.name = \"InputError\";"
         },
         {
           "element": "p",
@@ -1351,7 +1351,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function promptDirection(question) {\n  var result = prompt(question, \"\");\n  if (result.toLowerCase() == \"left\") return \"L\";\n  if (result.toLowerCase() == \"right\") return \"R\";\n  throw new InputError(\"Invalid direction: \" + result);\n}"
         },
         {
           "element": "p",
@@ -1362,7 +1362,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "for (;;) {\n  try {\n    var dir = promptDirection(\"Where?\");\n    console.log(\"You chose \", dir);\n    break;\n  } catch (e) {\n    if (e instanceof InputError)\n      console.log(\"Not a valid direction. Try again.\");\n    else\n      throw e;\n  }\n}"
         },
         {
           "element": "p",
@@ -1405,7 +1405,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function AssertionFailed(message) {\n  this.message = message;\n}\nAssertionFailed.prototype = Object.create(Error.prototype);\n\nfunction assert(test, message) {\n  if (!test)\n    throw new AssertionFailed(message);\n}\n\nfunction lastElement(array) {\n  assert(array.length > 0, \"empty array in lastElement\");\n  return array[array.length - 1];\n}"
         },
         {
           "element": "p",
@@ -1517,52 +1517,65 @@
             {
               "element": "p",
               "content": [
-                "Make sure you handle only the exceptions you are trying to handle."
+                "Make sure you handle only  the exceptions you are trying to handle."
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The call to ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "primitiveMultiply"
+                    "The call to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "primitiveMultiply"
+                      ]
+                    },
+                    " should obviously happen in a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "try"
+                      ]
+                    },
+                    " block. The corresponding ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "catch"
+                      ]
+                    },
+                    " block should rethrow the exception when it is not an instance of ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "MultiplicatorUnitFailure"
+                      ]
+                    },
+                    " and ensure the call is retried when it is."
                   ]
                 },
-                " should obviously happen in a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "try"
+                    "To do the retrying, you can either use a loop that breaks only when a call succeeds—as in the ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        {
+                          "element": "literal",
+                          "content": [
+                            "look"
+                          ]
+                        },
+                        " example"
+                      ]
+                    },
+                    " earlier in this chapter—or use recursion and hope you don’t get a string of failures so long that it overflows the stack (which is a pretty safe bet)."
                   ]
-                },
-                " block. The corresponding ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "catch"
-                  ]
-                },
-                " block should rethrow the exception when it is not an instance of ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "MultiplicatorUnitFailure"
-                  ]
-                },
-                " and ensure the call is retried when it is."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "To do the retrying, you can either use a loop that breaks only when a call succeeds—as in the ",
-                {
-                  "element": "reference",
-                  "content": "[object Object] example"
-                },
-                " earlier in this chapter—or use recursion and hope you don’t get a string of failures so long that it overflows the stack (which is a pretty safe bet)."
+                }
               ]
             }
           ],
@@ -1580,7 +1593,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "var box = {\n  locked: true,\n  unlock: function() { this.locked = false; },\n  lock: function() { this.locked = true;  },\n  _content: [],\n  get content() {\n    if (this.locked) throw new Error(\"Locked!\");\n    return this._content;\n  }\n};"
             },
             {
               "element": "p",
@@ -1609,36 +1622,41 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "This exercise calls for a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "finally"
+                    "This exercise calls for a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "finally"
+                      ]
+                    },
+                    " block, as you probably guessed. Your function should first unlock the box and then call the argument function from inside a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "try"
+                      ]
+                    },
+                    " body. The ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "finally"
+                      ]
+                    },
+                    " block after it should lock the box again."
                   ]
                 },
-                " block, as you probably guessed. Your function should first unlock the box and then call the argument function from inside a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "try"
+                    "To make sure we don’t lock the box when it wasn’t already locked, check its lock at the start of the function and unlock and lock it only when it started out locked."
                   ]
-                },
-                " body. The ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "finally"
-                  ]
-                },
-                " block after it should lock the box again."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "To make sure we don’t lock the box when it wasn’t already locked, check its lock at the start of the function and unlock and lock it only when it started out locked."
+                }
               ]
             }
           ],

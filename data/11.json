@@ -83,7 +83,7 @@
         {
           "element": "p",
           "content": [
-            " To keep the parser simple, strings in Egg do not support anything like backslash escapes. A string is simply a sequence of characters that are not double quotes, wrapped in double quotes. A number is a sequence of digits. Variable names can consist of any character that is not whitespace and does not have a special meaning in the syntax."
+            "To keep the parser simple, strings in Egg do not support anything like backslash escapes. A string is simply a sequence of characters that are not double quotes, wrapped in double quotes. A number is a sequence of digits. Variable names can consist of any character that is not whitespace and does not have a special meaning in the syntax."
           ]
         },
         {
@@ -191,8 +191,7 @@
             {
               "element": "literal",
               "content": [
-                ">",
-                "(x, 5)"
+                ">(x, 5)"
               ]
             },
             " part of the previous program would be represented like this:"
@@ -201,7 +200,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "{\n  type: \"apply\",\n  operator: {type: \"word\", name: \">\"},\n  args: [\n    {type: \"word\", name: \"x\"},\n    {type: \"value\", value: 5}\n  ]\n}"
         },
         {
           "element": "p",
@@ -226,7 +225,9 @@
             "Contrast this to the parser we wrote for the configuration file format in ",
             {
               "element": "reference",
-              "content": "Chapter 9"
+              "content": [
+                "Chapter 9"
+              ]
             },
             ", which had a simple structure: it split the input into lines and handled those lines one at a time. There were only a few simple forms that a line was allowed to have."
           ]
@@ -234,7 +235,7 @@
         {
           "element": "p",
           "content": [
-            " Here we must find a different approach. Expressions are not separated into lines, and they have a recursive structure. Application expressions ",
+            "Here we must find a different approach. Expressions are not separated into lines, and they have a recursive structure. Application expressions ",
             {
               "element": "em",
               "content": [
@@ -272,7 +273,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function parseExpression(program) {\n  program = skipSpace(program);\n  var match, expr;\n  if (match = /^\"([^\"]*)\"/.exec(program))\n    expr = {type: \"value\", value: match[1]};\n  else if (match = /^\\d+\\b/.exec(program))\n    expr = {type: \"value\", value: Number(match[0])};\n  else if (match = /^[^\\s(),\"]+/.exec(program))\n    expr = {type: \"word\", name: match[0]};\n  else\n    throw new SyntaxError(\"Unexpected syntax: \" + program);\n\n  return parseApply(expr, program.slice(match[0].length));\n}\n\nfunction skipSpace(string) {\n  var first = string.search(/\\S/);\n  if (first == -1) return \"\";\n  return string.slice(first);\n}"
         },
         {
           "element": "p",
@@ -323,7 +324,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function parseApply(expr, program) {\n  program = skipSpace(program);\n  if (program[0] != \"(\")\n    return {expr: expr, rest: program};\n\n  program = skipSpace(program.slice(1));\n  expr = {type: \"apply\", operator: expr, args: []};\n  while (program[0] != \")\") {\n    var arg = parseExpression(program);\n    expr.args.push(arg.expr);\n    program = skipSpace(arg.rest);\n    if (program[0] == \",\")\n      program = skipSpace(program.slice(1));\n    else if (program[0] != \")\")\n      throw new SyntaxError(\"Expected ',' or ')'\");\n  }\n  return parseApply(expr, program.slice(1));\n}"
         },
         {
           "element": "p",
@@ -401,7 +402,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function parse(program) {\n  var result = parseExpression(program);\n  if (skipSpace(result.rest).length > 0)\n    throw new SyntaxError(\"Unexpected text after program\");\n  return result.expr;\n}\n\nconsole.log(parse(\"+(a, 10)\"));\n// → {type: \"apply\",\n//    operator: {type: \"word\", name: \"+\"},\n//    args: [{type: \"word\", name: \"a\"},\n//           {type: \"value\", value: 10}]}"
         },
         {
           "element": "p",
@@ -424,7 +425,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function evaluate(expr, env) {\n  switch(expr.type) {\n    case \"value\":\n      return expr.value;\n\n    case \"word\":\n      if (expr.name in env)\n        return env[expr.name];\n      else\n        throw new ReferenceError(\"Undefined variable: \" +\n                                 expr.name);\n    case \"apply\":\n      if (expr.operator.type == \"word\" &&\n          expr.operator.name in specialForms)\n        return specialForms[expr.operator.name](expr.args,\n                                                env);\n      var op = evaluate(expr.operator, env);\n      if (typeof op != \"function\")\n        throw new TypeError(\"Applying a non-function.\");\n      return op.apply(null, expr.args.map(function(arg) {\n        return evaluate(arg, env);\n      }));\n  }\n}\n\nvar specialForms = Object.create(null);"
         },
         {
           "element": "p",
@@ -442,7 +443,7 @@
         {
           "element": "p",
           "content": [
-            " Applications are more involved. If they are a special form, like ",
+            "Applications are more involved. If they are a special form, like ",
             {
               "element": "literal",
               "content": [
@@ -458,7 +459,9 @@
             "We will use plain JavaScript function values to represent Egg’s function values. We will come back to this ",
             {
               "element": "reference",
-              "content": "later"
+              "content": [
+                "later"
+              ]
             },
             ", when the special form called ",
             {
@@ -511,7 +514,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "specialForms[\"if\"] = function(args, env) {\n  if (args.length != 3)\n    throw new SyntaxError(\"Bad number of args to if\");\n\n  if (evaluate(args[0], env) !== false)\n    return evaluate(args[1], env);\n  else\n    return evaluate(args[2], env);\n};"
         },
         {
           "element": "p",
@@ -617,7 +620,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "specialForms[\"while\"] = function(args, env) {\n  if (args.length != 2)\n    throw new SyntaxError(\"Bad number of args to while\");\n\n  while (evaluate(args[0], env) !== false)\n    evaluate(args[1], env);\n\n  // Since undefined does not exist in Egg, we return false,\n  // for lack of a meaningful result.\n  return false;\n};"
         },
         {
           "element": "p",
@@ -635,7 +638,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "specialForms[\"do\"] = function(args, env) {\n  var value = false;\n  args.forEach(function(arg) {\n    value = evaluate(arg, env);\n  });\n  return value;\n};"
         },
         {
           "element": "p",
@@ -667,7 +670,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "specialForms[\"define\"] = function(args, env) {\n  if (args.length != 2 || args[0].type != \"word\")\n    throw new SyntaxError(\"Bad use of define\");\n  var value = evaluate(args[1], env);\n  env[args[0].name] = value;\n  return value;\n};"
         }
       ],
       "title": "Special forms"
@@ -718,7 +721,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var topEnv = Object.create(null);\n\ntopEnv[\"true\"] = true;\ntopEnv[\"false\"] = false;"
         },
         {
           "element": "p",
@@ -729,7 +732,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var prog = parse(\"if(true, false, true)\");\nconsole.log(evaluate(prog, topEnv));\n// → false"
         },
         {
           "element": "p",
@@ -747,7 +750,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "[\"+\", \"-\", \"*\", \"/\", \"==\", \"<\", \">\"].forEach(function(op) {\n  topEnv[op] = new Function(\"a, b\", \"return a \" + op + \" b;\");\n});"
         },
         {
           "element": "p",
@@ -772,7 +775,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "topEnv[\"print\"] = function(value) {\n  console.log(value);\n  return value;\n};"
         },
         {
           "element": "p",
@@ -790,7 +793,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function run() {\n  var env = Object.create(topEnv);\n  var program = Array.prototype.slice\n    .call(arguments, 0).join(\"\\n\");\n  return evaluate(parse(program), env);\n}"
         },
         {
           "element": "p",
@@ -829,7 +832,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "run(\"do(define(total, 0),\",\n    \"   define(count, 1),\",\n    \"   while(<(count, 11),\",\n    \"         do(define(total, +(total, count)),\",\n    \"            define(count, +(count, 1)))),\",\n    \"   print(total))\");\n// → 55"
         },
         {
           "element": "p",
@@ -865,7 +868,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "specialForms[\"fun\"] = function(args, env) {\n  if (!args.length)\n    throw new SyntaxError(\"Functions need a body\");\n  function name(expr) {\n    if (expr.type != \"word\")\n      throw new SyntaxError(\"Arg names must be words\");\n    return expr.name;\n  }\n  var argNames = args.slice(0, args.length - 1).map(name);\n  var body = args[args.length - 1];\n\n  return function() {\n    if (arguments.length != argNames.length)\n      throw new TypeError(\"Wrong number of arguments\");\n    var localEnv = Object.create(env);\n    for (var i = 0; i < arguments.length; i++)\n      localEnv[argNames[i]] = arguments[i];\n    return evaluate(body, localEnv);\n  };\n};"
         },
         {
           "element": "p",
@@ -896,7 +899,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "run(\"do(define(plusOne, fun(a, +(a, 1))),\",\n    \"   print(plusOne(10)))\");\n// → 11\n\nrun(\"do(define(pow, fun(base, exp,\",\n    \"     if(==(exp, 0),\",\n    \"        1,\",\n    \"        *(base, pow(base, -(exp, 1)))))),\",\n    \"   print(pow(2, 10)))\");\n// → 1024"
         }
       ],
       "title": "Functions"
@@ -935,9 +938,7 @@
             {
               "element": "literal",
               "content": [
-                "new",
-                " ",
-                "Function"
+                "newFunction"
               ]
             },
             " to invoke the JavaScript compiler on it, and then runs the result. When done right, this would make Egg run very fast while still being quite simple to implement."
@@ -1081,29 +1082,34 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The easiest way to do this is to represent Egg arrays with JavaScript arrays."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The values added to the top environment must be functions. ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "Array.prototype.slice"
+                    "The easiest way to do this is to represent Egg arrays with JavaScript arrays."
                   ]
                 },
-                " can be used to convert an ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "arguments"
+                    "The values added to the top environment must be functions. ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Array.prototype.slice"
+                      ]
+                    },
+                    " can be used to convert an ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "arguments"
+                      ]
+                    },
+                    " array-like object into a regular array."
                   ]
-                },
-                " array-like object into a regular array."
+                }
               ]
             }
           ],
@@ -1115,7 +1121,7 @@
             {
               "element": "p",
               "content": [
-                " The way we have defined ",
+                "The way we have defined ",
                 {
                   "element": "literal",
                   "content": [
@@ -1162,7 +1168,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "run(\"do(define(f, fun(a, fun(b, +(a, b)))),\",\n    \"   print(f(4)(5)))\");\n// → 9"
             },
             {
               "element": "p",
@@ -1178,29 +1184,34 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Again, we are riding along on a JavaScript mechanism to get the equivalent feature in Egg. Special forms are passed the local environment in which they are evaluated so that they can evaluate their subforms in that environment. The function returned by ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "fun"
+                    "Again, we are riding along on a JavaScript mechanism to get the equivalent feature in Egg. Special forms are passed the local environment in which they are evaluated so that they can evaluate their subforms in that environment. The function returned by ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "fun"
+                      ]
+                    },
+                    " closes over the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "env"
+                      ]
+                    },
+                    " argument given to its enclosing function and uses that to create the function’s local environment when it is called."
                   ]
                 },
-                " closes over the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "env"
+                    "This means that the prototype of the local environment will be the environment in which the function was created, which makes it possible to access variables in that environment from the function. This is all there is to implementing closure (though to compile it in a way that is actually efficient, you’d need to do some more work)."
                   ]
-                },
-                " argument given to its enclosing function and uses that to create the function’s local environment when it is called."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "This means that the prototype of the local environment will be the environment in which the function was created, which makes it possible to access variables in that environment from the function. This is all there is to implementing closure (though to compile it in a way that is actually efficient, you’d need to do some more work)."
+                }
               ]
             }
           ],
@@ -1250,29 +1261,34 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Make sure your solution handles multiple comments in a row, with potentially whitespace between or after them."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "A regular expression is probably the easiest way to solve this. Write something that matches “whitespace or a comment, zero or more times”. Use the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "exec"
+                    "Make sure your solution handles multiple comments in a row, with potentially whitespace between or after them."
                   ]
                 },
-                " or ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "match"
+                    "A regular expression is probably the easiest way to solve this. Write something that matches “whitespace or a comment, zero or more times”. Use the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "exec"
+                      ]
+                    },
+                    " or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "match"
+                      ]
+                    },
+                    " method and look at the length of the first element in the returned array (the whole match) to find out how many characters to slice off."
                   ]
-                },
-                " method and look at the length of the first element in the returned array (the whole match) to find out how many characters to slice off."
+                }
               ]
             }
           ],
@@ -1284,7 +1300,7 @@
             {
               "element": "p",
               "content": [
-                " Currently, the only way to assign a variable a value is ",
+                "Currently, the only way to assign a variable a value is ",
                 {
                   "element": "literal",
                   "content": [
@@ -1357,7 +1373,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "Object.prototype.hasOwnProperty.call(scope, name);"
             },
             {
               "element": "p",
@@ -1380,57 +1396,62 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                " You will have to loop through one scope at a time, using ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "Object.getPrototypeOf"
+                    "You will have to loop through one scope at a time, using ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Object.getPrototypeOf"
+                      ]
+                    },
+                    " to go the next outer scope. For each scope, use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "hasOwnProperty"
+                      ]
+                    },
+                    " to find out whether the variable, indicated by the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "name"
+                      ]
+                    },
+                    " property of the first argument to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "set"
+                      ]
+                    },
+                    ", exists in that scope. If it does, set it to the result of evaluating the second argument to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "set"
+                      ]
+                    },
+                    " and then return that value."
                   ]
                 },
-                " to go the next outer scope. For each scope, use ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "hasOwnProperty"
+                    "If the outermost scope is reached (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Object.getPrototypeOf"
+                      ]
+                    },
+                    " returns null) and we haven’t found the variable yet, it doesn’t exist, and an error should be thrown."
                   ]
-                },
-                " to find out whether the variable, indicated by the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "name"
-                  ]
-                },
-                " property of the first argument to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "set"
-                  ]
-                },
-                ", exists in that scope. If it does, set it to the result of evaluating the second argument to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "set"
-                  ]
-                },
-                " and then return that value."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "If the outermost scope is reached (",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Object.getPrototypeOf"
-                  ]
-                },
-                " returns null) and we haven’t found the variable yet, it doesn’t exist, and an error should be thrown."
+                }
               ]
             }
           ],

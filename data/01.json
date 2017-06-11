@@ -94,7 +94,7 @@
         {
           "element": "p",
           "content": [
-            " Values of the ",
+            "Values of the ",
             {
               "element": "em",
               "content": [
@@ -107,7 +107,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "13"
         },
         {
           "element": "p",
@@ -118,7 +118,7 @@
         {
           "element": "p",
           "content": [
-            " JavaScript uses a fixed number of bits, namely 64 of them, to store a single number value. There are only so many patterns you can make with 64 bits, which means that the amount of different numbers that can be represented is limited. For ",
+            "JavaScript uses a fixed number of bits, namely 64 of them, to store a single number value. There are only so many patterns you can make with 64 bits, which means that the amount of different numbers that can be represented is limited. For ",
             {
               "element": "em",
               "content": [
@@ -169,24 +169,24 @@
         {
           "element": "p",
           "content": [
-            " Fractional numbers are written by using a dot."
+            "Fractional numbers are written by using a dot."
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "9.81"
         },
         {
           "element": "p",
           "content": [
-            " For very big or very small numbers, you can also use scientific notation by adding an “e” (for “exponent”), followed by the exponent of the number:"
+            "For very big or very small numbers, you can also use scientific notation by adding an “e” (for “exponent”), followed by the exponent of the number:"
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "2.998e8"
         },
         {
           "element": "p",
@@ -204,7 +204,7 @@
         {
           "element": "p",
           "content": [
-            " Calculations with whole numbers (also called ",
+            "Calculations with whole numbers (also called ",
             {
               "element": "em",
               "content": [
@@ -220,18 +220,18 @@
             {
               "element": "p",
               "content": [
-                " The main thing to do with numbers is arithmetic. Arithmetic operations such as addition or multiplication take two number values and produce a new number from them. Here is what they look like in JavaScript:"
+                "The main thing to do with numbers is arithmetic. Arithmetic operations such as addition or multiplication take two number values and produce a new number from them. Here is what they look like in JavaScript:"
               ]
             },
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "100 + 4 * 11"
             },
             {
               "element": "p",
               "content": [
-                " The ",
+                "The ",
                 {
                   "element": "literal",
                   "content": [
@@ -264,7 +264,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "(100 + 4) * 11"
             },
             {
               "element": "p",
@@ -439,7 +439,7 @@
             {
               "element": "p",
               "content": [
-                " There are three special values in JavaScript that are considered numbers but don’t behave like normal numbers."
+                "There are three special values in JavaScript that are considered numbers but don’t behave like normal numbers."
               ]
             },
             {
@@ -521,7 +521,7 @@
         {
           "element": "p",
           "content": [
-            " The next basic data type is the ",
+            "The next basic data type is the ",
             {
               "element": "em",
               "content": [
@@ -534,7 +534,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "\"Patch my boat with chewing gum\"\n'Monkeys wave goodbye'"
         },
         {
           "element": "p",
@@ -558,7 +558,7 @@
         {
           "element": "p",
           "content": [
-            " To make it possible to include such characters in a string, the following notation is used: whenever a backslash (",
+            "To make it possible to include such characters in a string, the following notation is used: whenever a backslash (",
             {
               "element": "literal",
               "content": [
@@ -592,7 +592,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "\"This is the first line\\nAnd this is the second\""
         },
         {
           "element": "p",
@@ -611,9 +611,7 @@
             {
               "element": "literal",
               "content": [
-                "A newline",
-                " ",
-                "character is written like \"\\n\"."
+                "A newlinecharacter is written like \"\\n\"."
               ]
             },
             "” can be expressed:"
@@ -622,7 +620,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "\"A newline character is written like \\\"\\\\n\\\".\""
         },
         {
           "element": "p",
@@ -661,7 +659,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "\"con\" + \"cat\" + \"e\" + \"nate\""
         },
         {
           "element": "p",
@@ -669,7 +667,9 @@
             "There are more ways of manipulating strings, which we will discuss when we get to methods in ",
             {
               "element": "reference",
-              "content": "Chapter 4"
+              "content": [
+                "Chapter 4"
+              ]
             },
             "."
           ]
@@ -696,7 +696,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(typeof 4.5)\n// → number\nconsole.log(typeof \"x\")\n// → string"
         },
         {
           "element": "p",
@@ -741,7 +741,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(- (10 - 2))\n// → -8"
         }
       ],
       "title": "Unary operators"
@@ -774,12 +774,12 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(3 > 2)\n// → true\nconsole.log(3 < 2)\n// → false"
             },
             {
               "element": "p",
               "content": [
-                " The ",
+                "The ",
                 {
                   "element": "literal",
                   "content": [
@@ -805,18 +805,16 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(\"Aardvark\" < \"Zoroaster\")\n// → true"
             },
             {
               "element": "p",
               "content": [
-                " The way strings are ordered is more or less alphabetic: uppercase letters are always “less” than lowercase ones, so ",
+                "The way strings are ordered is more or less alphabetic: uppercase letters are always “less” than lowercase ones, so ",
                 {
                   "element": "literal",
                   "content": [
-                    "\"Z\" ",
-                    "<",
-                    " \"a\""
+                    "\"Z\" < \"a\""
                   ]
                 },
                 " is true, and non-alphabetic characters (!, -, and so on) are also included in the ordering. The actual comparison is based on the ",
@@ -836,16 +834,14 @@
                 {
                   "element": "literal",
                   "content": [
-                    ">",
-                    "="
+                    ">="
                   ]
                 },
                 " (greater than or equal to), ",
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "="
+                    "<="
                   ]
                 },
                 " (less than or equal to), ",
@@ -868,12 +864,12 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(\"Itchy\" != \"Scratchy\")\n// → true"
             },
             {
               "element": "p",
               "content": [
-                " There is only one value in JavaScript that is not equal to itself, and that is ",
+                "There is only one value in JavaScript that is not equal to itself, and that is ",
                 {
                   "element": "literal",
                   "content": [
@@ -886,7 +882,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(NaN == NaN)\n// → false"
             },
             {
               "element": "p",
@@ -947,8 +943,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "&",
-                    "&"
+                    "&&"
                   ]
                 },
                 " operator represents logical ",
@@ -964,7 +959,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(true && false)\n// → false\nconsole.log(true && true)\n// → true"
             },
             {
               "element": "p",
@@ -989,7 +984,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(false || true)\n// → true\nconsole.log(false || false)\n// → false"
             },
             {
               "element": "p",
@@ -1052,8 +1047,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "&",
-                    "&"
+                    "&&"
                   ]
                 },
                 ", then the comparison operators (",
@@ -1076,7 +1070,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "1 + 1 == 2 && 10 * 10 > 50"
             },
             {
               "element": "p",
@@ -1094,7 +1088,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(true ? 1 : 2);\n// → 1\nconsole.log(false ? 1 : 2);\n// → 2"
             },
             {
               "element": "p",
@@ -1200,7 +1194,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(8 * null)\n// → 0\nconsole.log(\"5\" - 1)\n// → 4\nconsole.log(\"5\" + 1)\n// → 51\nconsole.log(\"five\" * 2)\n// → NaN\nconsole.log(false == 0)\n// → true"
         },
         {
           "element": "p",
@@ -1267,7 +1261,7 @@
         {
           "element": "p",
           "content": [
-            " When something that doesn’t map to a number in an obvious way (such as ",
+            "When something that doesn’t map to a number in an obvious way (such as ",
             {
               "element": "literal",
               "content": [
@@ -1308,7 +1302,7 @@
         {
           "element": "p",
           "content": [
-            " When comparing values of the same type using ",
+            "When comparing values of the same type using ",
             {
               "element": "literal",
               "content": [
@@ -1356,7 +1350,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "console.log(null == undefined);\n// → true\nconsole.log(null == 0);\n// → false"
         },
         {
           "element": "p",
@@ -1402,7 +1396,7 @@
         {
           "element": "p",
           "content": [
-            " But what if you want to test whether something refers to the precise value ",
+            "But what if you want to test whether something refers to the precise value ",
             {
               "element": "literal",
               "content": [
@@ -1448,9 +1442,7 @@
             {
               "element": "literal",
               "content": [
-                "0 ==",
-                " ",
-                "false"
+                "0 ==false"
               ]
             },
             " and ",
@@ -1503,12 +1495,11 @@
             {
               "element": "p",
               "content": [
-                " The logical operators ",
+                "The logical operators ",
                 {
                   "element": "literal",
                   "content": [
-                    "&",
-                    "&"
+                    "&&"
                   ]
                 },
                 " and ",
@@ -1544,7 +1535,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "console.log(null || \"user\")\n// → user\nconsole.log(\"Karl\" || \"user\")\n// → Karl"
             },
             {
               "element": "p",
@@ -1566,8 +1557,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "&",
-                    "&"
+                    "&&"
                   ]
                 },
                 " operator works similarly, but the other way around. When the value to its left is something that converts to false, it returns that value, and otherwise it returns the value on its right."
@@ -1608,10 +1598,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "false ",
-                    "&",
-                    "&",
-                    " X"
+                    "false && X"
                   ]
                 },
                 ", which is false and will ignore ",
@@ -1625,9 +1612,7 @@
                 {
                   "element": "em",
                   "content": [
-                    "short-circuit",
-                    " ",
-                    "evaluation"
+                    "short-circuitevaluation"
                   ]
                 },
                 "."
@@ -1773,24 +1758,21 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "="
+                "<="
               ]
             },
             ", ",
             {
               "element": "literal",
               "content": [
-                ">",
-                "="
+                ">="
               ]
             },
             "), and logic (",
             {
               "element": "literal",
               "content": [
-                "&",
-                "&"
+                "&&"
               ]
             },
             ", ",
@@ -1837,7 +1819,9 @@
             "This gives you enough information to use JavaScript as a pocket calculator, but not much more. The ",
             {
               "element": "reference",
-              "content": "next chapter"
+              "content": [
+                "next chapter"
+              ]
             },
             " will start tying these expressions together into basic programs."
           ]

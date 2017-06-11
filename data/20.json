@@ -18,7 +18,9 @@
         "So far, you have learned the JavaScript language and used it within a single environment: the browser. This chapter and the ",
         {
           "element": "reference",
-          "content": "next one"
+          "content": [
+            "next one"
+          ]
         },
         " will briefly introduce you to Node.js, a program that allows you to apply your JavaScript skills outside of the browser. With it, you can build anything from simple command-line tools to dynamic HTTP servers."
       ]
@@ -96,7 +98,9 @@
             " object, discussed in ",
             {
               "element": "reference",
-              "content": "Chapter 17"
+              "content": [
+                "Chapter 17"
+              ]
             },
             ". An asynchronous interface allows the script to continue running while it does its work and calls a callback function when it’s done. This is the way Node does all its I/O."
           ]
@@ -131,7 +135,9 @@
             "The solution to this problem, in a synchronous system, is to start additional threads of control. (Refer to ",
             {
               "element": "reference",
-              "content": "Chapter 14"
+              "content": [
+                "Chapter 14"
+              ]
             },
             " for a previous discussion of threads.) A second thread could start the second request, and then both threads wait for their results to come back, after which they resynchronize to combine their results."
           ]
@@ -186,7 +192,9 @@
             "In ",
             {
               "element": "reference",
-              "content": "Chapter 17"
+              "content": [
+                "Chapter 17"
+              ]
             },
             ", I already touched on the fact that all those callbacks add quite a lot of noise and indirection to a program. Whether this style of asynchronicity is a good idea in general can be debated. In any case, it takes some getting used to."
           ]
@@ -240,7 +248,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var message = \"Hello world\";\nconsole.log(message);"
         },
         {
           "element": "p",
@@ -292,7 +300,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -364,7 +372,7 @@
         {
           "element": "p",
           "content": [
-            " All the standard JavaScript global variables, such as ",
+            "All the standard JavaScript global variables, such as ",
             {
               "element": "literal",
               "content": [
@@ -461,7 +469,9 @@
             " function, was described in ",
             {
               "element": "reference",
-              "content": "Chapter 10"
+              "content": [
+                "Chapter 10"
+              ]
             },
             ". This system is built into Node and is used to load anything from built-in modules to downloaded libraries to files that are part of your own program."
           ]
@@ -469,7 +479,7 @@
         {
           "element": "p",
           "content": [
-            " When ",
+            "When ",
             {
               "element": "literal",
               "content": [
@@ -613,7 +623,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var garble = require(\"./garble\");\n\n// Index 2 holds the first actual command-line argument\nvar argument = process.argv[2];\n\nconsole.log(garble(argument));"
         },
         {
           "element": "p",
@@ -631,7 +641,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "module.exports = function(string) {\n  return string.split(\"\").map(function(ch) {\n    return String.fromCharCode(ch.charCodeAt(0) + 5);\n  }).join(\"\");\n};"
         },
         {
           "element": "p",
@@ -681,7 +691,9 @@
             "NPM, which was briefly discussed in ",
             {
               "element": "reference",
-              "content": "Chapter 10"
+              "content": [
+                "Chapter 10"
+              ]
             },
             ", is an online repository of JavaScript modules, many of which are specifically written for Node. When you install Node on your computer, you also get a program called ",
             {
@@ -906,7 +918,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var fs = require(\"fs\");\nfs.readFile(\"file.txt\", \"utf8\", function(error, text) {\n  if (error)\n    throw error;\n  console.log(\"The file contained:\", text);\n});"
         },
         {
           "element": "p",
@@ -945,7 +957,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var fs = require(\"fs\");\nfs.readFile(\"file.txt\", function(error, buffer) {\n  if (error)\n    throw error;\n  console.log(\"The file contained\", buffer.length, \"bytes.\",\n              \"The first byte is:\", buffer[0]);\n});"
         },
         {
           "element": "p",
@@ -963,7 +975,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var fs = require(\"fs\");\nfs.writeFile(\"graffiti.txt\", \"Node was here\", function(err) {\n  if (err)\n    console.log(\"Failed to write file:\", err);\n  else\n    console.log(\"File written.\");\n});"
         },
         {
           "element": "p",
@@ -1068,7 +1080,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var fs = require(\"fs\");\nconsole.log(fs.readFileSync(\"file.txt\", \"utf8\"));"
         },
         {
           "element": "p",
@@ -1104,7 +1116,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var http = require(\"http\");\nvar server = http.createServer(function(request, response) {\n  response.writeHead(200, {\"Content-Type\": \"text/html\"});\n  response.write(\"<h1>Hello!</h1><p>You asked for <code>\" +\n                 request.url + \"</code></p>\");\n  response.end();\n});\nserver.listen(8000);"
         },
         {
           "element": "p",
@@ -1178,7 +1190,9 @@
             ", will write out the response headers (see ",
             {
               "element": "reference",
-              "content": "Chapter 17"
+              "content": [
+                "Chapter 17"
+              ]
             },
             "). You give it the status code (200 for “OK” in this case) and an object that contains header values. Here we tell the client that we will be sending back an HTML document."
           ]
@@ -1249,7 +1263,9 @@
             " property) to see what action the client is trying to perform and at the request’s URL to find out which resource this action is being performed on. You’ll see a more advanced server ",
             {
               "element": "reference",
-              "content": "later in this chapter"
+              "content": [
+                "later in this chapter"
+              ]
             },
             "."
           ]
@@ -1284,7 +1300,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var http = require(\"http\");\nvar request = http.request({\n  hostname: \"eloquentjavascript.net\",\n  path: \"/20_node.html\",\n  method: \"GET\",\n  headers: {Accept: \"text/html\"}\n}, function(response) {\n  console.log(\"Server responded with status code\",\n              response.statusCode);\n});\nrequest.end();"
         },
         {
           "element": "p",
@@ -1396,7 +1412,7 @@
         {
           "element": "p",
           "content": [
-            " Writable streams are a widely used concept in Node interfaces. All writable streams have a ",
+            "Writable streams are a widely used concept in Node interfaces. All writable streams have a ",
             {
               "element": "literal",
               "content": [
@@ -1523,7 +1539,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var http = require(\"http\");\nhttp.createServer(function(request, response) {\n  response.writeHead(200, {\"Content-Type\": \"text/plain\"});\n  request.on(\"data\", function(chunk) {\n    response.write(chunk.toString().toUpperCase());\n  });\n  request.on(\"end\", function() {\n    response.end();\n  });\n}).listen(8000);"
         },
         {
           "element": "p",
@@ -1561,7 +1577,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var http = require(\"http\");\nvar request = http.request({\n  hostname: \"localhost\",\n  port: 8000,\n  method: \"POST\"\n}, function(response) {\n  response.on(\"data\", function(chunk) {\n    process.stdout.write(chunk.toString());\n  });\n});\nrequest.end(\"Hello server\");"
         },
         {
           "element": "p",
@@ -1605,7 +1621,7 @@
         {
           "element": "p",
           "content": [
-            "  When we treat files as HTTP resources, the HTTP methods ",
+            " When we treat files as HTTP resources, the HTTP methods ",
             {
               "element": "literal",
               "content": [
@@ -1632,7 +1648,7 @@
         {
           "element": "p",
           "content": [
-            " We probably don’t want to share our whole file system, so we’ll interpret these paths as starting in the server’s working directory, which is the directory in which it was started. If I ran the server from ",
+            "We probably don’t want to share our whole file system, so we’ll interpret these paths as starting in the server’s working directory, which is the directory in which it was started. If I ran the server from ",
             {
               "element": "literal",
               "content": [
@@ -1686,7 +1702,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var http = require(\"http\"), fs = require(\"fs\");\n\nvar methods = Object.create(null);\n\nhttp.createServer(function(request, response) {\n  function respond(code, body, type) {\n    if (!type) type = \"text/plain\";\n    response.writeHead(code, {\"Content-Type\": type});\n    if (body && body.pipe)\n      body.pipe(response);\n    else\n      response.end(body);\n  }\n  if (request.method in methods)\n    methods[request.method](urlToPath(request.url),\n                            respond, request);\n  else\n    respond(405, \"Method \" + request.method +\n            \" not allowed.\");\n}).listen(8000);"
         },
         {
           "element": "p",
@@ -1731,7 +1747,7 @@
         {
           "element": "p",
           "content": [
-            "  To get a path from the URL in the request, the ",
+            " To get a path from the URL in the request, the ",
             {
               "element": "literal",
               "content": [
@@ -1765,12 +1781,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function urlToPath(url) {\n  var path = require(\"url\").parse(url).pathname;\n  return \".\" + decodeURIComponent(path);\n}"
         },
         {
           "element": "p",
           "content": [
-            " If you are worried about the security of the ",
+            "If you are worried about the security of the ",
             {
               "element": "literal",
               "content": [
@@ -1867,7 +1883,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "methods.GET = function(path, respond) {\n  fs.stat(path, function(error, stats) {\n    if (error && error.code == \"ENOENT\")\n      respond(404, \"File not found\");\n    else if (error)\n      respond(500, error.toString());\n    else if (stats.isDirectory())\n      fs.readdir(path, function(error, files) {\n        if (error)\n          respond(500, error.toString());\n        else\n          respond(200, files.join(\"\\n\"));\n      });\n    else\n      respond(200, fs.createReadStream(path),\n              require(\"mime\").lookup(path));\n  });\n};"
         },
         {
           "element": "p",
@@ -2007,7 +2023,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "methods.DELETE = function(path, respond) {\n  fs.stat(path, function(error, stats) {\n    if (error && error.code == \"ENOENT\")\n      respond(204);\n    else if (error)\n      respond(500, error.toString());\n    else if (stats.isDirectory())\n      fs.rmdir(path, respondErrorOrNothing(respond));\n    else\n      fs.unlink(path, respondErrorOrNothing(respond));\n  });\n};"
         },
         {
           "element": "p",
@@ -2025,7 +2041,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function respondErrorOrNothing(respond) {\n  return function(error) {\n    if (error)\n      respond(500, error.toString());\n    else\n      respond(204);\n  };\n}"
         },
         {
           "element": "p",
@@ -2056,7 +2072,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "methods.PUT = function(path, respond, request) {\n  var outStream = fs.createWriteStream(path);\n  outStream.on(\"error\", function(error) {\n    respond(500, error.toString());\n  });\n  outStream.on(\"finish\", function() {\n    respond(204);\n  });\n  request.pipe(outStream);\n};"
         },
         {
           "element": "p",
@@ -2239,7 +2255,9 @@
             "Another approach is to use promises, which were introduced in ",
             {
               "element": "reference",
-              "content": "Chapter 17"
+              "content": [
+                "Chapter 17"
+              ]
             },
             ". Those catch exceptions raised by callback functions and propagate them as failures. It is possible to load a promise library in Node and use that to manage your asynchronous control. Few Node libraries integrate promises, but it is often trivial to wrap them. The excellent ",
             {
@@ -2268,7 +2286,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var Promise = require(\"promise\");\nvar fs = require(\"fs\");\n\nvar readFile = Promise.denodeify(fs.readFile);\nreadFile(\"file.txt\", \"utf8\").then(function(content) {\n  console.log(\"The file contained: \" + content);\n}, function(error) {\n  console.log(\"Failed to read file: \" + error);\n});"
         },
         {
           "element": "p",
@@ -2345,7 +2363,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "methods.GET = function(path) {\n  return inspectPath(path).then(function(stats) {\n    if (!stats) // Does not exist\n      return {code: 404, body: \"File not found\"};\n    else if (stats.isDirectory())\n      return fsp.readdir(path).then(function(files) {\n        return {code: 200, body: files.join(\"\\n\")};\n      });\n    else\n      return {code: 200,\n              type: require(\"mime\").lookup(path),\n              body: fs.createReadStream(path)};\n  });\n};\n\nfunction inspectPath(path) {\n  return fsp.stat(path).then(null, function(error) {\n    if (error.code == \"ENOENT\") return null;\n    else throw error;\n  });\n}"
         },
         {
           "element": "p",
@@ -2441,7 +2459,9 @@
                 "In ",
                 {
                   "element": "reference",
-                  "content": "Chapter 17"
+                  "content": [
+                    "Chapter 17"
+                  ]
                 },
                 ", the first exercise was to make several requests to ",
                 {
@@ -2520,42 +2540,47 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Don’t forget to call the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "end"
+                    "Don’t forget to call the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "end"
+                      ]
+                    },
+                    " method on the object returned by ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "http.request"
+                      ]
+                    },
+                    " in order to actually fire off the request."
                   ]
                 },
-                " method on the object returned by ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "http.request"
+                    "The response object passed to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "http.request"
+                      ]
+                    },
+                    "’s callback is a readable stream. This means that it is not entirely trivial to get the whole response body from it. The following utility function reads a whole stream and calls a callback function with the result, using the usual pattern of passing any errors it encounters as the first argument to the callback:"
                   ]
                 },
-                " in order to actually fire off the request."
+                {
+                  "element": "listing",
+                  "numbered": false,
+                  "content": "function readStreamAsString(stream, callback) {\n  var data = \"\";\n  stream.on(\"data\", function(chunk) {\n    data += chunk.toString();\n  });\n  stream.on(\"end\", function() {\n    callback(null, data);\n  });\n  stream.on(\"error\", function(error) {\n    callback(error);\n  });\n}"
+                }
               ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The response object passed to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "http.request"
-                  ]
-                },
-                "’s callback is a readable stream. This means that it is not entirely trivial to get the whole response body from it. The following utility function reads a whole stream and calls a callback function with the result, using the usual pattern of passing any errors it encounters as the first argument to the callback:"
-              ]
-            },
-            {
-              "element": "listing",
-              "numbered": false,
-              "content": []
             }
           ],
           "title": "Content negotiation, again"
@@ -2569,7 +2594,9 @@
                 "For easy remote access to some files, I might get into the habit of having the ",
                 {
                   "element": "reference",
-                  "content": "file server"
+                  "content": [
+                    "file server"
+                  ]
                 },
                 " defined in this chapter running on my machine, in the ",
                 {
@@ -2603,7 +2630,7 @@
             {
               "element": "listing",
               "numbered": false,
-              "content": []
+              "content": "function urlToPath(url) {\n  var path = require(\"url\").parse(url).pathname;\n  return \".\" + decodeURIComponent(path);\n}"
             },
             {
               "element": "p",
@@ -2649,50 +2676,55 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "It is enough to strip out all occurrences of two dots that have a slash, a backslash, or the end of the string on both sides. Using the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "replace"
+                    "It is enough to strip out all occurrences of two dots that have a slash, a backslash, or the end of the string on both sides. Using the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "replace"
+                      ]
+                    },
+                    " method with a regular expression is the easiest way to do this. Do not forget the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "g"
+                      ]
+                    },
+                    " flag on the expression, or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "replace"
+                      ]
+                    },
+                    " will replace only a single instance, and people could still get around this safety measure by including additional double dots in their paths! Also make sure you do the replace ",
+                    {
+                      "element": "em",
+                      "content": [
+                        "after"
+                      ]
+                    },
+                    " decoding the string, or it would be possible to foil the check by encoding a dot or a slash."
                   ]
                 },
-                " method with a regular expression is the easiest way to do this. Do not forget the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "g"
+                    "Another potentially worrying case is when paths start with a slash, which are interpreted as absolute paths. But because ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "urlToPath"
+                      ]
+                    },
+                    " puts a dot character in front of the path, it is impossible to create requests that result in such a path. Multiple slashes in a row, inside the path, are odd but will be treated as a single slash by the file system."
                   ]
-                },
-                " flag on the expression, or ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "replace"
-                  ]
-                },
-                " will replace only a single instance, and people could still get around this safety measure by including additional double dots in their paths! Also make sure you do the replace ",
-                {
-                  "element": "em",
-                  "content": [
-                    "after"
-                  ]
-                },
-                " decoding the string, or it would be possible to foil the check by encoding a dot or a slash."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                " Another potentially worrying case is when paths start with a slash, which are interpreted as absolute paths. But because ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "urlToPath"
-                  ]
-                },
-                " puts a dot character in front of the path, it is impossible to create requests that result in such a path. Multiple slashes in a row, inside the path, are odd but will be treated as a single slash by the file system."
+                }
               ]
             }
           ],
@@ -2763,30 +2795,35 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "You can use the function that implements the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "DELETE"
+                    "You can use the function that implements the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "DELETE"
+                      ]
+                    },
+                    " method as a blueprint for the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "MKCOL"
+                      ]
+                    },
+                    " method. When no file is found, try to create a directory with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "fs.mkdir"
+                      ]
+                    },
+                    ". When a directory exists at that path, you can return a 204 response so that directory creation requests are idempotent. If a nondirectory file exists here, return an error code. The code 400 (“bad request”) would be appropriate here."
                   ]
-                },
-                " method as a blueprint for the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "MKCOL"
-                  ]
-                },
-                " method. When no file is found, try to create a directory with ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "fs.mkdir"
-                  ]
-                },
-                ". When a directory exists at that path, you can return a 204 response so that directory creation requests are idempotent. If a nondirectory file exists here, return an error code. The code 400 (“bad request”) would be appropriate here."
+                }
               ]
             }
           ],
@@ -2833,12 +2870,16 @@
                 "Use an HTML form (",
                 {
                   "element": "reference",
-                  "content": "Chapter 18"
+                  "content": [
+                    "Chapter 18"
+                  ]
                 },
                 ") to edit the content of the files that make up the website, allowing the user to update them on the server by using HTTP requests as described in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 17"
+                  "content": [
+                    "Chapter 17"
+                  ]
                 },
                 "."
               ]
@@ -2881,154 +2922,149 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "You can create a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<",
-                    "textarea",
-                    ">"
-                  ]
-                },
-                " element to hold the content of the file that is being edited. A ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "GET"
-                  ]
-                },
-                " request, using ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "XMLHttpRequest"
-                  ]
-                },
-                ", can be used to get the current content of the file. You can use relative URLs like ",
-                {
-                  "element": "em",
-                  "content": [
-                    "index.html"
-                  ]
-                },
-                ", instead of ",
-                {
-                  "element": "reference",
-                  "content": [
+                    "You can create a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<textarea>"
+                      ]
+                    },
+                    " element to hold the content of the file that is being edited. A ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "GET"
+                      ]
+                    },
+                    " request, using ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "XMLHttpRequest"
+                      ]
+                    },
+                    ", can be used to get the current content of the file. You can use relative URLs like ",
                     {
                       "element": "em",
                       "content": [
-                        "http://localhost:8000/index.html"
+                        "index.html"
                       ]
-                    }
+                    },
+                    ", instead of ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        {
+                          "element": "em",
+                          "content": [
+                            "http://localhost:8000/index.html"
+                          ]
+                        }
+                      ]
+                    },
+                    ", to refer to files on the same server as the running script."
                   ]
                 },
-                ", to refer to files on the same server as the running script."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Then, when the user clicks a button (you can use a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<",
-                    "form",
-                    ">"
+                    "Then, when the user clicks a button (you can use a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<form>"
+                      ]
+                    },
+                    " element and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"submit\""
+                      ]
+                    },
+                    " event or simply a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"click\""
+                      ]
+                    },
+                    " handler), make a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "PUT"
+                      ]
+                    },
+                    " request to the same URL, with the content of the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<textarea>"
+                      ]
+                    },
+                    " as request body, to save the file."
                   ]
                 },
-                " element and ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"submit\""
+                    "You can then add a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<select>"
+                      ]
+                    },
+                    " element that contains all the files in the server’s root directory by adding ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<option>"
+                      ]
+                    },
+                    " elements containing the lines returned by a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "GET"
+                      ]
+                    },
+                    " request to the URL ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "/"
+                      ]
+                    },
+                    ". When the user selects another file (a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"change\""
+                      ]
+                    },
+                    " event on the field), the script must fetch and display that file. Also make sure that when saving a file, you use the currently selected filename."
                   ]
                 },
-                " event or simply a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"click\""
+                    "Unfortunately, the server is too simplistic to be able to reliably read files from subdirectories since it does not tell us whether the thing we fetched with a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "GET"
+                      ]
+                    },
+                    " request is a regular file or a directory. Can you think of a way to extend the server to address this?"
                   ]
-                },
-                " handler), make a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "PUT"
-                  ]
-                },
-                " request to the same URL, with the content of the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "<",
-                    "textarea",
-                    ">"
-                  ]
-                },
-                " as request body, to save the file."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "You can then add a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "<",
-                    "select",
-                    ">"
-                  ]
-                },
-                " element that contains all the files in the server’s root directory by adding ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "<",
-                    "option",
-                    ">"
-                  ]
-                },
-                " elements containing the lines returned by a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "GET"
-                  ]
-                },
-                " request to the URL ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "/"
-                  ]
-                },
-                ". When the user selects another file (a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"change\""
-                  ]
-                },
-                " event on the field), the script must fetch and display that file. Also make sure that when saving a file, you use the currently selected filename."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Unfortunately, the server is too simplistic to be able to reliably read files from subdirectories since it does not tell us whether the thing we fetched with a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "GET"
-                  ]
-                },
-                " request is a regular file or a directory. Can you think of a way to extend the server to address this?"
+                }
               ]
             }
           ],

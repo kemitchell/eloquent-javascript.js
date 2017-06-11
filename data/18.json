@@ -18,7 +18,9 @@
         "Forms were introduced briefly in the ",
         {
           "element": "reference",
-          "content": "previous chapter"
+          "content": [
+            "previous chapter"
+          ]
         },
         " as a way to ",
         {
@@ -46,9 +48,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "form",
-                ">"
+                "<form>"
               ]
             },
             " tag. HTML allows a number of different styles of fields, ranging from simple on/off checkboxes to drop-down menus and fields for text input. This book won’t try to comprehensively discuss all field types, but we will start with a rough overview."
@@ -61,9 +61,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "input",
-                ">"
+                "<input>"
               ]
             },
             " tag. This tag’s ",
@@ -77,9 +75,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "input",
-                ">"
+                "<input>"
               ]
             },
             " types:"
@@ -289,9 +285,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "form",
-                ">"
+                "<form>"
               ]
             },
             " tag. You can put them anywhere in a page. Such fields cannot be submitted (only a form as a whole can), but when responding to input with JavaScript, we often do not want to submit our fields normally anyway."
@@ -300,7 +294,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p><input type=\"text\" value=\"abc\"> (text)</p>\n<p><input type=\"password\" value=\"abc\"> (password)</p>\n<p><input type=\"checkbox\" checked> (checkbox)</p>\n<p><input type=\"radio\" value=\"A\" name=\"choice\">\n   <input type=\"radio\" value=\"B\" name=\"choice\" checked>\n   <input type=\"radio\" value=\"C\" name=\"choice\"> (radio)</p>\n<p><input type=\"file\"> (file)</p>"
         },
         {
           "element": "p",
@@ -315,27 +309,21 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "textarea",
-                ">"
+                "<textarea>"
               ]
             },
             ", mostly because using an attribute to specify a multiline starting value would be awkward. The ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "textarea",
-                ">"
+                "<textarea>"
               ]
             },
             " requires a matching ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "/textarea",
-                ">"
+                "</textarea>"
               ]
             },
             " closing tag and uses the text between those two, instead of using its ",
@@ -351,7 +339,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<textarea>\none\ntwo\nthree\n</textarea>"
         },
         {
           "element": "p",
@@ -360,9 +348,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " tag is used to create a field that allows the user to select from a number of predefined options."
@@ -371,7 +357,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<select>\n  <option>Pancakes</option>\n  <option>Pudding</option>\n  <option>Ice cream</option>\n</select>"
         },
         {
           "element": "p",
@@ -399,8 +385,7 @@
             {
               "element": "em",
               "content": [
-                "keyboard ",
-                "focus"
+                "keyboard focus"
               ]
             },
             ". When clicked—or activated in some other way—they become the currently active element, the main recipient of keyboard input."
@@ -413,9 +398,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " menu tries to move to the option that contains the text the user typed and responds to the arrow keys by moving its selection up and down."
@@ -451,7 +434,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<input type=\"text\">\n<script>\n  document.querySelector(\"input\").focus();\n  console.log(document.activeElement.tagName);\n  // → INPUT\n  document.querySelector(\"input\").blur();\n  console.log(document.activeElement.tagName);\n  // → BODY\n</script>"
         },
         {
           "element": "p",
@@ -469,7 +452,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<input type=\"text\" autofocus>"
         },
         {
           "element": "p",
@@ -487,7 +470,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<input type=\"text\" tabindex=1> <a href=\".\">(help)</a>\n<button onclick=\"console.log('ok')\" tabindex=2>OK</button>"
         },
         {
           "element": "p",
@@ -531,7 +514,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<button>I'm all right</button>\n<button disabled>I'm out</button>"
         },
         {
           "element": "p",
@@ -558,9 +541,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "form",
-                ">"
+                "<form>"
               ]
             },
             " element, its DOM element will have a property ",
@@ -574,9 +555,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "form",
-                ">"
+                "<form>"
               ]
             },
             " element, in turn, has a property called ",
@@ -612,7 +591,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<form action=\"example/submit.html\">\n  Name: <input type=\"text\" name=\"name\"><br>\n  Password: <input type=\"password\" name=\"password\"><br>\n  <button type=\"submit\">Log in</button>\n</form>\n<script>\n  var form = document.querySelector(\"form\");\n  console.log(form.elements[1].type);\n  // → password\n  console.log(form.elements.password.type);\n  // → password\n  console.log(form.elements.name.form == form);\n  // → true\n</script>"
         },
         {
           "element": "p",
@@ -678,7 +657,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<form action=\"example/submit.html\">\n  Value: <input type=\"text\" name=\"value\">\n  <button type=\"submit\">Save</button>\n</form>\n<script>\n  var form = document.querySelector(\"form\");\n  form.addEventListener(\"submit\", function(event) {\n    console.log(\"Saving value\", form.elements.value.value);\n    event.preventDefault();\n  });\n</script>"
         },
         {
           "element": "p",
@@ -713,9 +692,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "input",
-                ">"
+                "<input>"
               ]
             },
             " tags with a type of ",
@@ -790,9 +767,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "textarea",
-                ">"
+                "<textarea>"
               ]
             },
             " tag with an event handler that, when you press F2, inserts the string “Khasekhemwy” for you."
@@ -801,7 +776,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<textarea></textarea>\n<script>\n  var textarea = document.querySelector(\"textarea\");\n  textarea.addEventListener(\"keydown\", function(event) {\n    // The key code for F2 happens to be 113\n    if (event.keyCode == 113) {\n      replaceSelection(textarea, \"Khasekhemwy\");\n      event.preventDefault();\n    }\n  });\n  function replaceSelection(field, word) {\n    var from = field.selectionStart, to = field.selectionEnd;\n    field.value = field.value.slice(0, from) + word +\n                  field.value.slice(to);\n    // Put the cursor after the word\n    field.selectionStart = field.selectionEnd =\n      from + word.length;\n  }\n</script>"
         },
         {
           "element": "p",
@@ -839,13 +814,13 @@
         {
           "element": "p",
           "content": [
-            "The following example shows a text field and a counter showing the current length of the text entered:"
+            "The following example  shows a text field and a counter showing the current length of the text entered:"
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<input type=\"text\"> length: <span id=\"length\">0</span>\n<script>\n  var text = document.querySelector(\"input\");\n  var output = document.querySelector(\"#length\");\n  text.addEventListener(\"input\", function() {\n    output.textContent = text.value.length;\n  });\n</script>"
         }
       ],
       "title": "Text fields"
@@ -869,7 +844,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<input type=\"checkbox\" id=\"purple\">\n<label for=\"purple\">Make this page purple</label>\n<script>\n  var checkbox = document.querySelector(\"#purple\");\n  checkbox.addEventListener(\"change\", function() {\n    document.body.style.background =\n      checkbox.checked ? \"mediumpurple\" : \"\";\n  });\n</script>"
         },
         {
           "element": "p",
@@ -878,9 +853,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "label",
-                ">"
+                "<label>"
               ]
             },
             " tag is used to associate a piece of text with an input field. Its ",
@@ -916,7 +889,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Color:\n<input type=\"radio\" name=\"color\" value=\"mediumpurple\"> Purple\n<input type=\"radio\" name=\"color\" value=\"lightgreen\"> Green\n<input type=\"radio\" name=\"color\" value=\"lightblue\"> Blue\n<script>\n  var buttons = document.getElementsByName(\"color\");\n  function setColor(event) {\n    document.body.style.background = event.target.value;\n  }\n  for (var i = 0; i < buttons.length; i++)\n    buttons[i].addEventListener(\"change\", setColor);\n</script>"
         },
         {
           "element": "p",
@@ -972,9 +945,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " tag is determined by the browser."
@@ -994,9 +965,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " tag will allow the user to select any number of options, rather than just a single option."
@@ -1005,7 +974,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<select multiple>\n  <option>Pancakes</option>\n  <option>Pudding</option>\n  <option>Ice cream</option>\n</select>"
         },
         {
           "element": "p",
@@ -1041,9 +1010,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " tag is used to set the number of options that are visible at the same time, which gives you explicit control over the drop-down’s appearance. For example, setting the ",
@@ -1077,9 +1044,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "option",
-                ">"
+                "<option>"
               ]
             },
             " tag has a value. This value can be defined with a ",
@@ -1100,9 +1065,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " element reflects the currently selected option. For a ",
@@ -1129,18 +1092,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "option",
-                ">"
+                "<option>"
               ]
             },
             " tags for a ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " field can be accessed as an array-like object through the field’s ",
@@ -1176,7 +1135,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<select multiple>\n  <option value=\"1\">0001</option>\n  <option value=\"2\">0010</option>\n  <option value=\"4\">0100</option>\n  <option value=\"8\">1000</option>\n</select> = <span id=\"output\">0</span>\n<script>\n  var select = document.querySelector(\"select\");\n  var output = document.querySelector(\"#output\");\n  select.addEventListener(\"change\", function() {\n    var number = 0;\n    for (var i = 0; i < select.options.length; i++) {\n      var option = select.options[i];\n      if (option.selected)\n        number += Number(option.value);\n    }\n    output.textContent = number;\n  });\n</script>"
         }
       ],
       "title": "Select fields"
@@ -1199,7 +1158,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<input type=\"file\">\n<script>\n  var input = document.querySelector(\"input\");\n  input.addEventListener(\"change\", function() {\n    if (input.files.length > 0) {\n      var file = input.files[0];\n      console.log(\"You chose\", file.name);\n      if (file.type)\n        console.log(\"It has type\", file.type);\n    }\n  });\n</script>"
         },
         {
           "element": "p",
@@ -1299,7 +1258,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<input type=\"file\" multiple>\n<script>\n  var input = document.querySelector(\"input\");\n  input.addEventListener(\"change\", function() {\n    Array.prototype.forEach.call(input.files, function(file) {\n      var reader = new FileReader();\n      reader.addEventListener(\"load\", function() {\n        console.log(\"File\", file.name, \"starts with\",\n                    reader.result.slice(0, 20));\n      });\n      reader.readAsText(file);\n    });\n  });\n</script>"
         },
         {
           "element": "p",
@@ -1395,7 +1354,9 @@
             " (see ",
             {
               "element": "reference",
-              "content": "Chapter 17"
+              "content": [
+                "Chapter 17"
+              ]
             },
             ") like this:"
           ]
@@ -1403,7 +1364,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function readFile(file) {\n  return new Promise(function(succeed, fail) {\n    var reader = new FileReader();\n    reader.addEventListener(\"load\", function() {\n      succeed(reader.result);\n    });\n    reader.addEventListener(\"error\", function() {\n      fail(reader.error);\n    });\n    reader.readAsText(file);\n  });\n}"
         },
         {
           "element": "p",
@@ -1443,7 +1404,9 @@
             "When such an application needs to remember something between sessions, you cannot use JavaScript variables since those are thrown away every time a page is closed. You could set up a server, connect it to the Internet, and have your application store something there. We will see how to do that in ",
             {
               "element": "reference",
-              "content": "Chapter 20"
+              "content": [
+                "Chapter 20"
+              ]
             },
             ". But this adds a lot of extra work and complexity. Sometimes it is enough to just keep the data in the browser. But how?"
           ]
@@ -1464,7 +1427,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "localStorage.setItem(\"username\", \"marijn\");\nconsole.log(localStorage.getItem(\"username\"));\n// → marijn\nlocalStorage.removeItem(\"username\");"
         },
         {
           "element": "p",
@@ -1526,18 +1489,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " field and change that note’s text in a ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "textarea",
-                ">"
+                "<textarea>"
               ]
             },
             ". A note can be added by clicking a button."
@@ -1546,7 +1505,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "Notes: <select id=\"list\"></select>\n<button onclick=\"addNote()\">new</button><br>\n<textarea id=\"currentnote\" style=\"width: 100%; height: 10em\">\n</textarea>\n\n<script>\n  var list = document.querySelector(\"#list\");\n  function addToList(name) {\n    var option = document.createElement(\"option\");\n    option.textContent = name;\n    list.appendChild(option);\n  }\n\n  // Initialize the list from localStorage\n  var notes = JSON.parse(localStorage.getItem(\"notes\")) ||\n              {\"shopping list\": \"\"};\n  for (var name in notes)\n    if (notes.hasOwnProperty(name))\n      addToList(name);\n\n  function saveToStorage() {\n    localStorage.setItem(\"notes\", JSON.stringify(notes));\n  }\n\n  var current = document.querySelector(\"#currentnote\");\n  current.value = notes[list.value];\n\n  list.addEventListener(\"change\", function() {\n    current.value = notes[list.value];\n  });\n  current.addEventListener(\"change\", function() {\n    notes[list.value] = current.value;\n    saveToStorage();\n  });\n\n  function addNote() {\n    var name = prompt(\"Note name\", \"\");\n    if (!name) return;\n    if (!notes.hasOwnProperty(name)) {\n      notes[name] = \"\";\n      addToList(name);\n      saveToStorage();\n    }\n    list.value = name;\n    current.value = notes[name];\n  }\n</script>"
         },
         {
           "element": "p",
@@ -1644,9 +1603,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "select",
-                ">"
+                "<select>"
               ]
             },
             " field has a ",
@@ -1767,9 +1724,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "form",
-                ">"
+                "<form>"
               ]
             },
             " tags."
@@ -1830,9 +1785,7 @@
                 {
                   "element": "literal",
                   "content": [
-                    "<",
-                    "textarea",
-                    ">"
+                    "<textarea>"
                   ]
                 },
                 " field, which, when pressed, uses the ",
@@ -1845,97 +1798,104 @@
                 " constructor we saw in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 10"
+                  "content": [
+                    "Chapter 10"
+                  ]
                 },
                 " to wrap the text in a function and call it. Convert the return value of the function, or any error it raised, to a string and display it after the text field."
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "Use ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "document.querySelector"
+                    "Use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "document.querySelector"
+                      ]
+                    },
+                    " or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "document.getElementById"
+                      ]
+                    },
+                    " to get access to the elements defined in your HTML. An event handler for ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"click\""
+                      ]
+                    },
+                    " or ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"mousedown\""
+                      ]
+                    },
+                    " events on the button can get the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "value"
+                      ]
+                    },
+                    " property of the text field and call ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "new Function"
+                      ]
+                    },
+                    " on it."
                   ]
                 },
-                " or ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "document.getElementById"
+                    "Make sure you wrap both the call to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "new Function"
+                      ]
+                    },
+                    " and the call to its result in a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "try"
+                      ]
+                    },
+                    " block so that you can catch exceptions that it produces. In this case, we really don’t know what type of exception we are looking for, so catch everything."
                   ]
                 },
-                " to get access to the elements defined in your HTML. An event handler for ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"click\""
+                    "The ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "textContent"
+                      ]
+                    },
+                    " property of the output element can be used to fill it with a string message. Or, if you want to keep the old content around, create a new text node using ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "document.createTextNode"
+                      ]
+                    },
+                    " and append it to the element. Remember to add a newline character to the end so that not all output appears on a single line."
                   ]
-                },
-                " or ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"mousedown\""
-                  ]
-                },
-                " events on the button can get the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "value"
-                  ]
-                },
-                " property of the text field and call ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "new Function"
-                  ]
-                },
-                " on it."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Make sure you wrap both the call to ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "new Function"
-                  ]
-                },
-                " and the call to its result in a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "try"
-                  ]
-                },
-                " block so that you can catch exceptions that it produces. In this case, we really don’t know what type of exception we are looking for, so catch everything."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "textContent"
-                  ]
-                },
-                " property of the output element can be used to fill it with a string message. Or, if you want to keep the old content around, create a new text node using ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "document.createTextNode"
-                  ]
-                },
-                " and append it to the element. Remember to add a newline character to the end so that not all output appears on a single line."
+                }
               ]
             }
           ],
@@ -1951,87 +1911,88 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The best event for updating the suggestion list is ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "\"input\""
+                    "The best event for updating the suggestion list is ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"input\""
+                      ]
+                    },
+                    " since that will fire immediately when the content of the field is changed."
                   ]
                 },
-                " since that will fire immediately when the content of the field is changed."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Then loop over the array of terms and see whether they start with the given string. For example, you could call ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "indexOf"
+                    "Then loop over the array of terms and see whether they start with the given string. For example, you could call ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "indexOf"
+                      ]
+                    },
+                    " and see whether the result is zero. For each matching string, add an element to the suggestions ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<div>"
+                      ]
+                    },
+                    ". You should probably also empty that each time you start updating the suggestions, for example by setting its ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "textContent"
+                      ]
+                    },
+                    " to the empty string."
                   ]
                 },
-                " and see whether the result is zero. For each matching string, add an element to the suggestions ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<",
-                    "div",
-                    ">"
+                    "You could either add a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"click\""
+                      ]
+                    },
+                    " event handler to every suggestion element or add a single one to the outer ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<div>"
+                      ]
+                    },
+                    " that holds them and look at the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "target"
+                      ]
+                    },
+                    " property of the event to find out which suggestion was clicked."
                   ]
                 },
-                ". You should probably also empty that each time you start updating the suggestions, for example by setting its ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "textContent"
+                    "To get the suggestion text out of a DOM node, you could look at its ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "textContent"
+                      ]
+                    },
+                    " or set an attribute to explicitly store the text when you create the element."
                   ]
-                },
-                " to the empty string."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "You could either add a ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"click\""
-                  ]
-                },
-                " event handler to every suggestion element or add a single one to the outer ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "<",
-                    "div",
-                    ">"
-                  ]
-                },
-                " that holds them and look at the ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "target"
-                  ]
-                },
-                " property of the event to find out which suggestion was clicked."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "To get the suggestion text out of a DOM node, you could look at its ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "textContent"
-                  ]
-                },
-                " or set an attribute to explicitly store the text when you create the element."
+                }
               ]
             }
           ],
@@ -2055,7 +2016,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " Any live cell with fewer than two or more than three live  neighbors dies. "
+                        "Any live cell with fewer than two or more than three live  neighbors dies. "
                       ]
                     }
                   ]
@@ -2066,7 +2027,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " Any live cell with two or three live neighbors lives on to the  next generation. "
+                        "Any live cell with two or three live neighbors lives on to the  next generation. "
                       ]
                     }
                   ]
@@ -2077,7 +2038,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " Any dead cell with exactly three live neighbors becomes a live  cell. "
+                        "Any dead cell with exactly three live neighbors becomes a live  cell. "
                       ]
                     }
                   ]
@@ -2110,66 +2071,73 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "To solve the problem of having the changes conceptually happen at the same time, try to see the computation of a generation as a pure function, which takes one grid and produces a new grid that represents the next turn."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Representing the grid can be done in any of the ways shown in Chapters ",
                 {
-                  "element": "reference",
-                  "content": "7"
-                },
-                " and ",
-                {
-                  "element": "reference",
-                  "content": "15"
-                },
-                ". Counting live neighbors can be done with two nested loops, looping over adjacent coordinates. Take care not to count cells outside of the field and to ignore the cell in the center, whose neighbors we are counting."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Making changes to checkboxes take effect on the next generation can be done in two ways. An event handler could notice these changes and update the current grid to reflect them, or you could generate a fresh grid from the values in the checkboxes before computing the next turn."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "If you choose to go with event handlers, you might want to attach attributes that identify the position that each checkbox corresponds to so that it is easy to find out which cell to change."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "To draw the grid of checkboxes, you either can use a ",
-                {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<",
-                    "table",
-                    ">"
+                    "To solve the problem of having the changes conceptually happen at the same time, try to see the computation of a generation as a pure function, which takes one grid and produces a new grid that represents the next turn."
                   ]
                 },
-                " element (see ",
                 {
-                  "element": "reference",
-                  "content": "Chapter 13"
-                },
-                ") or simply put them all in the same element and put ",
-                {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<",
-                    "br",
-                    ">"
+                    "Representing the grid can be done in any of the ways shown in Chapters ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        "7"
+                      ]
+                    },
+                    " and ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        "15"
+                      ]
+                    },
+                    ". Counting live neighbors can be done with two nested loops, looping over adjacent coordinates. Take care not to count cells outside of the field and to ignore the cell in the center, whose neighbors we are counting."
                   ]
                 },
-                " (line break) elements between the rows."
+                {
+                  "element": "p",
+                  "content": [
+                    "Making changes to checkboxes take effect on the next generation can be done in two ways. An event handler could notice these changes and update the current grid to reflect them, or you could generate a fresh grid from the values in the checkboxes before computing the next turn."
+                  ]
+                },
+                {
+                  "element": "p",
+                  "content": [
+                    "If you choose to go with event handlers, you might want to attach attributes that identify the position that each checkbox corresponds to so that it is easy to find out which cell to change."
+                  ]
+                },
+                {
+                  "element": "p",
+                  "content": [
+                    "To draw the grid of checkboxes, you either can use a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<table>"
+                      ]
+                    },
+                    " element (see ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        "Chapter 13"
+                      ]
+                    },
+                    ") or simply put them all in the same element and put ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<br>"
+                      ]
+                    },
+                    " (line break) elements between the rows."
+                  ]
+                }
               ]
             }
           ],

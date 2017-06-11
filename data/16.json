@@ -18,7 +18,9 @@
         "Browsers give us several ways to display graphics. The simplest way is to use styles to position and color regular DOM elements. This can get you quite far, as the game in the ",
         {
           "element": "reference",
-          "content": "previous chapter"
+          "content": [
+            "previous chapter"
+          ]
         },
         " showed. By adding partially transparent background images to the nodes, we can make them look exactly the way we want. It is even possible to rotate or skew nodes by using the ",
         {
@@ -50,9 +52,7 @@
         {
           "element": "literal",
           "content": [
-            "<",
-            "img",
-            ">"
+            "<img>"
           ]
         },
         " tag."
@@ -80,7 +80,9 @@
             "This book will not go into SVG in detail, but I will briefly  explain how it works. At the ",
             {
               "element": "reference",
-              "content": "end of the chapter"
+              "content": [
+                "end of the chapter"
+              ]
             },
             ", I’ll come back to the trade-offs that you must consider when deciding which drawing mechanism is appropriate for a given application."
           ]
@@ -94,7 +96,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Normal HTML here.</p>\n<svg xmlns=\"http://www.w3.org/2000/svg\">\n  <circle r=\"50\" cx=\"50\" cy=\"50\" fill=\"red\"/>\n  <rect x=\"120\" y=\"5\" width=\"90\" height=\"90\"\n        stroke=\"blue\" fill=\"none\"/>\n</svg>"
         },
         {
           "element": "p",
@@ -117,18 +119,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "circle",
-                ">"
+                "<circle>"
               ]
             },
             " and ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "rect",
-                ">"
+                "<rect>"
               ]
             },
             " tags, which do not exist in HTML, do have a meaning in SVG—they draw shapes using the style and position specified by their attributes."
@@ -141,9 +139,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "circle",
-                ">"
+                "<circle>"
               ]
             },
             " element to be colored cyan instead:"
@@ -152,7 +148,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var circle = document.querySelector(\"circle\");\ncircle.setAttribute(\"fill\", \"cyan\");"
         }
       ],
       "title": "SVG"
@@ -163,13 +159,11 @@
         {
           "element": "p",
           "content": [
-            " Canvas graphics can be drawn onto a ",
+            "Canvas graphics can be drawn onto a ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "canvas",
-                ">"
+                "<canvas>"
               ]
             },
             " element. You can give such an element ",
@@ -198,13 +192,11 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "canvas",
-                ">"
+                "<canvas>"
               ]
             },
             " tag is intended to support different styles of drawing. To get access to an actual drawing interface, we first need to create a ",
@@ -240,7 +232,7 @@
         {
           "element": "p",
           "content": [
-            " A context is created through the ",
+            "A context is created through the ",
             {
               "element": "literal",
               "content": [
@@ -251,9 +243,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "canvas",
-                ">"
+                "<canvas>"
               ]
             },
             " element."
@@ -262,7 +252,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<p>Before canvas.</p>\n<canvas width=\"120\" height=\"60\"></canvas>\n<p>After canvas.</p>\n<script>\n  var canvas = document.querySelector(\"canvas\");\n  var context = canvas.getContext(\"2d\");\n  context.fillStyle = \"red\";\n  context.fillRect(10, 10, 100, 50);\n</script>"
         },
         {
           "element": "p",
@@ -364,12 +354,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.strokeStyle = \"blue\";\n  cx.strokeRect(5, 5, 50, 50);\n  cx.lineWidth = 5;\n  cx.strokeRect(135, 5, 50, 50);\n</script>"
         },
         {
           "element": "p",
           "content": [
-            " When no ",
+            "When no ",
             {
               "element": "literal",
               "content": [
@@ -395,13 +385,13 @@
         {
           "element": "p",
           "content": [
-            "   A path is a sequence of lines. The 2D canvas interface takes a peculiar approach to describing such a path. It is done entirely through side effects. Paths are not values that can be stored and passed around. Instead, if you want to do something with a path, you make a sequence of method calls to describe its shape."
+            "  A path is a sequence of lines. The 2D canvas interface takes a peculiar approach to describing such a path. It is done entirely through side effects. Paths are not values that can be stored and passed around. Instead, if you want to do something with a path, you make a sequence of method calls to describe its shape."
           ]
         },
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.beginPath();\n  for (var y = 10; y < 100; y += 10) {\n    cx.moveTo(10, y);\n    cx.lineTo(90, y);\n  }\n  cx.stroke();\n</script>"
         },
         {
           "element": "p",
@@ -447,7 +437,7 @@
         {
           "element": "p",
           "content": [
-            "  When filling a path (using the ",
+            " When filling a path (using the ",
             {
               "element": "literal",
               "content": [
@@ -474,7 +464,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.beginPath();\n  cx.moveTo(50, 10);\n  cx.lineTo(10, 70);\n  cx.lineTo(90, 70);\n  cx.fill();\n</script>"
         },
         {
           "element": "p",
@@ -485,7 +475,7 @@
         {
           "element": "p",
           "content": [
-            " You could also use the ",
+            "You could also use the ",
             {
               "element": "literal",
               "content": [
@@ -511,7 +501,7 @@
         {
           "element": "p",
           "content": [
-            " A path may also contain curved lines. These are, unfortunately, a bit more involved to draw than straight lines."
+            "A path may also contain curved lines. These are, unfortunately, a bit more involved to draw than straight lines."
           ]
         },
         {
@@ -537,7 +527,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.beginPath();\n  cx.moveTo(10, 90);\n  // control=(60,10) goal=(90,90)\n  cx.quadraticCurveTo(60, 10, 90, 90);\n  cx.lineTo(60, 10);\n  cx.closePath();\n  cx.stroke();\n</script>"
         },
         {
           "element": "p",
@@ -555,7 +545,7 @@
         {
           "element": "p",
           "content": [
-            " The ",
+            "The ",
             {
               "element": "literal",
               "content": [
@@ -568,7 +558,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.beginPath();\n  cx.moveTo(10, 90);\n  // control1=(10,10) control2=(90,10) goal=(50,90)\n  cx.bezierCurveTo(10, 10, 90, 10, 50, 90);\n  cx.lineTo(90, 10);\n  cx.lineTo(10, 10);\n  cx.closePath();\n  cx.stroke();\n</script>"
         },
         {
           "element": "p",
@@ -618,7 +608,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.beginPath();\n  cx.moveTo(10, 10);\n  // control=(90,10) goal=(90,90) radius=20\n  cx.arcTo(90, 10, 90, 90, 20);\n  cx.moveTo(10, 10);\n  // control=(90,10) goal=(90,90) radius=80\n  cx.arcTo(90, 10, 90, 90, 80);\n  cx.stroke();\n</script>"
         },
         {
           "element": "p",
@@ -683,12 +673,12 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.beginPath();\n  // center=(50,50) radius=40 angle=0 to 7\n  cx.arc(50, 50, 40, 0, 7);\n  // center=(150,50) radius=40 angle=0 to ½π\n  cx.arc(150, 50, 40, 0, 0.5 * Math.PI);\n  cx.stroke();\n</script>"
         },
         {
           "element": "p",
           "content": [
-            " The resulting picture contains a line from the right of the full circle (first call to ",
+            "The resulting picture contains a line from the right of the full circle (first call to ",
             {
               "element": "literal",
               "content": [
@@ -740,7 +730,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var results = [\n  {name: \"Satisfied\", count: 1043, color: \"lightblue\"},\n  {name: \"Neutral\", count: 563, color: \"lightgreen\"},\n  {name: \"Unsatisfied\", count: 510, color: \"pink\"},\n  {name: \"No comment\", count: 175, color: \"silver\"}\n];"
         },
         {
           "element": "p",
@@ -751,7 +741,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas width=\"200\" height=\"200\"></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  var total = results.reduce(function(sum, choice) {\n    return sum + choice.count;\n  }, 0);\n  // Start at the top\n  var currentAngle = -0.5 * Math.PI;\n  results.forEach(function(result) {\n    var sliceAngle = (result.count / total) * 2 * Math.PI;\n    cx.beginPath();\n    // center=100,100, radius=100\n    // from current angle, clockwise by slice's angle\n    cx.arc(100, 100, 100,\n           currentAngle, currentAngle + sliceAngle);\n    currentAngle += sliceAngle;\n    cx.lineTo(100, 100);\n    cx.fillStyle = result.color;\n    cx.fill();\n  });\n</script>"
         },
         {
           "element": "p",
@@ -802,7 +792,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.font = \"28px Georgia\";\n  cx.fillStyle = \"fuchsia\";\n  cx.fillText(\"I can draw text, too!\", 10, 50);\n</script>"
         },
         {
           "element": "p",
@@ -920,7 +910,9 @@
             "We will come back to our pie chart, and the problem of labeling the slices, in the ",
             {
               "element": "reference",
-              "content": "exercises"
+              "content": [
+                "exercises"
+              ]
             },
             " at the end of the chapter."
           ]
@@ -965,18 +957,14 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "img",
-                ">"
+                "<img>"
               ]
             },
             " element or from another canvas, and neither has to be visible in the actual document. The following example creates a detached ",
             {
               "element": "literal",
               "content": [
-                "<",
-                "img",
-                ">"
+                "<img>"
               ]
             },
             " element and loads an image file into it. But it cannot immediately start drawing from this picture because the browser may not have fetched it yet. To deal with this, we register a ",
@@ -992,7 +980,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  var img = document.createElement(\"img\");\n  img.src = \"img/hat.png\";\n  img.addEventListener(\"load\", function() {\n    for (var x = 10; x < 200; x += 30)\n      cx.drawImage(img, x, 10);\n  });\n</script>"
         },
         {
           "element": "p",
@@ -1093,7 +1081,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  var img = document.createElement(\"img\");\n  img.src = \"img/player.png\";\n  var spriteW = 24, spriteH = 30;\n  img.addEventListener(\"load\", function() {\n    var cycle = 0;\n    setInterval(function() {\n      cx.clearRect(0, 0, spriteW, spriteH);\n      cx.drawImage(img,\n                   // source rectangle\n                   cycle * spriteW, 0, spriteW, spriteH,\n                   // destination rectangle\n                   0,               0, spriteW, spriteH);\n      cycle = (cycle + 1) % 8;\n    }, 120);\n  });\n</script>"
         },
         {
           "element": "p",
@@ -1136,7 +1124,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  cx.scale(3, .5);\n  cx.beginPath();\n  cx.arc(50, 50, 40, 0, 7);\n  cx.lineWidth = 3;\n  cx.stroke();\n</script>"
         },
         {
           "element": "p",
@@ -1251,7 +1239,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function flipHorizontally(context, around) {\n  context.translate(around, 0);\n  context.scale(-1, 1);\n  context.translate(-around, 0);\n}"
         },
         {
           "element": "p",
@@ -1292,7 +1280,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  var img = document.createElement(\"img\");\n  img.src = \"img/player.png\";\n  var spriteW = 24, spriteH = 30;\n  img.addEventListener(\"load\", function() {\n    flipHorizontally(cx, 100 + spriteW / 2);\n    cx.drawImage(img, 0, 0, spriteW, spriteH,\n                 100, 0, spriteW, spriteH);\n  });\n</script>"
         }
       ],
       "title": "Transformation"
@@ -1368,7 +1356,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "<canvas width=\"600\" height=\"300\"></canvas>\n<script>\n  var cx = document.querySelector(\"canvas\").getContext(\"2d\");\n  function branch(length, angle, scale) {\n    cx.fillRect(0, 0, 1, length);\n    if (length < 8) return;\n    cx.save();\n    cx.translate(0, length);\n    cx.rotate(-angle);\n    branch(length * scale, angle, scale);\n    cx.rotate(2 * angle);\n    branch(length * scale, angle, scale);\n    cx.restore();\n  }\n  cx.translate(300, 0);\n  branch(60, 0.5, 0.8);\n</script>"
         },
         {
           "element": "p",
@@ -1409,7 +1397,9 @@
             "We now know enough about canvas drawing to start working on a canvas-based display system for the game from the ",
             {
               "element": "reference",
-              "content": "previous chapter"
+              "content": [
+                "previous chapter"
+              ]
             },
             ". The new display will no longer be showing just colored boxes. Instead, we’ll use ",
             {
@@ -1441,7 +1431,9 @@
             " from ",
             {
               "element": "reference",
-              "content": "Chapter 15"
+              "content": [
+                "Chapter 15"
+              ]
             },
             ", namely, the methods ",
             {
@@ -1483,7 +1475,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "function CanvasDisplay(parent, level) {\n  this.canvas = document.createElement(\"canvas\");\n  this.canvas.width = Math.min(600, level.width * scale);\n  this.canvas.height = Math.min(450, level.height * scale);\n  parent.appendChild(this.canvas);\n  this.cx = this.canvas.getContext(\"2d\");\n\n  this.level = level;\n  this.animationTime = 0;\n  this.flipPlayer = false;\n\n  this.viewport = {\n    left: 0,\n    top: 0,\n    width: this.canvas.width / scale,\n    height: this.canvas.height / scale\n  };\n\n  this.drawFrame(0);\n}\n\nCanvasDisplay.prototype.clear = function() {\n  this.canvas.parentNode.removeChild(this.canvas);\n};"
         },
         {
           "element": "p",
@@ -1505,7 +1497,9 @@
             " in ",
             {
               "element": "reference",
-              "content": "Chapter 15"
+              "content": [
+                "Chapter 15"
+              ]
             },
             ", even though ",
             {
@@ -1527,7 +1521,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "CanvasDisplay.prototype.drawFrame = function(step) {\n  this.animationTime += step;\n\n  this.updateViewport();\n  this.clearDisplay();\n  this.drawBackground();\n  this.drawActors();\n};"
         },
         {
           "element": "p",
@@ -1535,7 +1529,9 @@
             "Other than tracking time, the method updates the viewport for the current player position, fills the whole canvas with a background color, and draws the background and actors onto that. Note that this is different from the approach in ",
             {
               "element": "reference",
-              "content": "Chapter 15"
+              "content": [
+                "Chapter 15"
+              ]
             },
             ", where we drew the background once and scrolled the wrapping DOM element to move it."
           ]
@@ -1576,7 +1572,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "CanvasDisplay.prototype.updateViewport = function() {\n  var view = this.viewport, margin = view.width / 3;\n  var player = this.level.player;\n  var center = player.pos.plus(player.size.times(0.5));\n\n  if (center.x < view.left + margin)\n    view.left = Math.max(center.x - margin, 0);\n  else if (center.x > view.left + view.width - margin)\n    view.left = Math.min(center.x + margin - view.width,\n                         this.level.width - view.width);\n  if (center.y < view.top + margin)\n    view.top = Math.max(center.y - margin, 0);\n  else if (center.y > view.top + view.height - margin)\n    view.top = Math.min(center.y + margin - view.height,\n                        this.level.height - view.height);\n};"
         },
         {
           "element": "p",
@@ -1621,7 +1617,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "CanvasDisplay.prototype.clearDisplay = function() {\n  if (this.level.status == \"won\")\n    this.cx.fillStyle = \"rgb(68, 191, 255)\";\n  else if (this.level.status == \"lost\")\n    this.cx.fillStyle = \"rgb(44, 136, 214)\";\n  else\n    this.cx.fillStyle = \"rgb(52, 166, 251)\";\n  this.cx.fillRect(0, 0,\n                   this.canvas.width, this.canvas.height);\n};"
         },
         {
           "element": "p",
@@ -1636,7 +1632,9 @@
             " in the ",
             {
               "element": "reference",
-              "content": "previous chapter"
+              "content": [
+                "previous chapter"
+              ]
             },
             "."
           ]
@@ -1644,7 +1642,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var otherSprites = document.createElement(\"img\");\notherSprites.src = \"img/sprites.png\";\n\nCanvasDisplay.prototype.drawBackground = function() {\n  var view = this.viewport;\n  var xStart = Math.floor(view.left);\n  var xEnd = Math.ceil(view.left + view.width);\n  var yStart = Math.floor(view.top);\n  var yEnd = Math.ceil(view.top + view.height);\n\n  for (var y = yStart; y < yEnd; y++) {\n    for (var x = xStart; x < xEnd; x++) {\n      var tile = this.level.grid[y][x];\n      if (tile == null) continue;\n      var screenX = (x - view.left) * scale;\n      var screenY = (y - view.top) * scale;\n      var tileX = tile == \"lava\" ? scale : 0;\n      this.cx.drawImage(otherSprites,\n                        tileX,         0, scale, scale,\n                        screenX, screenY, scale, scale);\n    }\n  }\n};"
         },
         {
           "element": "p",
@@ -1732,7 +1730,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "var playerSprites = document.createElement(\"img\");\nplayerSprites.src = \"img/player.png\";\nvar playerXOverlap = 4;\n\nCanvasDisplay.prototype.drawPlayer = function(x, y, width,\n                                              height) {\n  var sprite = 8, player = this.level.player;\n  width += playerXOverlap * 2;\n  x -= playerXOverlap;\n  if (player.speed.x != 0)\n    this.flipPlayer = player.speed.x < 0;\n\n  if (player.speed.y != 0)\n    sprite = 9;\n  else if (player.speed.x != 0)\n    sprite = Math.floor(this.animationTime * 12) % 8;\n\n  this.cx.save();\n  if (this.flipPlayer)\n    flipHorizontally(this.cx, x + width / 2);\n\n  this.cx.drawImage(playerSprites,\n                    sprite * width, 0, width, height,\n                    x,              y, width, height);\n\n  this.cx.restore();\n};"
         },
         {
           "element": "p",
@@ -1757,7 +1755,7 @@
         {
           "element": "listing",
           "numbered": false,
-          "content": []
+          "content": "CanvasDisplay.prototype.drawActors = function() {\n  this.level.actors.forEach(function(actor) {\n    var width = actor.size.x * scale;\n    var height = actor.size.y * scale;\n    var x = (actor.pos.x - this.viewport.left) * scale;\n    var y = (actor.pos.y - this.viewport.top) * scale;\n    if (actor.type == \"player\") {\n      this.drawPlayer(x, y, width, height);\n    } else {\n      var tileX = (actor.type == \"coin\" ? 2 : 1) * scale;\n      this.cx.drawImage(otherSprites,\n                        tileX, 0, width, height,\n                        x,     y, width, height);\n    }\n  }, this);\n};"
         },
         {
           "element": "p",
@@ -1846,7 +1844,9 @@
             "For nondemanding applications, it really doesn’t matter much which interface you choose. The ",
             {
               "element": "reference",
-              "content": "second display"
+              "content": [
+                "second display"
+              ]
             },
             " we built for our game in this chapter could have been implemented using any of these three graphics technologies since it does not need to draw text, handle mouse interaction, or work with an extraordinarily large amount of elements."
           ]
@@ -1864,9 +1864,7 @@
             {
               "element": "literal",
               "content": [
-                "<",
-                "canvas",
-                ">"
+                "<canvas>"
               ]
             },
             " element."
@@ -2007,8 +2005,7 @@
             {
               "element": "literal",
               "content": [
-                "scal",
-                "e"
+                "scale"
               ]
             },
             ", and ",
@@ -2072,7 +2069,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " A trapezoid (a rectangle that is wider on one side) "
+                        "A trapezoid (a rectangle that is wider on one side) "
                       ]
                     }
                   ]
@@ -2083,7 +2080,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " A red diamond (a rectangle rotated 45 degrees or ¼π radians) "
+                        "A red diamond (a rectangle rotated 45 degrees or ¼π radians) "
                       ]
                     }
                   ]
@@ -2094,7 +2091,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " A zigzagging line "
+                        "A zigzagging line "
                       ]
                     }
                   ]
@@ -2105,7 +2102,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " A spiral made up of 100 straight line segments "
+                        "A spiral made up of 100 straight line segments "
                       ]
                     }
                   ]
@@ -2116,7 +2113,7 @@
                     {
                       "element": "p",
                       "content": [
-                        " A yellow star "
+                        "A yellow star "
                       ]
                     }
                   ]
@@ -2147,7 +2144,9 @@
                 " in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 13"
+                  "content": [
+                    "Chapter 13"
+                  ]
                 },
                 ", which describes how to get coordinates on a circle using these functions."
               ]
@@ -2159,82 +2158,87 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                " The trapezoid (1) is easy to draw using a path. Pick suitable center coordinates and add each of the four corners around that."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The diamond (2) can be drawn the easy way, with a path, or the interesting way, with a ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "rotate"
+                    "The trapezoid (1) is easy to draw using a path. Pick suitable center coordinates and add each of the four corners around that."
                   ]
                 },
-                " transformation. To use rotation, you will have to apply a trick similar to what we did in the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "flipHorizontally"
+                    "The diamond (2) can be drawn the easy way, with a path, or the interesting way, with a ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "rotate"
+                      ]
+                    },
+                    " transformation. To use rotation, you will have to apply a trick similar to what we did in the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "flipHorizontally"
+                      ]
+                    },
+                    " function. Because you want to rotate around the center of your rectangle and not around the point (0,0), you must first ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "translate"
+                      ]
+                    },
+                    " to there, then rotate, and then translate back."
                   ]
                 },
-                " function. Because you want to rotate around the center of your rectangle and not around the point (0,0), you must first ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "translate"
+                    "For the zigzag (3) it becomes impractical to write a new call to ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "lineTo"
+                      ]
+                    },
+                    " for each line segment. Instead, you should use a loop. You can have each iteration draw either two line segments (right and then left again) or one, in which case you must use the evenness (",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "% 2"
+                      ]
+                    },
+                    ") of the loop index to determine whether to go left or right."
                   ]
                 },
-                " to there, then rotate, and then translate back."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "For the zigzag (3) it becomes impractical to write a new call to ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "lineTo"
+                    "You’ll also need a loop for the spiral (4). If you draw a series of points, with each point moving further along a circle around the spiral’s center, you get a circle. If, during the loop, you vary the radius of the circle on which you are putting the current point and go around more than once, the result is a spiral."
                   ]
                 },
-                " for each line segment. Instead, you should use a loop. You can have each iteration draw either two line segments (right and then left again) or one, in which case you must use the evenness (",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "% 2"
+                    "The star (5) depicted is built out of ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "quadraticCurveTo"
+                      ]
+                    },
+                    " lines. You could also draw one with straight lines. Divide a circle into eight pieces, or a piece for each point you want your star to have. Draw lines between these points, making them curve toward the center of the star. With ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "quadraticCurveTo"
+                      ]
+                    },
+                    ", you can use the center as the control point."
                   ]
-                },
-                ") of the loop index to determine whether to go left or right."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "You’ll also need a loop for the spiral (4). If you draw a series of points, with each point moving further along a circle around the spiral’s center, you get a circle. If, during the loop, you vary the radius of the circle on which you are putting the current point and go around more than once, the result is a spiral."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The star (5) depicted is built out of ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "quadraticCurveTo"
-                  ]
-                },
-                " lines. You could also draw one with straight lines. Divide a circle into eight pieces, or a piece for each point you want your star to have. Draw lines between these points, making them curve toward the center of the star. With ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "quadraticCurveTo"
-                  ]
-                },
-                ", you can use the center as the control point."
+                }
               ]
             }
           ],
@@ -2248,7 +2252,9 @@
               "content": [
                 {
                   "element": "reference",
-                  "content": "Earlier"
+                  "content": [
+                    "Earlier"
+                  ]
                 },
                 " in the chapter, we saw an example program that drew a pie chart. Modify this program so that the name of each category is shown next to the slice that represents it. Try to find a pleasing-looking way to automatically position this text, which would work for other data sets as well. You may assume that categories are no smaller than 5 percent (that is, there won’t be a bunch of tiny ones next to each other)."
               ]
@@ -2274,108 +2280,113 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "You will need to call ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "fillText"
+                    "You will need to call ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "fillText"
+                      ]
+                    },
+                    " and set the context’s ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "textAlign"
+                      ]
+                    },
+                    " and ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "textBaseline"
+                      ]
+                    },
+                    " properties in such a way that the text ends up where you want it."
                   ]
                 },
-                " and set the context’s ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "textAlign"
+                    "A sensible way to position the labels would be to put the text on the line going from the center of the pie through the middle of the slice. You don’t want to put the text directly against the side of the pie but rather move the text out to the side of the pie by a given number of pixels."
                   ]
                 },
-                " and ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "textBaseline"
+                    "The angle of this line is ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "currentAngle + 0.5 * sliceAngle"
+                      ]
+                    },
+                    ". The following code finds a position on this line, 120 pixels from the center:"
                   ]
                 },
-                " properties in such a way that the text ends up where you want it."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "A sensible way to position the labels would be to put the text on the line going from the center of the pie through the middle of the slice. You don’t want to put the text directly against the side of the pie but rather move the text out to the side of the pie by a given number of pixels."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "The angle of this line is ",
                 {
-                  "element": "literal",
+                  "element": "listing",
+                  "numbered": false,
+                  "content": "var middleAngle = currentAngle + 0.5 * sliceAngle;\nvar textX = Math.cos(middleAngle) * 120 + centerX;\nvar textY = Math.sin(middleAngle) * 120 + centerY;"
+                },
+                {
+                  "element": "p",
                   "content": [
-                    "currentAngle + 0.5 * sliceAngle"
+                    "For ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "textBaseline"
+                      ]
+                    },
+                    ", the value ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"middle\""
+                      ]
+                    },
+                    " is probably appropriate when using this approach. What to use for ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "textAlign"
+                      ]
+                    },
+                    " depends on the side of the circle we are on. On the left, it should be ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"right\""
+                      ]
+                    },
+                    ", and on the right, it should be ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"left\""
+                      ]
+                    },
+                    " so that the text is positioned away from the pie."
                   ]
                 },
-                ". The following code finds a position on this line, 120 pixels from the center:"
-              ]
-            },
-            {
-              "element": "listing",
-              "numbered": false,
-              "content": []
-            },
-            {
-              "element": "p",
-              "content": [
-                "For ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "textBaseline"
+                    "If you are not sure how to find out which side of the circle a given angle is on, look to the explanation of ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Math.cos"
+                      ]
+                    },
+                    " in the previous exercise. The cosine of an angle tells us which x-coordinate it corresponds to, which in turn tells us exactly which side of the circle we are on."
                   ]
-                },
-                ", the value ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"middle\""
-                  ]
-                },
-                " is probably appropriate when using this approach. What to use for ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "textAlign"
-                  ]
-                },
-                " depends on the side of the circle we are on. On the left, it should be ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"right\""
-                  ]
-                },
-                ", and on the right, it should be ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"left\""
-                  ]
-                },
-                " so that the text is positioned away from the pie."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "If you are not sure how to find out which side of the circle a given angle is on, look to the explanation of ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "Math.cos"
-                  ]
-                },
-                " in the previous exercise. The cosine of an angle tells us which x-coordinate it corresponds to, which in turn tells us exactly which side of the circle we are on."
+                }
               ]
             }
           ],
@@ -2397,65 +2408,76 @@
                 " technique that we saw in ",
                 {
                   "element": "reference",
-                  "content": "Chapter 13"
+                  "content": [
+                    "Chapter 13"
+                  ]
                 },
                 " and ",
                 {
                   "element": "reference",
-                  "content": "Chapter 15"
+                  "content": [
+                    "Chapter 15"
+                  ]
                 },
                 " to draw a box with a bouncing ball in it. The ball moves at a constant speed and bounces off the box’s sides when it hits them."
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "A box is easy to draw with ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "strokeRect"
+                    "A box is easy to draw with ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "strokeRect"
+                      ]
+                    },
+                    ". Define a variable that holds its size or define two variables if your box’s width and height differ. To create a round ball, start a path, call ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "arc(x, y, radius, 0, 7)"
+                      ]
+                    },
+                    ", which creates an arc going from zero to more than a whole circle, and fill it."
                   ]
                 },
-                ". Define a variable that holds its size or define two variables if your box’s width and height differ. To create a round ball, start a path, call ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "arc(x, y, radius, 0, 7)"
+                    "To model the ball’s position and speed, you can use the ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "Vector"
+                      ]
+                    },
+                    " type from ",
+                    {
+                      "element": "reference",
+                      "content": [
+                        "Chapter 15"
+                      ]
+                    },
+                    "(which is available on this page). Give it a starting speed, preferably one that is not purely vertical or horizontal, and every frame, multiply that speed with the amount of time that elapsed. When the ball gets too close to a vertical wall, invert the x component in its speed. Likewise, invert the y component when it hits a horizontal wall."
                   ]
                 },
-                ", which creates an arc going from zero to more than a whole circle, and fill it."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "To model the ball’s position and speed, you can use the ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "Vector"
+                    "After finding the ball’s new position and speed, use ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "clearRect"
+                      ]
+                    },
+                    " to delete the scene and redraw it using the new position."
                   ]
-                },
-                " type from ",
-                {
-                  "element": "reference",
-                  "content": "Chapter 15"
-                },
-                "(which is available on this page). Give it a starting speed, preferably one that is not purely vertical or horizontal, and every frame, multiply that speed with the amount of time that elapsed. When the ball gets too close to a vertical wall, invert the x component in its speed. Likewise, invert the y component when it hits a horizontal wall."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "After finding the ball’s new position and speed, use ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "clearRect"
-                  ]
-                },
-                " to delete the scene and redraw it using the new position."
+                }
               ]
             }
           ],
@@ -2490,38 +2512,41 @@
               ]
             },
             {
-              "element": "p",
+              "element": "hint",
               "content": [
-                "The key to the solution is the fact that we can use a canvas element as a source image when using ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "drawImage"
+                    "The key to the solution is the fact that we can use a canvas element as a source image when using ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "drawImage"
+                      ]
+                    },
+                    ". It is possible to create an extra ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "<canvas>"
+                      ]
+                    },
+                    " element, without adding it to the document, and draw our inverted sprites to it, once. When drawing an actual frame, we just copy the already inverted sprites to the main canvas."
                   ]
                 },
-                ". It is possible to create an extra ",
                 {
-                  "element": "literal",
+                  "element": "p",
                   "content": [
-                    "<",
-                    "canvas",
-                    ">"
+                    "Some care would be required because images do not load instantly. We do the inverted drawing only once, and if we do it before the image loads, it won’t draw anything. A ",
+                    {
+                      "element": "literal",
+                      "content": [
+                        "\"load\""
+                      ]
+                    },
+                    " handler on the image can be used to draw the inverted images to the extra canvas. This canvas can be used as a drawing source immediately (it’ll simply be blank until we draw the character onto it)."
                   ]
-                },
-                " element, without adding it to the document, and draw our inverted sprites to it, once. When drawing an actual frame, we just copy the already inverted sprites to the main canvas."
-              ]
-            },
-            {
-              "element": "p",
-              "content": [
-                "Some care would be required because images do not load instantly. We do the inverted drawing only once, and if we do it before the image loads, it won’t draw anything. A ",
-                {
-                  "element": "literal",
-                  "content": [
-                    "\"load\""
-                  ]
-                },
-                " handler on the image can be used to draw the inverted images to the extra canvas. This canvas can be used as a drawing source immediately (it’ll simply be blank until we draw the character onto it)."
+                }
               ]
             }
           ],
